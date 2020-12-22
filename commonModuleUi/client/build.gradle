@@ -2,6 +2,10 @@ apply plugin : 'base'
 apply plugin: 'org.openapi.generator'
 apply plugin: 'com.github.node-gradle.node'
 
+node {
+  download = false
+}
+
 task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
   group = 'build'
   description = 'Compile client side assets for production'
