@@ -91,9 +91,9 @@ pipeline {
                                 enabledForFailure: true, aggregatingResults: true,
                                 tools: [java(), checkStyle(pattern: '**/build/reports/checkstyle/main.xml', reportEncoding: 'UTF-8')]
                         )
-                        mail 	to: 'markus.oley@vsa.de',		//Always send a mail after the build to this mail address
+                        /**mail 	to: 'markus.oley@vsa.de',		//Always send a mail after the build to this mail address
                                 subject: "Pipeline ${currentBuild.fullDisplayName} finished with ${currentBuild.currentResult} ",
-                                body: "Check ${BUILD_URL}"
+                                body: "Check ${BUILD_URL}"**/
                     }
                 }
             }
