@@ -20,6 +20,10 @@ apply {
     plugin 'io.spring.dependency-management'
 }
 
+springBoot {
+    mainClassName = 'de.noventi.cm.mpm.Application'
+}
+
 dependencies {
 
     annotationProcessor 'org.projectlombok:lombok:1.18.6'
