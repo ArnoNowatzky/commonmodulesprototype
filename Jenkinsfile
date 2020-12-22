@@ -24,19 +24,19 @@ pipeline {
 
                 steps {
                     dir("${env.WORKSPACE}/commonModuleService"){
-                        bat 'gradlew build'
+                        bat 'gradlew build -s'
                     }
 
                     dir("${env.WORKSPACE}/commonModuleUi"){
-                        bat 'gradlew build'
+                        bat 'gradlew build -s'
                     }
 
                     dir("${env.WORKSPACE}/commonModuleRuntime"){
-                        bat 'gradlew build'
+                        bat 'gradlew build -s'
                     }
 
                     dir("${env.WORKSPACE}/commonModuleRuntime"){
-                        bat 'gradlew build'
+                        bat 'gradlew build -s'
                     }
                 }
             }
@@ -53,19 +53,19 @@ pipeline {
 
                 steps {
                     dir("${env.WORKSPACE}/commonModuleService"){
-                        sh './gradlew build'
+                        sh './gradlew build -s'
                     }
 
                     dir("${env.WORKSPACE}/commonModuleUi"){
-                        sh './gradlew build'
+                        sh './gradlew build -s'
                     }
 
                     dir("${env.WORKSPACE}/commonModuleRuntime"){
-                        sh './gradlew build'
+                        sh './gradlew build -s'
                     }
 
                     dir("${env.WORKSPACE}/commonModuleMPM"){
-                        sh './gradlew build'
+                        sh './gradlew build -s'
                     }
                 }
 
