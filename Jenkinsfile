@@ -23,7 +23,9 @@ pipeline {
                 }
 
                 steps {
-                    bat 'cd commonModuleService;gradlew build'
+                    dir("${env.WORKSPACE}/commonModuleService"){
+                        bat 'gradlew build'
+                    }
 
                     bat 'cd commonModuleUi;gradlew build'
 
