@@ -8,6 +8,10 @@ pipeline {
   }
   environment {
     CI_SONAR=true 					//for running sonar always (not only at night), CI_SONAR=false does not run sonar at all
+    http_proxy='http://proxy.vsa.de:8080'
+    https_proxy='http://proxy.vsa.de:8080'
+    no_proxy='.vsa.de,.ads-root.de,localhost'
+    PHANTOMJS_CDNURL='http://webentw.intra.vsa.de/public/phantomjs/'
   }
   stages { 
     stage('Run Tests') {
