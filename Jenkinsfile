@@ -27,11 +27,17 @@ pipeline {
                         bat 'gradlew build'
                     }
 
-                    bat 'cd commonModuleUi;gradlew build'
+                    dir("${env.WORKSPACE}/commonModuleUi"){
+                        bat 'gradlew build'
+                    }
 
-                    bat 'cd commonModuleRuntime;gradlew build'
+                    dir("${env.WORKSPACE}/commonModuleRuntime"){
+                        bat 'gradlew build'
+                    }
 
-                    bat 'cd commonModuleMPM;gradlew build'
+                    dir("${env.WORKSPACE}/commonModuleRuntime"){
+                        bat 'gradlew build'
+                    }
                 }
             }
 
@@ -50,16 +56,22 @@ pipeline {
                         sh './gradlew build'
                     }
 
-                    sh 'cd commonModuleUi;gradlew build'
+                    dir("${env.WORKSPACE}/commonModuleUi"){
+                        sh './gradlew build'
+                    }
 
-                    sh 'cd commonModuleRuntime;gradlew build'
+                    dir("${env.WORKSPACE}/commonModuleRuntime"){
+                        sh './gradlew build'
+                    }
 
-                    sh 'cd commonModuleMPM;gradlew build'
+                    dir("${env.WORKSPACE}/commonModuleMPM"){
+                        sh './gradlew build'
+                    }
                 }
 
                 post {
                     always {
-                        junit '**/build/test-results/**/TEST*.xml' 	// Collect junit reports to be shown in jenkins
+                        //junit '**/build/test-results/**/TEST*.xml' 	// Collect junit reports to be shown in jenkins
                         archive '**/*.log'				// Archives are sent to the master server and can be viewed even if the workspace of the last build is removed
                         script {
                             currentBuild.description = GIT_BRANCH.replace ('origin/', '') // Show branch name in description
