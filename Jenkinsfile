@@ -46,7 +46,9 @@ pipeline {
                 }
 
                 steps {
-                    sh 'cd commonModuleService;gradlew build'
+                    dir("${env.WORKSPACE}/commonModuleService"){
+                        sh './gradlew build'
+                    }
 
                     sh 'cd commonModuleUi;gradlew build'
 
