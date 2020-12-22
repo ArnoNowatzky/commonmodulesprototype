@@ -1,0 +1,1 @@
+Project contains client implementations for a WAWI implemented in CSharp (like Jump)

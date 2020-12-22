@@ -1,0 +1,40 @@
+apply plugin : 'base'
+apply plugin: 'org.openapi.generator'
+apply plugin: 'com.github.node-gradle.node'
+
+task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
+  group = 'build'
+  description = 'Compile client side assets for production'
+  args = ['run', 'build']
+}
+
+task clientTest(type: NpmTask, dependsOn: 'npmInstall') {
+  group = 'verification'
+  description = 'Executes client side unit tests'
+  args = ['run', 'test']
+}
+
+task clientIntegrationTest(type: NpmTask, dependsOn: 'npmInstall') {
+  group = 'verification'
+  description = 'Executes client side integration tests'
+  args = ['run', 'e2e']
+}
+
+openApiGenerate {
+  //verbose = true
+  generatorName = "typescript-angular"
+  inputSpec = file('../../api/ui.yaml').toString()
+  outputDir = "$projectDir/src/app/generated".toString()
+  apiPackage = "api"
+  modelPackage = "model"
+  invokerPackage = "api"
+}
+
+tasks.openApiGenerate {
+  outputs.upToDateWhen { false }
+  outputs.cacheIf { false }
+}
+
+buildClient.dependsOn tasks.openApiGenerate
+
+

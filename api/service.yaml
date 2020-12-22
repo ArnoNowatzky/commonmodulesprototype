@@ -1,0 +1,1616 @@
+openapi: 3.0.0
+info:
+  description: Description of KSV Zentralmodul TSE ([TR-03151](https://www.bsi.bund.de/DE/Publikationen/TechnischeRichtlinien/tr03151/tr03151_node.html))
+  version: "0.0.22" 
+  title: KSV Zentralmodul TSE
+  contact:
+    email: fvoss@seg-gesundheitswesen.de
+servers:
+  - url: '{baseUrl}/v1'    
+tags:
+- name: "registration"
+  description: |
+    registration functions
+- name: "transaction"
+  description: |
+    transaction functions 
+- name: "export"
+  description: |
+    export functions 
+- name: "util"
+  description: |
+    utilities functions
+- name: "admin"
+  description: |
+    admin functions
+paths:
+  /registration:
+    get:
+      tags:
+       - "registration"
+      description: Gets all registered clients
+      operationId: registrationGET 
+      parameters:
+        - name: credentials
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/credentials'
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/uniqueClientId'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+    post:
+      tags:
+       - "registration"
+      description: Register a new client at the TSE
+      operationId: registrationPost 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'
+      responses:
+        '201':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+    delete:
+      tags:
+       - "registration"
+      description: Deregister a client
+      operationId: registrationDelete 
+      parameters:
+        - name: credentials
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/credentials'
+      responses:
+        '200':
+          description: Execution successful 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess' 
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+  /transaction:
+    get:
+      tags:
+      - "transaction"
+      description: Get a list of all open transactions of a specific client
+      operationId: transactionGET
+      parameters:
+        - name: credentials
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/credentials'
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/transactionResult'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+    post:
+      tags:
+      - "transaction" 
+      description: Start a new transaction
+      operationId: transactionPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messageCredentialsTransaction'
+      responses:
+        '201': 
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transactionResult'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+    put:
+      tags:
+      - "transaction"
+      description: Update a transaction
+      operationId: transactionPut 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messageCredentialsTransaction'
+      responses:
+        '201':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transactionResult'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+  /transactionLast:
+    get:
+      tags:
+      - "transaction"
+      description: Get short information of the last transaction of a specific client
+      operationId: transactionLastGET
+      parameters:
+        - name: credentials
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/credentials'
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transactionResult'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+  /transactionFinish:
+    put:
+      tags:
+      - "transaction"
+      description: Close a transaction
+      operationId: transactionFinishPut
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messageCredentialsTransaction'
+      responses:
+        '201':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transactionResult'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+  /exportTransactionAll:
+    get:
+      tags:
+       - "export"
+      description: Export all data from TSE
+      operationId: exportTransactionAllGET
+      parameters:
+        - name: credentials
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/credentials'    
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportData'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+    delete:
+      tags:
+       - "export"
+      description: Finish a Export and delete the data on TSE
+      operationId: exportAllDelete 
+      parameters:
+        - name: credentials
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/credentials'
+      responses:
+        '200':
+          description: Execution successful 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess' 
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'
+    put:
+      tags:
+       - "export"
+      description: Cancel a Export
+      operationId: exportAllPut
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'
+      responses:
+        '201':
+          description: Execution successful 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess' 
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'
+  /exportTransactionFilterdByDate:
+    get:
+      tags:
+       - "export"
+      description: Export data from a specific date range
+      operationId: exportTransaktionFilterdByDateGET
+      parameters:
+        - name: messageCredentialsDateDelete 
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messageCredentialsDateDelete'  
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportData'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+  /exportTransactionFilterdByTransactionNumber:
+    get:
+      tags:
+       - "export"
+      description: Export data from a specific transaction number range
+      operationId: exportTransactionFilterdByTransactionnumberGET
+      parameters:
+        - name: messageCredentialsTransactionDelete
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messageCredentialsTransactionDelete'
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportData'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'  
+  /exportCertificate:
+    get:
+      tags:
+       - "export"
+      description: Requests all certificates including the certificates of the certificate chains currently in use
+      operationId: exportCertificateGET
+      parameters:
+        - name: credentials
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/credentials'
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/defaultMessage'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'  
+  /tseinfo:
+    get:
+      tags:
+      - "util"
+      description: Get TSE information. Set credential.tseid = "" to get infos of all tses of the given Server or enter are valid tseid 
+      operationId: utilTseInfoGET 
+      parameters:
+        - name: credentials
+          in: header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/credentials'        
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/tseInfo'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+  /dailyInit:
+    post:
+      tags:
+      - "util"
+      description: Daily initialisation
+      operationId: utilDailyInitPost 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'        
+      responses:
+        '201':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'
+  /dailyInitForce:
+    post:
+      tags:
+      - "util"
+      description: Daily initialisation
+      operationId: utilDailyInitForcePost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'        
+      responses:
+        '201':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'              
+  /synchronize:
+    post:
+      tags:
+      - "util"
+      description: synchronization functions for tse and client
+      operationId: utilSynchronizePost 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'        
+      responses:
+        '201':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'
+  /synchronizeForce:
+    post:
+      tags:
+      - "util"
+      description: synchronization functions for tse and client
+      operationId: utilSynchronizeForcePost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'        
+      responses:
+        '201':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'
+  /version:
+    get:
+      tags:
+      - "util"
+      description: Get Zentralmodul Version
+      operationId: utilVersionGET       
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+  /reInitTSE:
+    post:
+      tags:
+      - "util"
+      description: Setup after replacing TSE from hardware.
+      operationId: utilReSetupPost    
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'           
+      responses:
+        '200':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError'               
+  /changeDataAccess:
+    post:
+      tags:
+      - "admin"
+      description: function to change different access data 
+      operationId: adminChangeDataAccessPost 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'        
+      responses:
+        '201':
+          description: Execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseSuccess'
+        '400':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '404':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '500':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+        '502':
+          description: Returns a reponse error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseError' 
+components:
+  schemas:
+    clientSystemTime:
+      description: systemtime of client, timeformat in (ISO-8601)
+      type: string
+      maxLength: 25
+      minLength: 25
+      example: 2020-12-02T17:00:01.001
+    defaultMessage:
+      description: default message object 
+      properties:
+        message:
+          $ref: '#/components/schemas/message'
+    description: 
+      description: description of an order
+      type: string
+      maxLength: 200
+      example: Paracetamol
+    externalId:
+      description: Unique external id of a client
+      type: string
+      maxLength: 40
+      example: sn1234-123-1234
+    gross: 
+      description: Gross amount 
+      type: number
+      format: decimal
+      example: 2.78
+    grossTotalTaxRate: 
+      description: Gross total for one specific tax rate
+      type: object
+      properties:
+        gross:
+          $ref: '#/components/schemas/gross'
+        taxRate: 
+          $ref: '#/components/schemas/taxRate'
+    connectionLink:
+      description: URL or network address of cloud or connector
+      type: string
+      maxLength: 512
+      example: 168.122.124.12
+    connectionPort:
+      description: Port of connector
+      type: integer
+      format: int32
+      example: 8080
+    exportData:
+      description: Tar-file, contains data of transaction and logs
+      type: string
+      format: byte
+    filterEndDate:
+      description: End date for restrictive search (ISO-8601)
+      type: string
+      maxLength: 25
+      minLength: 25
+      example: 2020-12-02T17:00:01.001
+    filterEndTan:
+      description: End transcaction number for restrictive search (ISO-8601)
+      type: integer
+      format: int32
+      example: 13234213
+    filterStartDate:
+      description: Start date for restrictive search (ISO-8601)
+      type: string
+      maxLength: 25
+      minLength: 25
+      example: 2020-12-02T17:00:01.001
+    filterStartTan:
+      description: Start transaction number for restrictive search (ISO-8601)
+      type: integer
+      format: int32
+      example: 13234213
+    freeText:
+      description: Free text
+      type: string
+      maxLength: 5000
+      example: a user defined text
+    credentials:
+      description: Authentification information 
+      properties:
+        connectionLink:
+          $ref: '#/components/schemas/connectionLink'
+        connectionPort:
+          $ref: '#/components/schemas/connectionPort'
+        tseId:
+          $ref: '#/components/schemas/tseId'
+        accessDataCol:
+          type: array
+          items:
+            $ref: '#/components/schemas/accessData'
+        uniqueClientId:
+          $ref: '#/components/schemas/uniqueClientId'
+        tseQualifier:
+          $ref: '#/components/schemas/tseQualifier'
+        clientSystemTime:
+          $ref: '#/components/schemas/clientSystemTime'
+    tseQualifier:
+      description: Name of the TSE module vendor
+      type: string
+      enum:
+        - 'Epson'
+    deleteActive:
+      description: Value, if data should be deleted
+      type: string
+      maxLength: 1 
+      example: '1' 
+    orderQuantity:
+      description: Order quantity of single position
+      type: number
+      format: decimal
+      example: 0.345
+    message:
+      description: a standard message string
+      type: string
+      example: base64 encoded string
+    messageCredentialsDelete:
+      properties:
+        credentials:
+          $ref: '#/components/schemas/credentials' 
+        deleteActive:
+          $ref: '#/components/schemas/deleteActive'
+    messageCredentialsDateDelete:
+      properties:
+        credentials:
+          $ref: '#/components/schemas/credentials' 
+        deleteActive:
+          $ref: '#/components/schemas/deleteActive'
+        filterStartDate:
+          $ref: '#/components/schemas/filterStartDate'
+        filterEndDate: 
+          $ref: '#/components/schemas/filterEndDate'
+    messageCredentialsTransaction:
+      properties:
+        credentials:
+          $ref: '#/components/schemas/credentials'
+        transaction:
+          $ref: '#/components/schemas/transaction'
+    messageCredentialsTransactionDelete:
+      properties:
+        credentials:
+          $ref: '#/components/schemas/credentials' 
+        deleteActive:
+          $ref: '#/components/schemas/deleteActive'
+        filterStartTan:
+          $ref: '#/components/schemas/filterStartTan'
+        filterEndTan:
+          $ref: '#/components/schemas/filterEndTan'
+    accessData:
+      description: Input for password information (e.g. Pin, Puk, token, secret)
+      type: object
+      properties:
+        accessDataKey:
+          $ref: '#/components/schemas/accessDataKey'
+        accessDataVal:
+          $ref: '#/components/schemas/accessDataVal'
+    accessDataKey:
+      description: Kind of access data
+      type: string
+      example: AdminPin
+    accessDataVal:
+      description: Codeword  
+      type: string
+      example: password
+    processDataRaw:
+      description: Processdata as rawdata - will not be formatted (see DSFinV-K spec.)
+      type: string
+      minLength: 5
+    processData:
+      description: Processdata
+      type: object
+      properties:
+        processDataOrderCol:
+          type: array
+          items:
+            $ref: '#/components/schemas/processDataOrder'
+        processDataReceipt:
+          $ref: '#/components/schemas/processDataReceipt'
+        processDataDifferentProcess:
+          $ref: '#/components/schemas/processDataDifferentProcess'
+    processDataOrder:
+      description: Description of a single order
+      type: object
+      properties:
+        orderQuantity: 
+          $ref: '#/components/schemas/orderQuantity'
+        description:
+          $ref: '#/components/schemas/description'
+        gross:
+          $ref: '#/components/schemas/gross'
+    processDataReceipt:
+      description: Decription of a sinlge receipt
+      type: object
+      properties:
+        receiptType:
+          $ref: '#/components/schemas/receiptType'
+        grossTotalTaxRate:
+          type: array
+          items:
+            $ref: '#/components/schemas/grossTotalTaxRate'
+        paymentCol:
+          type: array
+          items:
+            $ref: '#/components/schemas/payment'
+    processDataDifferentProcess:
+      description: Description of a different process
+      type: object
+      properties:
+        freeText:
+          $ref: '#/components/schemas/freeText'
+    processType:
+      description: Type of process
+      type: string
+      enum:
+        - 'Kassenbeleg-V1'
+        - 'Bestellung-V1'
+        - 'SonstigerVorgang'
+    receiptType:
+      description: Type of Receipt
+      type: string
+      enum:
+        - 'Beleg'
+        - 'AVTransfer'
+        - 'AVBestellung'
+        - 'AVTraining'
+        - 'AVBelegstorno'
+        - 'AVBelegabbruch'
+        - 'AVSachbezug'
+        - 'AVSonstige'
+        - 'AVRechnung'
+    responseError:
+      description: Error response object with information of the error source
+      type: object
+      properties:
+        responseErrorIsApiError:
+          $ref: '#/components/schemas/responseErrorIsApiError'
+        responseErrorIsTseError:
+          $ref: '#/components/schemas/responseErrorIsTseError'
+        responseErrorMessage:
+          $ref: '#/components/schemas/responseErrorMessage'
+        responseErrorOrgException:
+          $ref: '#/components/schemas/responseErrorOrgException'
+        responseErrorOrgStackstrace:
+          $ref: '#/components/schemas/responseErrorOrgStackstrace'
+        responseErrorTimestamp:
+          $ref: '#/components/schemas/responseErrorTimestamp'
+        responseErrorCode:
+          $ref: '#/components/schemas/responseErrorCode'
+    responseErrorCode:
+      description: Unique error code for mechanical interpretation
+      type: string
+      maxLength: 4
+      example: 3000
+    responseErrorIsApiError:
+      description: Criteria if Zentralmodul Api is source of the error
+      type: string
+      maxLength: 1
+      example: '1'
+    responseErrorIsTseError:
+      description: Criteria if TSE module is source of the error
+      type: string
+      maxLength: 1
+      example: '1'
+    responseErrorMessage:
+      description: Corresponding error message
+      type: string
+      maxLength: 200
+      example: Die Api konnte die TSE nicht ansprechen
+    responseErrorOrgException:
+      description: Original error message from source
+      type: string
+      maxLength: 500
+      example: Internal IOException
+    responseErrorOrgStackstrace:
+      description: Stacktrace for developers information
+      type: string
+      maxLength: 1000
+      example: Line 103 Invalid Argument
+    responseErrorTimestamp:
+      description: Timestamp of error
+      type: string
+      maxLength: 30
+      example: 2020-01-01 13:45:23
+    responseSuccess:
+      description: Response if execution succeeded
+      type: string
+      example: Kasse erfolgreich registriert
+    taxRate:
+      description: Value of tax rate
+      type: string
+      enum:
+        - 'RegelUST'
+        - 'ErmUST'
+        - 'DSUST2413'
+        - 'DSUST2411'
+        - 'UST0'
+    transaction:
+      description: Transaction
+      properties:
+        externalId:
+          $ref: '#/components/schemas/externalId'
+        transactionNumber:
+          $ref: '#/components/schemas/transactionNumber'
+        processData:
+          $ref: '#/components/schemas/processData'
+        processDataRaw:
+          $ref: '#/components/schemas/processDataRaw'
+        processType:
+          $ref: '#/components/schemas/processType'
+    transactionResult:
+      description: Result object of a transaction
+      properties:
+        externalId:
+          $ref: '#/components/schemas/externalId'
+        tseId:
+          $ref: '#/components/schemas/tseId'
+        transactionNumber:
+          $ref: '#/components/schemas/transactionNumber'
+        transactionStart:
+          $ref: '#/components/schemas/transactionStart'
+        transactionStop:
+          $ref: '#/components/schemas/transactionStop'
+        tseSignatureCounter:
+          $ref: '#/components/schemas/tseSignatureCounter'
+        tseSignature:
+          $ref: '#/components/schemas/tseSignature'
+        tseSignatureAlgorithm:
+          $ref: '#/components/schemas/tseSignatureAlgorithm'
+        processData:
+          $ref: '#/components/schemas/processData'
+        processDataRaw:
+          $ref: '#/components/schemas/processDataRaw'
+        processType:
+          $ref: '#/components/schemas/processType'
+        tsePublicKey:
+          $ref: '#/components/schemas/tsePublicKey'
+    tseInfo:
+      description: TSE information
+      type: object
+      properties:
+        tseId:
+          $ref: '#/components/schemas/tseId'
+        tseDeviceType:
+          $ref: '#/components/schemas/tseDeviceType'
+        tseConnectionState:
+          $ref: '#/components/schemas/tseConnectionState'
+        tseTimeFormat:
+          $ref: '#/components/schemas/tseTimeFormat'
+        tsePdEncoding:
+          $ref: '#/components/schemas/tsePdEncoding'
+        tseCertificate1:
+          $ref: '#/components/schemas/tseCertificate1'
+        tseCertificate2:
+          $ref: '#/components/schemas/tseCertificate2'
+        tseDataIntegrity:
+          $ref: '#/components/schemas/tseDataIntegrity'
+        tseLifeTime:
+          $ref: '#/components/schemas/tseLifeTime'
+        tseCompensationBlockModus:
+          $ref: '#/components/schemas/tseCompensationBlockModus'
+        tseCdcHash:
+          $ref: '#/components/schemas/tseCdcHash'
+        tseCdcId:
+          $ref: '#/components/schemas/tseCdcId'
+        tseCertificateExpiredDate:
+          $ref: '#/components/schemas/tseCertificateExpiredDate'
+        tseSignatureCounter:
+          $ref: '#/components/schemas/tseSignatureCounter'
+        tseHardwareVersion:
+          $ref: '#/components/schemas/tseHardwareVersion'
+        tseHasPassedSelftest:
+          $ref: '#/components/schemas/tseHasPassedSelftest'
+        tseHasValidTime:
+          $ref: '#/components/schemas/tseHasValidTime'
+        tseIsExportEnabledCspTestFails:
+          $ref: '#/components/schemas/tseIsExportEnabledCspTestFails'
+        tseIsTransactionInProgress:
+          $ref: '#/components/schemas/tseIsTransactionInProgress'
+        tseIsUnlocked:
+          $ref: '#/components/schemas/tseIsUnlocked'
+        tseLastExportedDate:
+          $ref: '#/components/schemas/tseLastExportedDate'
+        tseNextExportDate:
+          $ref: '#/components/schemas/tseNextExportDate'
+        tseMaxRegisteredClients:
+          $ref: '#/components/schemas/tseMaxRegisteredClients'
+        tseMaxSignatures:
+          $ref: '#/components/schemas/tseMaxSignatures'
+        tseMaxStartedTransactions:
+          $ref: '#/components/schemas/tseMaxStartedTransactions'
+        tseMaxUpdateDelay:
+          $ref: '#/components/schemas/tseMaxUpdateDelay'
+        tseRegisteredClients:
+          $ref: '#/components/schemas/tseRegisteredClients'
+        tseRemainingSignatures:
+          $ref: '#/components/schemas/tseRemainingSignatures'
+        tseSerialNumber:
+          $ref: '#/components/schemas/tseSerialNumber'
+        tseSignatureAlgorithm:
+          $ref: '#/components/schemas/tseSignatureAlgorithm'
+        tseSoftwareVersion:
+          $ref: '#/components/schemas/tseSoftwareVersion'
+        tseStartedTransaction:
+          $ref: '#/components/schemas/tseStartedTransaction'
+        tseTarExportSize:
+          $ref: '#/components/schemas/tseTarExportSize'
+        tseTimeUntilNextSelfTest:
+          $ref: '#/components/schemas/tseTimeUntilNextSelfTest'
+        tseCapacity:
+          $ref: '#/components/schemas/tseCapacity'
+        tseCurrentSize:
+          $ref: '#/components/schemas/tseCurrentSize'
+        tseModel:
+          $ref: '#/components/schemas/tseModel'
+        tseInitializedState:
+          $ref: '#/components/schemas/tseInitializedState'
+        tseVendorType:
+          $ref: '#/components/schemas/tseVendorType'
+        tsePublicKey:
+          $ref: '#/components/schemas/tsePublicKey'        
+    tseDeviceType:
+      description: Type of TSE device
+      type: string
+      example: type_storage
+    tseConnectionState:
+      description: Connection state
+      type: string
+      example: connected
+    tseId:
+      description: Unique Id of the TSE hardware module
+      type: string
+      maxLength: 200
+      example: TSE_UEDF234594KDDLFMEFIF34324ESDGNNBGGGG7566734FFSDFSFSE2343422_2
+    tseDataIntegrity:
+      description: Data integrity state
+      type: string
+      example: gut
+    tseLifeTime:
+      description: Lifetime state of the TSE
+      type: string
+      example: gut     
+    tseCompensationBlockModus:
+      description: Compensation block mode 
+      type: string
+      example: gut
+    tseCdcHash:
+      description: CDC Hash
+      type: string
+      example: fdec0a214c6043453acd7d8s26227s8s8900sd8acbdd32
+    tseCdcId:
+      description: Id of CDC
+      type: string
+      example: U209071A9E7445C0C3
+    tseCertificateExpiredDate:
+      description: Certificate expire date
+      type: string
+      example: 07.09.2020 23:59:59
+    tseNextExportDate:
+      description: Next date to get an export (Iso-8601)
+      type: string
+      maxLength: 25
+      minLength: 25
+      example: 2020-12-02T17:00:01.001
+    tseSignatureCounter:
+      description: Counter of used signatures
+      type: string
+      example: '170'
+    tseHardwareVersion:
+      description: Version of hardware
+      type: string
+      example: '65540'
+    tseHasPassedSelftest:
+      description: Passed selftest
+      type: string
+      example: FALSE
+    tseHasValidTime:
+      description: Has date been set
+      type: string
+      example: FALSE
+    tseIsExportEnabledCspTestFails:
+      description: Enables/Disables export of log data after CSP(Crypto Service Provider) Test failed
+      type: string
+      example: TRUE
+    tseIsUnlocked:
+      description: TSE unlocked state
+      type: string
+      example: FALSE
+    tseIsTransactionInProgress:
+      description: Transaction in progress state
+      type: string
+      example: FALSE
+    tseLastExportedDate:
+      description: Last date of succeeded export
+      type: string
+      example: '01.01.2020 23:59:59'
+    tseMaxRegisteredClients:
+      description: Maximum amount of possible clients registered at the TSE
+      type: string
+      example: '100'
+    tseMaxSignatures:
+      description: Maximum amount of created signatures by the TSE
+      type: string
+      example: '20000000'
+    tseMaxStartedTransactions:
+      description: Amount of parallel possible open transaction states
+      type: string
+      example: '512'
+    tseMaxUpdateDelay:
+      description: Maximum timespan until a transaction must be updated 
+      type: string
+      example: '45'
+    tseRegisteredClients:
+      description: Amount of registered clients on the TSE
+      type: string
+      example: '3'
+    tseRemainingSignatures:
+      description: Remaining signatures
+      type: string
+      example: '1999999830'
+    tseSerialNumber:
+      description: Serial number of the TSE
+      type: string
+      example: 19XdEdjdDAS3324dDHHG44dv3234dvsdj3423A
+    tseSoftwareVersion:
+      description: Software version of the TSE
+      type: string
+      example: V65539
+    tseStartedTransaction:
+      description: Amount of opened transactions
+      type: string
+      example: '2'
+    tseTarExportSize:
+      description: Size of tar-file from export
+      type: string
+      example: '2'
+    tseTimeUntilNextSelfTest:
+      description: Time in seconds until next selftest must be performed 
+      type: string
+      example: '20211'
+    tseCapacity:
+      description: Capacity of TSE in Kbyte
+      type: string
+      example: '13631488'
+    tseCurrentSize:
+      description: Current size in use by TSE (blocks; 1 block = 512 byte)
+      type: string
+      example: '12343'
+    tseModel:
+      description: Name of TSE model
+      type: string
+      example: BSI-K-TS-0373
+    tseInitializedState:
+      description: Initialisation state
+      type: string
+      example: initialized
+    tseVendorType:
+      description: Vendor type
+      type: string
+      example: TSE1
+    transactionNumber:
+      description: transaction nubmer
+      type: integer
+      format: int32
+      example: 13234213
+    transactionStop:
+      description: Logtime of end of transcaction (ISO-8601)
+      type: string
+      maxLength: 25
+      minLength: 25
+      example: '2020-12-02T17:00:01.001'
+    transactionStart:
+      description: Logtime of start of transcaction (ISO-8601)
+      type: string
+      maxLength: 25
+      minLength: 25
+      example: '2020-12-02T17:00:01.001'
+    tseSignature: 
+      description: Signature of transaction (base64 encoded)
+      type: string
+      maxLength: 512
+      example: 'c2lnbmF0dXJlCg=='
+    tseSignatureAlgorithm:
+      description: Used signature algorithm
+      type: string
+      maxLength: 200
+      example: ecdsa-plain-SHA3-256
+    tsePdEncoding:
+      description: Textencoding of processdata
+      type: string
+      enum:   
+        - 'UTF8'
+        - 'ASCII'
+    tsePublicKey:
+      description: The public key that belongs to the private key generating signatures,formatted according to [BSI TR-03111]
+      type: string
+      maxLength: 512  
+      example: 'MIIBCgKCAQEA+xGZ/wcz9ugFpP07Nspo6U17l0YhFiFpxxU4pTk3Lifz9R3zsIsu' 
+    tseTimeFormat:
+      description: Logtime format
+      type: string
+      enum:
+        - 'utcTime' # YYMMDDhhmmZ,  
+        - 'utcTimeWithSeconds' # YYMMDDhhmmssZ,  
+        - 'generalizedTime' # YYYYMMDDhhmmssZ,  
+        - 'generalizedTimeWithMilliseconds' # YYYYMMDDhhmmss.fffZ
+    tseCertificate1:
+      description: Certificate of the TSE (base64 encoded); first 1000 signs
+      type: string
+      maxLength: 1000  
+    tseCertificate2:
+      description: Remainung part of certificate 1
+      type: string
+      maxLength: 1000  
+    uniqueClientId:
+      description: Unique clientId
+      type: string
+      maxLength: 100
+      example: KasseEingang1
+    currencyCode:
+      description: Currency code, only required if currency is not base currency 
+      type: string
+      maxLength: 3
+      example: AFN oder 971 (Afgahni)
+    paymentType:
+      description: Type of Payment
+      type: string
+      enum: 
+        - 'Bar'
+        - 'Unbar'
+    payment:
+      description: Payment description
+      type: object
+      properties:
+        gross:
+          $ref: '#/components/schemas/gross'
+        currencyCode:
+          $ref: '#/components/schemas/currencyCode'
+        taxRate:
+          $ref: '#/components/schemas/taxRate'
+        paymentType:
+          $ref: '#/components/schemas/paymentType'

@@ -1,0 +1,1 @@
+This project provides an example of a ui common module

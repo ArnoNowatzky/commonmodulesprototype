@@ -1,0 +1,1 @@
+This project provides an example runtime to handle the common modules locally in the pharmacy

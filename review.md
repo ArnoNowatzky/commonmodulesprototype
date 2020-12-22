@@ -1,0 +1,1 @@
+- The yaml of openapi is valid
