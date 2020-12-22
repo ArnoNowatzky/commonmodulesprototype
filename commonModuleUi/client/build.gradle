@@ -3,7 +3,7 @@ apply plugin: 'org.openapi.generator'
 apply plugin: 'com.github.node-gradle.node'
 
 node {
-  download = false
+  download = true
 }
 
 task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
