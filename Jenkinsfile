@@ -48,7 +48,7 @@ pipeline {
                 }
 
                 environment {
-                    JAVA_HOME = tool name: 'corretto_11.0.3.7.1_windows'
+                    JAVA_HOME = tool name: 'corretto_11.0.3.7.1_linux'
                     PATH = "$JAVA_HOME/bin;$PATH"
                 }
 
