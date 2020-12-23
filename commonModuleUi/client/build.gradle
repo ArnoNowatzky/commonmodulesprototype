@@ -4,24 +4,17 @@ apply plugin: 'com.github.node-gradle.node'
 
 node {
   download = true
+  version = '14.15.1'
 }
 
-task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
-  group = 'build'
-  description = 'Compile client side assets for production'
-  args = ['run', 'build']
-}
-
-task clientTest(type: NpmTask, dependsOn: 'npmInstall') {
-  group = 'verification'
-  description = 'Executes client side unit tests'
-  args = ['run', 'test']
-}
-
-task clientIntegrationTest(type: NpmTask, dependsOn: 'npmInstall') {
-  group = 'verification'
-  description = 'Executes client side integration tests'
-  args = ['run', 'e2e']
+task buildClient(type: NpxTask) {
+  dependsOn npmInstall
+  command = 'ng'
+  args = ['build']
+  inputs.files('package.json', 'package-lock.json', 'angular.json', 'tsconfig.json', 'tsconfig.app.json')
+  inputs.dir('src')
+  inputs.dir(fileTree("node_modules").exclude(".cache"))
+  outputs.dir('dist')
 }
 
 openApiGenerate {
