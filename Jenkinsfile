@@ -39,9 +39,6 @@ pipeline {
                         bat 'gradlew build -s'
                     }
 
-                    dir("${env.WORKSPACE}/commonModuleRuntime"){
-                        bat 'gradlew build -s'
-                    }
                 }
             }
 
@@ -68,9 +65,6 @@ pipeline {
                         sh './gradlew build -s'
                     }
 
-                    dir("${env.WORKSPACE}/commonModuleMPM"){
-                        sh './gradlew build -s'
-                    }
                 }
 
                 post {
