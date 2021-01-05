@@ -20,7 +20,7 @@ task buildClient(type: NpxTask) {
 openApiGenerate {
   //verbose = true
   generatorName = "typescript-angular"
-  inputSpec = file('../../api/ui.yaml').toString()
+  inputSpec = file('../../api/service.yaml').toString()
   outputDir = "$projectDir/src/app/generated".toString()
   apiPackage = "api"
   modelPackage = "model"

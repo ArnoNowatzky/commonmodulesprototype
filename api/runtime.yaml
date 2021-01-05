@@ -1,0 +1,49 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: "runtime api"
+  description: "API which is provided by the module runtime itself"
+servers:
+  - url: http://localhost:8001/api
+security:
+  - BasicAuth
+
+paths:
+  /module/setup:
+    get:
+      tags:
+        - module
+      operationId: "setupModules"
+      description: "sets the modules up due to the description"
+      requestBody:
+        description: modules descriptor
+        content:
+          text/plain:
+            schema:
+              type: "string"
+
+      responses:
+        '200':
+          description: Ok
+                
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+    ModuleDTO:
+      type: "object"
+      properties:
+        id: 
+          type: "string"
+        url:
+          type: "string"
+
+    ModuleType:
+      type: string
+      enum:
+        - jar
+        - docker
+        

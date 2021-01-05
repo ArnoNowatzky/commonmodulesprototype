@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<GridPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.noventi.cm.client.java.ServiceController" hgap="20" vgap="20">
+    <padding><Insets top="40" bottom="40" left="30" right="30"/> </padding>
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="40"/>
+        <ColumnConstraints percentWidth="40"/>
+    </columnConstraints>
+
+    <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <Label fx:id="lblId" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+    <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <Label fx:id="lblName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Label text="First name:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <Label fx:id="lblFirstname" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <Button fx:id="btnInstall" text="Install" GridPane.columnIndex="0" GridPane.rowIndex="3"></Button>
+    <Button fx:id="btnFetchData" text="Fetch data" GridPane.columnIndex="0" GridPane.rowIndex="4"></Button>
+
+
+
+</GridPane>
