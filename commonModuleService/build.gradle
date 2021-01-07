@@ -87,13 +87,13 @@ sourceSets {
 
 tasks.compileJava.dependsOn tasks.openApiGenerate
 
-println "Docker user = " + getProperty('awinta.dockerUser')
+println "Docker user = " + project.properties['awinta.dockerUser']
 
 docker {
     registryCredentials {
         url = 'https://awinta-docker.intra.vsa.de/'
-        username = getProperty('awinta_dockerUser')
-        password = getProperty('awinta_dockerPassword')
+        username = project.properties['awinta_dockerUser']
+        password = project.properties['awinta_dockerPassword']
     }
     springBootApplication {
         baseImage = 'openjdk:14'
