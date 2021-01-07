@@ -57,6 +57,7 @@ pipeline {
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
                       dir("${env.WORKSPACE}/commonModuleService"){
+                        sh 'printenv'
                         sh './gradlew build -s'
                       }
 
