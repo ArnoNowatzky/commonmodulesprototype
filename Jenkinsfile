@@ -32,9 +32,9 @@ pipeline {
                         bat 'gradlew build -s'
                       }
 
-                      dir("${env.WORKSPACE}/commonModuleUi"){
+                      /**dir("${env.WORKSPACE}/commonModuleUi"){
                         bat 'gradlew build -s'
-                      }
+                      }**/
 
                       dir("${env.WORKSPACE}/commonModuleRuntime"){
                         bat 'gradlew build -s'
@@ -60,9 +60,9 @@ pipeline {
                         sh './gradlew build -s'
                       }
 
-                      dir("${env.WORKSPACE}/commonModuleUi"){
+                      /**dir("${env.WORKSPACE}/commonModuleUi"){
                         sh './gradlew build -s'
-                      }
+                      }**/
 
                       dir("${env.WORKSPACE}/commonModuleRuntime"){
                         sh './gradlew build -s'

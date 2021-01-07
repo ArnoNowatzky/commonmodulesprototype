@@ -45,7 +45,7 @@ springBoot {
 openApiGenerate {
     generatorName = "spring"
     library = "spring-boot"
-    inputSpec = file('../../api/ui.yaml').toString()
+    inputSpec = file('../../api/service.yaml').toString()
     outputDir = "$buildDir/generated".toString()
     apiPackage = "de.noventi.cm.ui.api"
     invokerPackage = "de.noventi.cm.ui.invoker"
