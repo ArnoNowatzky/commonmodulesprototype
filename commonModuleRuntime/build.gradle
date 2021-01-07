@@ -92,8 +92,8 @@ println "Docker user = " + System.getProperty('awinta.dockerUser')
 docker {
     registryCredentials {
         url = 'https://vsa-docker.intra.vsa.de/'
-        username = System.getProperty('awinta.dockerUser')
-        password = System.getProperty('awinta.dockerPassword')
+        username = System.getProperty('awinta_dockerUser')
+        password = System.getProperty('awinta_dockerPassword')
     }
     springBootApplication {
         baseImage = 'openjdk:14'
