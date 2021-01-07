@@ -1,8 +1,11 @@
 package de.noventi.cm.client.java;
 
-import de.noventi.cm.client.java.api.CustomerApi;
-import de.noventi.cm.client.java.api.ModuleApi;
-import de.noventi.cm.client.java.model.CustomerDTO;
+import de.noventi.cm.client.java.runtime.ApiException;
+import de.noventi.cm.client.java.runtime.api.ModuleApi;
+import de.noventi.cm.client.java.runtime.model.SetupModulesParamDTO;
+import de.noventi.cm.client.java.service.api.CustomerApi;
+import de.noventi.cm.client.java.service.model.CustomerDTO;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -18,64 +21,89 @@ import org.apache.commons.io.IOUtils;
 @Slf4j
 public class ServiceController {
   @FXML
-  public Label lblId;
+  private Label lblId;
 
   @FXML
-  public Label lblName;
+  private Label lblName;
 
   @FXML
-  public Label lblFirstname;
+  private Label lblFirstname;
 
   @FXML
-  public Button btnInstall;
+  private Button btnInstall;
 
   @FXML
-  public Button btnFetchData;
+  private Button btnStart;
+
+  @FXML
+  private Button btnFetchData;
 
   public void load () throws ApiException {
 
     fetchData();
 
     btnFetchData.setOnAction(event -> fetchData());
+    btnInstall.setOnAction(event -> install());
+    btnStart.setOnAction(event -> start());
 
-    btnInstall.setOnAction(new EventHandler<>() {
-      @Override public void handle(ActionEvent event) {
-        ApiClient apiClient = new ApiClient();
-        apiClient.setBasePath("http://localhost:8001");
-        ModuleApi moduleApi = new ModuleApi(apiClient);
-        InputStream inputStream = getClass().getResourceAsStream("/install.xml");
-        StringWriter stringWriter = new StringWriter();
-        try {
-          IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
+  }
 
-          log.info("Send modules descriptor " + stringWriter.toString());
+  public void install () {
+    ModuleApi moduleApi = new ModuleApi();
+    log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
+    InputStream inputStream = getClass().getResourceAsStream("/install.xml");
+    StringWriter stringWriter = new StringWriter();
+    try {
+      IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
 
-          moduleApi.setupModules(stringWriter.toString());
-        } catch (IOException e) {
-          log.error(e.getLocalizedMessage(), e);;
+      log.info("Send modules descriptor " + stringWriter.toString());
+      File file = new File ("build/runtime");
 
-        } catch (ApiException e) {
-          log.error("Error installing new modules " + e.getResponseBody());
-          throw new IllegalStateException(e);
-        }
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(file.getAbsolutePath());
+      moduleApi.installModules(setupModulesParamDTO);
+    } catch (IOException e) {
+      log.error(e.getLocalizedMessage(), e);;
 
-      }
-    });
+    } catch (ApiException e) {
+      log.error("Error installing new modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
+    }
+
+
+  }
+
+  public void start () {
+    ModuleApi moduleApi = new ModuleApi();
+    log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
+    InputStream inputStream = getClass().getResourceAsStream("/install.xml");
+    StringWriter stringWriter = new StringWriter();
+    try {
+      IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
+
+      log.info("Send modules descriptor " + stringWriter.toString());
+      File file = new File ("build/example");
+
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(file.getAbsolutePath());
+      moduleApi.startModules(setupModulesParamDTO);
+    } catch (IOException e) {
+      log.error(e.getLocalizedMessage(), e);
+
+    } catch (ApiException e) {
+      log.error("Error starting new modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
+    }
 
   }
 
   private void fetchData () {
+    CustomerApi customerApi = new CustomerApi();
+
     try {
-      ApiClient apiClient = new ApiClient();
-      apiClient.setBasePath("http://localhost:8002");
-      CustomerApi customerApi = new CustomerApi(apiClient);
+      log.info("Basepath of customer: " + customerApi.getApiClient().getBasePath());
       CustomerDTO customer = customerApi.getCustomer("1");
       lblId.setText(customer.getId());
       lblName.setText(customer.getName());
       lblFirstname.setText(customer.getFirstname());
     } catch (Exception e) {
-      log.error("Error fetching customer data: " + e.getLocalizedMessage(), e);
-
+      log.error("Error fetching customer data: " + e.getLocalizedMessage(), e, customerApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
     }
 
   }

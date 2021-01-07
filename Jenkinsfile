@@ -29,7 +29,7 @@ pipeline {
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
                       dir("${env.WORKSPACE}/commonModuleService"){
-                        bat 'gradlew build -s'
+                        bat 'gradlew build releaseLocalSnapshot -s'
                       }
 
                       /**dir("${env.WORKSPACE}/commonModuleUi"){
@@ -58,7 +58,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
                       dir("${env.WORKSPACE}/commonModuleService"){
                         sh 'printenv'
-                        sh './gradlew build -s'
+                        sh './gradlew build releaseLocalSnapshot -s'
                       }
 
                       /**dir("${env.WORKSPACE}/commonModuleUi"){

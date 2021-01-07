@@ -4,27 +4,45 @@ info:
   title: "runtime api"
   description: "API which is provided by the module runtime itself"
 servers:
-  - url: http://localhost:8001/api
+  - url: http://localhost:8001
 security:
   - BasicAuth
 
 paths:
   /module/setup:
-    get:
+    post:
       tags:
         - module
-      operationId: "setupModules"
+      operationId: "installModules"
       description: "sets the modules up due to the description"
       requestBody:
+        required: true
         description: modules descriptor
         content:
-          text/plain:
+          application/json:
             schema:
-              type: "string"
+              $ref: "#/components/schemas/SetupModulesParamDTO"
 
       responses:
         '200':
           description: Ok
+  /module/start:
+    post:
+      tags:
+        - module
+      operationId: "startModules"
+      description: "starts the modules up due to the description"
+      requestBody:
+        required: true
+        description: modules descriptor
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetupModulesParamDTO"
+
+      responses:
+        '200':
+          description: Ok          
                 
 components:
   securitySchemes:
@@ -33,17 +51,10 @@ components:
       scheme: basic
 
   schemas:
-    ModuleDTO:
+    SetupModulesParamDTO:
       type: "object"
       properties:
-        id: 
+        path:
           type: "string"
-        url:
-          type: "string"
-
-    ModuleType:
-      type: string
-      enum:
-        - jar
-        - docker
-        
+        descriptor: 
+          type: "string"        

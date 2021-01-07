@@ -81,9 +81,9 @@ openApiInputs.each {
         //verbose = true
         generatorName = "java"
         inputSpec = file("../../api/" + apiName + ".yaml").toString()
-        outputDir = "$buildDir/generated/openapi".toString()
-        apiPackage = "de.noventi.cm.client.java.api"
-        modelPackage = "de.noventi.cm.client.java.model"
+        outputDir = "$buildDir/generated/openapi/".toString()
+        apiPackage = "de.noventi.cm.client.java." + apiName + ".api"
+        modelPackage = "de.noventi.cm.client.java." + apiName + ".model"
         configOptions = [
                 dateLibrary: "java8"
         ]
