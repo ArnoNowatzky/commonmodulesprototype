@@ -27,16 +27,18 @@ pipeline {
                 }
 
                 steps {
-                    dir("${env.WORKSPACE}/commonModuleService"){
+                    withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
+                      dir("${env.WORKSPACE}/commonModuleService"){
                         bat 'gradlew build -s'
-                    }
+                      }
 
-                    dir("${env.WORKSPACE}/commonModuleUi"){
+                      dir("${env.WORKSPACE}/commonModuleUi"){
                         bat 'gradlew build -s'
-                    }
+                      }
 
-                    dir("${env.WORKSPACE}/commonModuleRuntime"){
+                      dir("${env.WORKSPACE}/commonModuleRuntime"){
                         bat 'gradlew build -s'
+                      }
                     }
 
                 }
@@ -53,16 +55,18 @@ pipeline {
                 }
 
                 steps {
-                    dir("${env.WORKSPACE}/commonModuleService"){
+                    withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
+                      dir("${env.WORKSPACE}/commonModuleService"){
                         sh './gradlew build -s'
-                    }
+                      }
 
-                    dir("${env.WORKSPACE}/commonModuleUi"){
+                      dir("${env.WORKSPACE}/commonModuleUi"){
                         sh './gradlew build -s'
-                    }
+                      }
 
-                    dir("${env.WORKSPACE}/commonModuleRuntime"){
+                      dir("${env.WORKSPACE}/commonModuleRuntime"){
                         sh './gradlew build -s'
+                      }
                     }
 
                 }
