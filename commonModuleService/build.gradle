@@ -87,7 +87,7 @@ sourceSets {
 
 tasks.compileJava.dependsOn tasks.openApiGenerate
 
-println "Docker user = " + project.properties['awinta.dockerUser']
+println "Docker user = " + project.properties['awinta_dockerUser']
 
 docker {
     registryCredentials {
