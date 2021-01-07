@@ -102,9 +102,6 @@ docker {
     }
 }
 
-println getProperty('awinta.dockerUser')
-println getProperty('awinta.dockerPassword')
-
 tasks.dockerBuildImage.dependsOn classes, bootJar
 
 //TODO https://stackoverflow.com/questions/61197984/bootjar-mavenjar-artifact-wasnt-produced-by-this-build
