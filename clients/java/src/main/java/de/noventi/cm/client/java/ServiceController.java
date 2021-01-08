@@ -38,6 +38,8 @@ public class ServiceController {
   @FXML
   private Button btnFetchData;
 
+  File examplePath = new File ("build/example");
+
   public void load () throws ApiException {
 
     fetchData();
@@ -57,9 +59,8 @@ public class ServiceController {
       IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
 
       log.info("Send modules descriptor " + stringWriter.toString());
-      File file = new File ("build/runtime");
 
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(file.getAbsolutePath());
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(examplePath.getAbsolutePath());
       moduleApi.installModules(setupModulesParamDTO);
     } catch (IOException e) {
       log.error(e.getLocalizedMessage(), e);;
@@ -80,9 +81,8 @@ public class ServiceController {
       IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
 
       log.info("Send modules descriptor " + stringWriter.toString());
-      File file = new File ("build/example");
 
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(file.getAbsolutePath());
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(examplePath.getAbsolutePath());
       moduleApi.startModules(setupModulesParamDTO);
     } catch (IOException e) {
       log.error(e.getLocalizedMessage(), e);

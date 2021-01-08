@@ -1,5 +1,10 @@
-package de.noventi.cm.runtime.domain.module;
+package de.noventi.cm.runtime.module.domain.module;
 
+import de.noventi.cm.runtime.module.domain.Action;
+import de.noventi.cm.runtime.module.domain.CommonModule;
+import de.noventi.cm.runtime.module.domain.CommonModules;
+import de.noventi.cm.runtime.module.domain.SetupModulesParamReader;
+import de.noventi.cm.runtime.module.domain.Type;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;

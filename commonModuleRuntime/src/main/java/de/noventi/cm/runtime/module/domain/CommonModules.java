@@ -1,4 +1,4 @@
-package de.noventi.cm.runtime.domain.module;
+package de.noventi.cm.runtime.module.domain;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;

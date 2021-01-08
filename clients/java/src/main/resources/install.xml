@@ -3,7 +3,8 @@
         <id>service</id>
         <action>INSTALL</action>
         <type>JAR</type>
+        <jdk>jdk11</jdk>
         <name>CustomerService</name>
-        <url>http://repo.intra.vsa.de:8082/artifactory/awinta-maven/de/noventi/cm/service/0.1/service-0.1.jar</url>
+        <url>file://~/.m2/repository/de/noventi/cm/service/0.1-SNAPSHOT/service-0.1-SNAPSHOT.jar</url>
     </module>
 </modules>

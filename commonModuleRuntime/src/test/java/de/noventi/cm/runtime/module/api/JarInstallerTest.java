@@ -1,6 +1,6 @@
-package de.noventi.cm.runtime.api;
+package de.noventi.cm.runtime.module.api;
 
-import de.noventi.cm.runtime.domain.module.CommonModule;
+import de.noventi.cm.runtime.module.domain.CommonModule;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

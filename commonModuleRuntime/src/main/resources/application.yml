@@ -1,2 +1,4 @@
 server:
   port: 8001
+
+jdks: jdk8@http://repo.intra.vsa.de:8082/artifactory/vsa-generic/java/distributions/corretto/8.202.08.2/corretto-8.202.08.2-#OS#-x64.zip, jdk11@http://repo.intra.vsa.de:8082/artifactory/vsa-generic/java/distributions/corretto/11.0.3.7.1/corretto-11.0.3.7.1-#OS#-x64.zip

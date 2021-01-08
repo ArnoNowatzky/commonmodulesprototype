@@ -1,4 +1,4 @@
-package de.noventi.cm.runtime.domain.module;
+package de.noventi.cm.runtime.module.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -20,4 +20,6 @@ public class CommonModule {
   private String name;
 
   private String url;
+
+  private String jdk; //jdk8 or jdk11....
 }

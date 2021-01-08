@@ -1,4 +1,4 @@
-package de.noventi.cm.runtime.domain.module;
+package de.noventi.cm.runtime.module.domain;
 
 import java.io.StringReader;
 import javax.xml.bind.JAXBContext;
@@ -7,7 +7,8 @@ import javax.xml.bind.Unmarshaller;
 
 public class SetupModulesParamReader {
 
-  public CommonModules read (final String descriptor) {
+  public CommonModules read (String descriptor) {
+    descriptor = descriptor.replace("~", System.getProperty("user.home"));
     try {
       JAXBContext context = JAXBContext.newInstance(CommonModules.class);
       Unmarshaller unmarshaller = context.createUnmarshaller();
