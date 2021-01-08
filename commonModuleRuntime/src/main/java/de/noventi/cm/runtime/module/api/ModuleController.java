@@ -1,5 +1,6 @@
 package de.noventi.cm.runtime.module.api;
 
+import de.noventi.cm.runtime.api.ModuleApi;
 import de.noventi.cm.runtime.module.domain.CommonModule;
 import de.noventi.cm.runtime.module.domain.CommonModules;
 import de.noventi.cm.runtime.module.domain.SetupModulesParamReader;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class ModuleController implements ModuleApi{
+public class ModuleController implements ModuleApi {
 
   private SetupModulesParamReader setupModulesParamReader = new SetupModulesParamReader();
 
