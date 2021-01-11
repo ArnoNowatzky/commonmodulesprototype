@@ -17,27 +17,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
 @Slf4j
-public class ServiceController {
-  @FXML
-  private Label lblId;
+public class AdminController {
 
   @FXML
-  private Label lblName;
+  private Button btnInstall;
 
   @FXML
-  private Label lblFirstname;
+  private Button btnStart;
 
-
-  @FXML
-  private Button btnFetchData;
 
   File examplePath = new File ("build/example");
 
   public void load () throws ApiException {
-
-    fetchData();
-
-    btnFetchData.setOnAction(event -> fetchData());
+    
+    btnInstall.setOnAction(event -> install());
+    btnStart.setOnAction(event -> start());
 
   }
 
@@ -84,18 +78,5 @@ public class ServiceController {
 
   }
 
-  private void fetchData () {
-    CustomerApi customerApi = new CustomerApi();
 
-    try {
-      log.info("Basepath of customer: " + customerApi.getApiClient().getBasePath());
-      CustomerDTO customer = customerApi.getCustomer("1");
-      lblId.setText(customer.getId());
-      lblName.setText(customer.getName());
-      lblFirstname.setText(customer.getFirstname());
-    } catch (Exception e) {
-      log.error("Error fetching customer data: " + e.getLocalizedMessage(), e, customerApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
-    }
-
-  }
 }

@@ -23,8 +23,7 @@
     <Label text="First name:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
     <Label fx:id="lblFirstname" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-    <Button fx:id="btnInstall" text="Install" GridPane.columnIndex="0" GridPane.rowIndex="3"></Button>
-    <Button fx:id="btnStart" text="Start" GridPane.columnIndex="0" GridPane.rowIndex="4"></Button>
+
     <Button fx:id="btnFetchData" text="Fetch data" GridPane.columnIndex="0" GridPane.rowIndex="5"></Button>
 
 

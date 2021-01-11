@@ -17,7 +17,7 @@ plugins {
 }
 
 javafx {
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing', 'javafx.media']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing', 'javafx.media', 'javafx.web']
     version = "11.0.2" //12-ea+8"
 }
 

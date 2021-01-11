@@ -31,12 +31,20 @@ public class JavaFxApplication extends Application {
       FXMLLoader loaderUiMask = getMaskLoader("ui");
       Parent rootUi = loaderUiMask.load();
       UiController uiController = loaderUiMask.getController();
+      uiController.load();
+
+      FXMLLoader loaderAdminMask = getMaskLoader("admin");
+      Parent rootAdmin = loaderAdminMask.load();
+      AdminController adminController = loaderAdminMask.getController();
+      adminController.load();
 
       Tab tab1 = new Tab("Service", rootService);
       Tab tab2 = new Tab("UI", rootUi);
+      Tab tab3 = new Tab ("Admin", rootAdmin);
 
       tabPane.getTabs().add(tab1);
       tabPane.getTabs().add(tab2);
+      tabPane.getTabs().add(tab3);
 
       VBox vBox = new VBox(tabPane);
       Scene scene = new Scene(vBox);
