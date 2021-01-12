@@ -24,7 +24,7 @@
     <Label fx:id="lblFirstname" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
 
-    <Button fx:id="btnFetchData" text="Fetch data" GridPane.columnIndex="0" GridPane.rowIndex="5"></Button>
+    <Button fx:id="btnReload" text="Reload" GridPane.columnIndex="0" GridPane.rowIndex="5"></Button>
 
 
 

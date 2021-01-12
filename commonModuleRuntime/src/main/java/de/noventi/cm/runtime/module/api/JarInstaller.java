@@ -53,8 +53,6 @@ public class JarInstaller implements Installer {
     File modulePath = new File (path, module.getId());
     File binPath = new File (modulePath, "bin");
 
-
-
     File javaHome = jdkInstaller.getHome(folder);
     File javaBin = jdkInstaller.getJreExecutable(javaHome);
 
@@ -64,7 +62,6 @@ public class JarInstaller implements Installer {
     cmdarray.add("-jar");
     cmdarray.add(getSingleFile(binPath).getAbsolutePath());
 
-    //todo make asynchronous
     ProcessBuilder processBuilder = new ProcessBuilder(cmdarray);
     processBuilder.redirectErrorStream(true);
     Process process = null;

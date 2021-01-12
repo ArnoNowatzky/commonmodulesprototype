@@ -27,6 +27,9 @@ public class ModuleController implements ModuleApi {
   @Autowired
   private JarInstaller jarInstaller;
 
+  @Autowired
+  private DockerInstaller dockerInstaller;
+
   @Override
   public ResponseEntity<Void> installModules(@ApiParam(value = "modules descriptor" ,required=true )  @Valid @RequestBody SetupModulesParamDTO setupModulesParamDTO) {
     log.info("called setupModules <" + setupModulesParamDTO + ">");
@@ -35,8 +38,11 @@ public class ModuleController implements ModuleApi {
 
     for (CommonModule next: commonModules.getCommonModule()) {
       log.info("Install module " + next);
-      if (next.getType().equals(Type.JAR)) { //TODO generalize
+      if (next.getType().equals(Type.JAR)) {
         jarInstaller.install(path, next);
+      }
+      else if (next.getType().equals(Type.DOCKER)) {
+        dockerInstaller.install(path, next);
       }
     }
     log.info("installModules finished");
@@ -54,8 +60,11 @@ public class ModuleController implements ModuleApi {
       executorService.execute(new Runnable() {
         @Override public void run() {
           log.info("Start module " + next);
-          if (next.getType().equals(Type.JAR)) { //TODO generalize
+          if (next.getType().equals(Type.JAR)) {
             jarInstaller.start(path, next);
+          }
+          else if (next.getType().equals(Type.DOCKER)) {
+            dockerInstaller.start(path, next);
           }
         }
       });

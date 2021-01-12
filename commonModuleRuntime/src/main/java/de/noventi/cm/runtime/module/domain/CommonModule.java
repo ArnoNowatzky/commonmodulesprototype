@@ -9,6 +9,7 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CommonModule {
 
+  @XmlElement(required = true)
   private String id;
 
   @XmlElement(required = true)
@@ -17,9 +18,12 @@ public class CommonModule {
   @XmlElement(required = true)
   private Type type;
 
+  @XmlElement(required = true)
   private String name;
 
   private String url;
 
   private String jdk; //jdk8 or jdk11....
+
+  private String description;
 }

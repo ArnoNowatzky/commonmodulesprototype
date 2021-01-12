@@ -29,22 +29,22 @@ public class ServiceController {
 
 
   @FXML
-  private Button btnFetchData;
+  private Button btnReload;
 
   File examplePath = new File ("build/example");
 
   public void load () throws ApiException {
 
-    fetchData();
+    reload();
 
-    btnFetchData.setOnAction(event -> fetchData());
+    btnReload.setOnAction(event -> reload());
 
   }
 
   public void install () {
     ModuleApi moduleApi = new ModuleApi();
     log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
-    InputStream inputStream = getClass().getResourceAsStream("/install.xml");
+    InputStream inputStream = getClass().getResourceAsStream("/install_jar.xml");
     StringWriter stringWriter = new StringWriter();
     try {
       IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
@@ -66,7 +66,7 @@ public class ServiceController {
   public void start () {
     ModuleApi moduleApi = new ModuleApi();
     log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
-    InputStream inputStream = getClass().getResourceAsStream("/install.xml");
+    InputStream inputStream = getClass().getResourceAsStream("/install_jar.xml");
     StringWriter stringWriter = new StringWriter();
     try {
       IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
@@ -84,7 +84,7 @@ public class ServiceController {
 
   }
 
-  private void fetchData () {
+  private void reload() {
     CustomerApi customerApi = new CustomerApi();
 
     try {

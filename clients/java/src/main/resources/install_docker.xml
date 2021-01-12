@@ -1,0 +1,34 @@
+<modules>
+    <module>
+        <id>serviceDocker</id>
+        <action>INSTALL</action>
+        <type>DOCKER</type>
+        <jdk>jdk11</jdk>
+        <name>CustomerService</name>
+        <description>
+version: '3'
+
+services:
+  service:
+   image:  awinta-docker.intra.vsa.de/noventi.cm/service:0.1-SNAPSHOT
+   ports:
+     - "8002:8002"
+        </description>
+    </module>
+    <module>
+        <id>uiDocker</id>
+        <action>INSTALL</action>
+        <type>DOCKER</type>
+        <jdk>jdk11</jdk>
+        <name>Customer Service with Ui</name>
+        <description>
+version: '3'
+
+services:
+  ui:
+   image:  awinta-docker.intra.vsa.de/noventi.cm/ui:0.1-SNAPSHOT
+   ports:
+     - "8003:8003"
+        </description>
+    </module>
+</modules>

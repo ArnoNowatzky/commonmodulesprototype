@@ -3,21 +3,24 @@ package de.noventi.cm.client.java;
 import de.noventi.cm.client.java.runtime.ApiException;
 import de.noventi.cm.client.java.runtime.api.ModuleApi;
 import de.noventi.cm.client.java.runtime.model.SetupModulesParamDTO;
-import de.noventi.cm.client.java.service.api.CustomerApi;
-import de.noventi.cm.client.java.service.model.CustomerDTO;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ComboBox;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
 @Slf4j
 public class AdminController {
+
+  @FXML
+  private ComboBox<String> cboRuntimeType;
 
   @FXML
   private Button btnInstall;
@@ -29,16 +32,23 @@ public class AdminController {
   File examplePath = new File ("build/example");
 
   public void load () throws ApiException {
+
+    cboRuntimeType.setItems(FXCollections.observableArrayList(Arrays.asList("jar", "docker")));
+    cboRuntimeType.getSelectionModel().select("jar");
     
     btnInstall.setOnAction(event -> install());
     btnStart.setOnAction(event -> start());
 
   }
 
+  private String getInstallDescription () {
+    return "/install_" + cboRuntimeType.getSelectionModel().getSelectedItem() + ".xml";
+  }
+
   public void install () {
     ModuleApi moduleApi = new ModuleApi();
     log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
-    InputStream inputStream = getClass().getResourceAsStream("/install.xml");
+    InputStream inputStream = getClass().getResourceAsStream(getInstallDescription());
     StringWriter stringWriter = new StringWriter();
     try {
       IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
@@ -60,7 +70,7 @@ public class AdminController {
   public void start () {
     ModuleApi moduleApi = new ModuleApi();
     log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
-    InputStream inputStream = getClass().getResourceAsStream("/install.xml");
+    InputStream inputStream = getClass().getResourceAsStream(getInstallDescription());
     StringWriter stringWriter = new StringWriter();
     try {
       IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());

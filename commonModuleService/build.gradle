@@ -97,7 +97,7 @@ docker {
     }
     springBootApplication {
         baseImage = 'openjdk:14'
-        ports = [8080]
+        ports = [8002]
         images = ["awinta-docker.intra.vsa.de/noventi.cm/service:${jar.archiveVersion.get()}"]
     }
 }

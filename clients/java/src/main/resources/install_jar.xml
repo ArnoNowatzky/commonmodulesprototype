@@ -1,6 +1,6 @@
 <modules>
     <module>
-        <id>service</id>
+        <id>serviceJar</id>
         <action>INSTALL</action>
         <type>JAR</type>
         <jdk>jdk11</jdk>
@@ -8,7 +8,7 @@
         <url>file://~/.m2/repository/de/noventi/cm/service/0.1-SNAPSHOT/service-0.1-SNAPSHOT.jar</url>
     </module>
     <module>
-        <id>ui</id>
+        <id>uiJar</id>
         <action>INSTALL</action>
         <type>JAR</type>
         <jdk>jdk11</jdk>
