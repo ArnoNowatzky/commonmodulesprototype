@@ -1,5 +1,8 @@
 This is a complete prototype for handling common modules in *WawiNeu*
 
+> #### <i class="fa fa-gear fa-spin fa-2x" style="color: firebrick"></i> Configuration
+> Configuration can be launched from the **Tools -> Settings** menu option.
+
 #
 
 # Containment
