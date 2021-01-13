@@ -24,6 +24,7 @@ pipeline {
                 environment {
                   JAVA_HOME = tool name: 'corretto_11.0.3.7.1_windows'
                   PATH = "$JAVA_HOME/bin;$PATH"
+                  CI_SONAR=false
                 }
 
                 steps {
@@ -32,9 +33,9 @@ pipeline {
                         bat 'gradlew build releaseLocalSnapshot -s'
                       }
 
-                      /**dir("${env.WORKSPACE}/commonModuleUi"){
-                        bat 'gradlew build -s'
-                      }**/
+                      dir("${env.WORKSPACE}/commonModuleUi"){
+                        bat 'gradlew build releaseLocalSnapshot -s'
+                      }
 
                       dir("${env.WORKSPACE}/commonModuleRuntime"){
                         bat 'gradlew build -s'
@@ -52,18 +53,18 @@ pipeline {
                 environment {
                     JAVA_HOME = tool name: 'corretto_11.0.3.7.1_linux'
                     PATH = "$JAVA_HOME/bin;$PATH"
+                    CI_SONAR=true
                 }
 
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
                       dir("${env.WORKSPACE}/commonModuleService"){
-                        sh 'printenv'
                         sh './gradlew build releaseLocalSnapshot -s'
                       }
 
-                      /**dir("${env.WORKSPACE}/commonModuleUi"){
-                        sh './gradlew build -s'
-                      }**/
+                      dir("${env.WORKSPACE}/commonModuleUi"){
+                        sh './gradlew build releaseLocalSnapshot -s'
+                      }
 
                       dir("${env.WORKSPACE}/commonModuleRuntime"){
                         sh './gradlew build -s'
