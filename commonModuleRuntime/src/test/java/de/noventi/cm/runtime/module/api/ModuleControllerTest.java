@@ -1,11 +1,14 @@
 package de.noventi.cm.runtime.module.api;
 
 import de.noventi.cm.runtime.model.SetupModulesParamDTO;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,11 +24,11 @@ public class ModuleControllerTest {
   private ModuleController moduleController;
 
   @BeforeEach
-  /**public void cleanUp () throws IOException {
+  public void cleanUp () throws IOException {
     File examplePath = new File ("build/example");
     if (examplePath.exists())
       FileUtils.deleteDirectory(examplePath);
-  }**/
+  }
 
   @Test
   public void installStartAndStop () throws IOException {
@@ -40,5 +43,15 @@ public class ModuleControllerTest {
 
     moduleController.installModules(setupModulesParamDTO);
     moduleController.startModules(setupModulesParamDTO);
+
+    Assertions.assertTrue(new File ("build/example/jdk8/corretto_8.202.08.2_macosx").exists(), "JDK path does not exist");
   }
+
+  @Test
+  public void installStartAndStopWithError () {
+    throw new IllegalStateException("Installing or starting with error must fail");
+
+  }
+
+
 }

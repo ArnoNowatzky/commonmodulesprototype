@@ -1,0 +1,197 @@
+﻿<Window
+    x:Class="Browser_Controls.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Browser_Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Awinta - Browser Controls Testing Tool"
+    Width="800"
+    Height="450"
+    Icon="Awinta.ico"
+    ResizeMode="NoResize"
+    mc:Ignorable="d">
+    <Grid ShowGridLines="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height=".03*" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+        <Label
+            Margin="30,0,0,0"
+            VerticalAlignment="Center"
+            FontFamily="Roboto Condensed"
+            FontSize="16"
+            ToolTip="Bitte geben Sie ihre gewünschte Startseite an.">
+            Start-URL:
+        </Label>
+        <DockPanel
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Background="Gray">
+            <DockPanel.Effect>
+                <DropShadowEffect Opacity="0.2" />
+            </DockPanel.Effect>
+        </DockPanel>
+        <TextBox
+            x:Name="tbStartUrl"
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Margin="110,0,30,0"
+            VerticalAlignment="Center"
+            BorderBrush="Gray"
+            BorderThickness="2"
+            ToolTip="Bitte geben Sie ihre gewünschte Startseite an." />
+        <Label
+            x:Name="lbWpfWebBrowser"
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontFamily="OCR A Extended"
+            FontSize="36">
+            <Label.Effect>
+                <DropShadowEffect Opacity="0.4" />
+            </Label.Effect>
+            WPF WebBrowser
+        </Label>
+        <Button
+            x:Name="btWpf"
+            Grid.Row="2"
+            Background="Transparent"
+            Click="BtWpf_Click"
+            Foreground="Transparent">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Opacity" Value="1.0" />
+                        </Trigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="0.2"
+                                        To="1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="0.2"
+                                        To="0.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetName="lbWpfWebBrowser"
+                                Storyboard.TargetProperty="FontSize"
+                                From="36"
+                                To="40"
+                                Duration="0:0:0:0.4" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Button.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetName="lbWpfWebBrowser"
+                                Storyboard.TargetProperty="FontSize"
+                                From="40"
+                                To="36"
+                                Duration="0:0:0:0.3" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+        <Image
+            x:Name="imgCefSharp"
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="60"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Source="logo.png" />
+        <Button
+            x:Name="btCef"
+            Grid.Row="2"
+            Grid.Column="1"
+            Background="Transparent"
+            Click="BtCef_Click"
+            Foreground="Transparent">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Opacity" Value="1.0" />
+                        </Trigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="0.2"
+                                        To="1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="0.2"
+                                        To="0.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation
+                                Storyboard.TargetName="imgCefSharp"
+                                Storyboard.TargetProperty="Margin"
+                                From="60"
+                                To="50"
+                                Duration="0:0:0:0.4" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Button.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation
+                                Storyboard.TargetName="imgCefSharp"
+                                Storyboard.TargetProperty="Margin"
+                                From="50"
+                                To="60"
+                                Duration="0:0:0:0.3" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+    </Grid>
+</Window>

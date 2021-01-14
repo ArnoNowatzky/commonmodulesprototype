@@ -32,45 +32,53 @@ public class ModuleController implements ModuleApi {
 
   @Override
   public ResponseEntity<Void> installModules(@ApiParam(value = "modules descriptor" ,required=true )  @Valid @RequestBody SetupModulesParamDTO setupModulesParamDTO) {
-    log.info("called setupModules <" + setupModulesParamDTO + ">");
-    CommonModules commonModules = setupModulesParamReader.read(setupModulesParamDTO.getDescriptor());
-    File path = new File (setupModulesParamDTO.getPath());
+    try {
+      log.info("called setupModules <" + setupModulesParamDTO + ">");
+      CommonModules commonModules = setupModulesParamReader.read(setupModulesParamDTO.getDescriptor());
+      File path = new File(setupModulesParamDTO.getPath());
 
-    for (CommonModule next: commonModules.getCommonModule()) {
-      log.info("Install module " + next);
-      if (next.getType().equals(Type.JAR)) {
-        jarInstaller.install(path, next);
+      for (CommonModule next : commonModules.getCommonModule()) {
+        log.info("Install module " + next);
+        if (next.getType().equals(Type.JAR)) {
+          jarInstaller.install(path, next);
+        } else if (next.getType().equals(Type.DOCKER)) {
+          dockerInstaller.install(path, next);
+        }
       }
-      else if (next.getType().equals(Type.DOCKER)) {
-        dockerInstaller.install(path, next);
-      }
+      log.info("installModules finished");
+    }catch (Exception e) {
+      log.error("Error installing modules: " + e.getLocalizedMessage(), e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-    log.info("installModules finished");
     return new ResponseEntity<Void>( HttpStatus.OK );
   }
 
   @Override
   public ResponseEntity<Void> startModules(@ApiParam(value = "modules descriptor" ,required=true )  @Valid @RequestBody SetupModulesParamDTO setupModulesParamDTO) {
-    log.info("called startModules <" + setupModulesParamDTO + ">");
-    CommonModules commonModules = setupModulesParamReader.read(setupModulesParamDTO.getDescriptor());
-    File path = new File (setupModulesParamDTO.getPath());
+    try {
+      log.info("called startModules <" + setupModulesParamDTO + ">");
+      CommonModules commonModules = setupModulesParamReader.read(setupModulesParamDTO.getDescriptor());
+      File path = new File(setupModulesParamDTO.getPath());
 
-    ExecutorService executorService = Executors.newCachedThreadPool();
-    for (CommonModule next: commonModules.getCommonModule()) {
-      executorService.execute(new Runnable() {
-        @Override public void run() {
-          log.info("Start module " + next);
-          if (next.getType().equals(Type.JAR)) {
-            jarInstaller.start(path, next);
+      ExecutorService executorService = Executors.newCachedThreadPool();
+      for (CommonModule next : commonModules.getCommonModule()) {
+        executorService.execute(new Runnable() {
+          @Override public void run() {
+            log.info("Start module " + next);
+            if (next.getType().equals(Type.JAR)) {
+              jarInstaller.start(path, next);
+            } else if (next.getType().equals(Type.DOCKER)) {
+              dockerInstaller.start(path, next);
+            }
           }
-          else if (next.getType().equals(Type.DOCKER)) {
-            dockerInstaller.start(path, next);
-          }
-        }
-      });
+        });
 
+      }
+      log.info("startModules finished");
+    } catch (Exception e) {
+      log.error("Error starting modules: " + e.getLocalizedMessage(), e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-    log.info("startModules finished");
     return new ResponseEntity<Void>( HttpStatus.OK );
   }
 }

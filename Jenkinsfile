@@ -22,7 +22,7 @@ pipeline {
                 }
 
                 environment {
-                  JAVA_HOME = tool name: 'corretto_11.0.3.7.1_windows'
+                  JAVA_HOME = tool name: 'openjdk_15_windows'
                   PATH = "$JAVA_HOME/bin;$PATH"
                   CI_SONAR=false
                 }
@@ -51,7 +51,7 @@ pipeline {
                 }
 
                 environment {
-                    JAVA_HOME = tool name: 'corretto_11.0.3.7.1_linux'
+                    JAVA_HOME = tool name: 'openjdk_15_linux'
                     PATH = "$JAVA_HOME/bin;$PATH"
                     CI_SONAR=true
                 }

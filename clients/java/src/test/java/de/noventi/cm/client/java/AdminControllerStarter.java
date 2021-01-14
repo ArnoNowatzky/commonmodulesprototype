@@ -1,9 +1,9 @@
 package de.noventi.cm.client.java;
 
-public class ServiceControllerStarter {
+public class AdminControllerStarter {
 
   public static void main(String[] args) {
-    ServiceController controller = new ServiceController();
+    AdminController controller = new AdminController();
     controller.install();
 
     controller.start();

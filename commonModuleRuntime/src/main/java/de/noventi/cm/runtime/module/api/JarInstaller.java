@@ -61,6 +61,7 @@ public class JarInstaller implements Installer {
     cmdarray.add(javaBin.getAbsolutePath());
     cmdarray.add("-jar");
     cmdarray.add(getSingleFile(binPath).getAbsolutePath());
+    log.info("-" + cmdarray);
 
     ProcessBuilder processBuilder = new ProcessBuilder(cmdarray);
     processBuilder.redirectErrorStream(true);

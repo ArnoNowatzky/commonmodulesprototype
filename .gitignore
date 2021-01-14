@@ -3,3 +3,4 @@ out/
 .idea/
 build/
 commonModuleUi/client/src/app/generated/
+*.log

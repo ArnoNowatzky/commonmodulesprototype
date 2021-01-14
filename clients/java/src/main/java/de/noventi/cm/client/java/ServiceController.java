@@ -41,48 +41,6 @@ public class ServiceController {
 
   }
 
-  public void install () {
-    ModuleApi moduleApi = new ModuleApi();
-    log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
-    InputStream inputStream = getClass().getResourceAsStream("/install_jar.xml");
-    StringWriter stringWriter = new StringWriter();
-    try {
-      IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
-
-      log.info("Send modules descriptor " + stringWriter.toString());
-
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(examplePath.getAbsolutePath());
-      moduleApi.installModules(setupModulesParamDTO);
-    } catch (IOException e) {
-      log.error(e.getLocalizedMessage(), e);;
-
-    } catch (ApiException e) {
-      log.error("Error installing new modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
-    }
-
-
-  }
-
-  public void start () {
-    ModuleApi moduleApi = new ModuleApi();
-    log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
-    InputStream inputStream = getClass().getResourceAsStream("/install_jar.xml");
-    StringWriter stringWriter = new StringWriter();
-    try {
-      IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
-
-      log.info("Send modules descriptor " + stringWriter.toString());
-
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(examplePath.getAbsolutePath());
-      moduleApi.startModules(setupModulesParamDTO);
-    } catch (IOException e) {
-      log.error(e.getLocalizedMessage(), e);
-
-    } catch (ApiException e) {
-      log.error("Error starting new modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
-    }
-
-  }
 
   private void reload() {
     CustomerApi customerApi = new CustomerApi();

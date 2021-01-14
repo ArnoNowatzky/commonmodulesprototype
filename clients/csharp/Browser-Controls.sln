@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Browser-Controls", "Browser-Controls\Browser-Controls.csproj", "{AC3FF515-9670-4867-B181-B1D705B97C02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Debug|x64.ActiveCfg = Debug|x64
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Debug|x64.Build.0 = Debug|x64
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Debug|x86.ActiveCfg = Debug|x86
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Debug|x86.Build.0 = Debug|x86
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Release|x64.ActiveCfg = Release|x64
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Release|x64.Build.0 = Release|x64
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Release|x86.ActiveCfg = Release|x86
+		{AC3FF515-9670-4867-B181-B1D705B97C02}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B1866C4C-9196-4DB6-9C7B-B88869D68752}
+	EndGlobalSection
+EndGlobal

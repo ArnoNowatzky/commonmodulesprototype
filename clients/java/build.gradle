@@ -33,6 +33,9 @@ apply {
 
 ext.lombokVersion = '1.18.6'
 
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
+
 
 dependencies {
 
@@ -64,7 +67,7 @@ dependencies {
 
 
 
-def dir = new File("../../api/".toString())
+def dir = project.file("../../api/".toString())
 def openApiInputs = []
 dir.eachFileRecurse(groovy.io.FileType.FILES) { file ->
     if (file.getName().endsWith(".yaml"))
@@ -104,4 +107,8 @@ sourceSets {
 
 application {
     mainClass = 'de.noventi.cm.client.java.Application'
+}
+
+test {
+    useJUnitPlatform()
 }

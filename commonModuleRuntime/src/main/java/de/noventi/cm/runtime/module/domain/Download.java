@@ -23,6 +23,11 @@ public class Download {
         FileOutputStream fos = new FileOutputStream(outputFile);
         URL installUrl = new URL(url);
         IOUtils.copy(installUrl.openStream(), fos);
+
+        /**if (outputFile.length() == 0) {
+          outputFile.delete();
+          throw new IllegalStateException("Could not download file " + url);
+        }**/
       }
       else
         log.info(outputFile.getAbsolutePath() + " already exists, skip download");
