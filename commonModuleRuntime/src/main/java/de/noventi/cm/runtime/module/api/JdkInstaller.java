@@ -83,7 +83,7 @@ public class JdkInstaller implements Installer {
 
   public File getHome (final File unzipPath) {
     if (SystemUtils.IS_OS_WINDOWS) {
-      throw new IllegalStateException("Not yet implemented");
+      return unzipPath;
     }
     else if (SystemUtils.IS_OS_LINUX) {
       throw new IllegalStateException("Not yet implemented");
