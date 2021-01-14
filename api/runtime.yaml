@@ -42,8 +42,19 @@ paths:
 
       responses:
         '200':
-          description: Ok          
-                
+          description: Ok
+
+  /module/stop:
+    post:
+      tags:
+        - module
+      operationId: "stopModules"
+      description: "stops the modules up due to the description"
+
+      responses:
+        '200':
+          description: Ok
+
 components:
   securitySchemes:
     BasicAuth:

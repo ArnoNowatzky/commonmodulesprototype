@@ -81,6 +81,10 @@ public class ModuleController implements ModuleApi {
     }
     return new ResponseEntity<Void>( HttpStatus.OK );
   }
+
+  public ResponseEntity<Void> stopModules() {
+    return new ResponseEntity<Void>( HttpStatus.OK );
+  }
 }
 
 /**

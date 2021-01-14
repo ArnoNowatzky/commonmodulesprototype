@@ -89,6 +89,8 @@ public class JarInstaller implements Installer {
 
 
   private File getSingleFolder (final File inPath) {
+    if (inPath.listFiles() == null)
+      throw new IllegalStateException("No entry found in " + inPath.getAbsolutePath());
     for (File next: inPath.listFiles()) {
       if (next.isDirectory())
         return next;
@@ -98,6 +100,8 @@ public class JarInstaller implements Installer {
   }
 
   private File getSingleFile (final File inPath) {
+    if (inPath.listFiles() == null)
+      throw new IllegalStateException("No entry found in " + inPath.getAbsolutePath());
     for (File next: inPath.listFiles()) {
       if (! next.isDirectory())
         return next;

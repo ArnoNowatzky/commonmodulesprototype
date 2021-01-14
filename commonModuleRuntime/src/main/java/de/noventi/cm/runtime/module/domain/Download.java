@@ -14,9 +14,11 @@ public class Download {
     if (! toDir.exists())
       toDir.mkdirs();
 
-    String [] urlTokens = url.split("/");
-    String filename = urlTokens[urlTokens.length - 1];
+
     try {
+
+      String [] urlTokens = url.split("/");
+      String filename = urlTokens[urlTokens.length - 1];
       File outputFile = new File (toDir, filename);
       if (! outputFile.exists()) {
         log.info("Download " + url + " to " + outputFile.getAbsolutePath());
