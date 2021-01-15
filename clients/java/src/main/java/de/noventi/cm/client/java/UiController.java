@@ -15,7 +15,6 @@ public class UiController {
   private Button btnReload;
 
   public void load() {
-    reload();
     btnReload.setOnAction(event -> reload());
   }
 

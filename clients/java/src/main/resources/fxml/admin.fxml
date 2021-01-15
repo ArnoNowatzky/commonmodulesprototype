@@ -11,6 +11,7 @@
     <ComboBox fx:id="cboRuntimeType" GridPane.columnIndex="0" GridPane.rowIndex="0"></ComboBox>
     <Button fx:id="btnInstall" text="Install" GridPane.columnIndex="0" GridPane.rowIndex="1"></Button>
     <Button fx:id="btnStart" text="Start" GridPane.columnIndex="0" GridPane.rowIndex="2"></Button>
+    <Button fx:id="btnStop" text="Stop" GridPane.columnIndex="0" GridPane.rowIndex="3"></Button>
 
 
 

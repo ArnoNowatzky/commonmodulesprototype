@@ -50,6 +50,14 @@ paths:
         - module
       operationId: "stopModules"
       description: "stops the modules up due to the description"
+      requestBody:
+        required: true
+        description: modules descriptor
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetupModulesParamDTO"
+
 
       responses:
         '200':

@@ -15,9 +15,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.controlsfx.control.Notifications;
 
 @Slf4j
 public class AdminController {
+
 
   @FXML
   private ComboBox<String> cboRuntimeType;
@@ -28,6 +30,8 @@ public class AdminController {
   @FXML
   private Button btnStart;
 
+  @FXML
+  private Button btnStop;
 
   File examplePath = new File ("build/example");
 
@@ -38,8 +42,11 @@ public class AdminController {
     
     btnInstall.setOnAction(event -> install());
     btnStart.setOnAction(event -> start());
+    btnStop.setOnAction(event -> stop());
 
   }
+
+
 
   private String getInstallFile() {
     String type = cboRuntimeType == null ? "jar" : cboRuntimeType.getSelectionModel().getSelectedItem();
@@ -73,7 +80,7 @@ public class AdminController {
 
     } catch (ApiException e) {
       log.error("Error installing new modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e.getCause());
-      throw new IllegalStateException(e.getLocalizedMessage(), e);
+      Notifications.create().title("Installing modules").text("Error installing modules: " + e.getLocalizedMessage()).showError();
     }
 
 
@@ -97,8 +104,30 @@ public class AdminController {
 
     } catch (ApiException e) {
       log.error("Error starting new modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
+      Notifications.create().title("Start modules").text("Error starting modules: " + e.getLocalizedMessage()).showError();
     }
 
+  }
+
+  public void stop() {
+    ModuleApi moduleApi = new ModuleApi();
+    moduleApi.getApiClient().setReadTimeout(60000);
+    log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
+    InputStream inputStream = getClass().getResourceAsStream(getInstallFile());
+    StringWriter stringWriter = new StringWriter();
+    try {
+      IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
+
+      log.info("Send modules descriptor " + stringWriter.toString());
+
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(examplePath.getAbsolutePath());
+      moduleApi.stopModules(setupModulesParamDTO);
+    } catch (IOException e) {
+      log.error(e.getLocalizedMessage(), e);
+    } catch (ApiException e) {
+      log.error("Error stopping new modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
+      Notifications.create().title("Stop modules").text("Error stopping modules: " + e.getLocalizedMessage()).showError();
+    }
   }
 
 

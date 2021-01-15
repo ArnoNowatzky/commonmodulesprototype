@@ -55,6 +55,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     //compile 'org.springframework.boot:spring-boot-starter-security'
 
+    //TODO discuss compile 'org.springframework.boot:spring-boot-starter-actuator'
+
     compile 'io.swagger:swagger-annotations:1.5.22'
     compile 'javax.validation:validation-api:2.0.1.Final'
 

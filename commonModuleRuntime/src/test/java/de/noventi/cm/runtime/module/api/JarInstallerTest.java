@@ -27,4 +27,6 @@ public class JarInstallerTest {
     Assertions.assertTrue (downloadedFile.exists(), "Destination file " + downloadedFile.getAbsolutePath() + " not available");
     Assertions.assertEquals (downloadedFile.length(), origin.length(), "Length of " + downloadedFile.getAbsolutePath() + " invalid" );
   }
+
+
 }

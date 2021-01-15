@@ -1,20 +1,13 @@
 package de.noventi.cm.client.java;
 
 import de.noventi.cm.client.java.runtime.ApiException;
-import de.noventi.cm.client.java.runtime.api.ModuleApi;
-import de.noventi.cm.client.java.runtime.model.SetupModulesParamDTO;
 import de.noventi.cm.client.java.service.api.CustomerApi;
 import de.noventi.cm.client.java.service.model.CustomerDTO;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.Charset;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
+import org.controlsfx.control.Notifications;
 
 @Slf4j
 public class ServiceController {
@@ -31,14 +24,8 @@ public class ServiceController {
   @FXML
   private Button btnReload;
 
-  File examplePath = new File ("build/example");
-
   public void load () throws ApiException {
-
-    reload();
-
     btnReload.setOnAction(event -> reload());
-
   }
 
 
@@ -52,7 +39,11 @@ public class ServiceController {
       lblName.setText(customer.getName());
       lblFirstname.setText(customer.getFirstname());
     } catch (Exception e) {
+      lblFirstname.setText("");
+      lblName.setText("");
+      lblId.setText("");
       log.error("Error fetching customer data: " + e.getLocalizedMessage(), e, customerApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e);
+      Notifications.create().title("Synch data").text("Error synching data: " + e.getLocalizedMessage()).showError();
     }
 
   }

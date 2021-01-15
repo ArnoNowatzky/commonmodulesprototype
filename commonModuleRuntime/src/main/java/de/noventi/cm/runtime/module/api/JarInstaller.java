@@ -64,6 +64,7 @@ public class JarInstaller implements Installer {
     log.info("-" + cmdarray);
 
     ProcessBuilder processBuilder = new ProcessBuilder(cmdarray);
+    processBuilder.directory(modulePath);
     processBuilder.redirectErrorStream(true);
     Process process = null;
     byte[] buffer = new byte[1024];
@@ -76,15 +77,17 @@ public class JarInstaller implements Installer {
         if (r <= 0) {
           break;
         }
-        System.out.write(buffer, 0, r);
+        String line = new String(buffer);
+        log.info(module.getId() + " " + line);
+
       }
     } catch (IOException e) {
       throw new IllegalStateException(e);
     }
 
 
-
   }
+
 
 
 
