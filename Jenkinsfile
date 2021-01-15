@@ -53,7 +53,8 @@ pipeline {
                 environment {
                     JAVA_HOME = tool name: 'openjdk_15_linux'
                     PATH = "$JAVA_HOME/bin;$PATH"
-                    CI_SONAR=true
+                    CI_SONAR=false //TODO make true, when jacoco works again
+                    CI_JACOCO=false
                 }
 
                 steps {
