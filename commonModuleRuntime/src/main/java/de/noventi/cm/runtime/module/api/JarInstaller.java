@@ -78,7 +78,7 @@ public class JarInstaller implements Installer {
           break;
         }
         String line = new String(buffer);
-        log.info(module.getId() + " " + line);
+        System.out.println ("->" + module.getId() + " " + line);
 
       }
     } catch (IOException e) {
