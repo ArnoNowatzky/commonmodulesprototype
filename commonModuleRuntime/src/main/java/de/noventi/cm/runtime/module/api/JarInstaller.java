@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class JarInstaller implements Installer {
 
   @Autowired
-  private JdkInstaller jdkInstaller;
+  JdkInstaller jdkInstaller;
 
   private Download download = new Download();
 

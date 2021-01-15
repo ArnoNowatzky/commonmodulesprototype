@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class JarInstallerTest {
 
@@ -20,8 +21,11 @@ public class JarInstallerTest {
     commonModule.setUrl(fileUrl.toString());
     commonModule.setId("service");
 
+    JdkInstaller mockedJdkInstaller = Mockito.mock(JdkInstaller.class);
+
     File tmpDir = Files.createTempDirectory(getClass().getName()).toFile();
     JarInstaller jarInstaller = new JarInstaller();
+    jarInstaller.jdkInstaller = mockedJdkInstaller;
     jarInstaller.install(tmpDir, commonModule);
     File downloadedFile = new File (tmpDir, "service/bin/testinstall.xml");
     Assertions.assertTrue (downloadedFile.exists(), "Destination file " + downloadedFile.getAbsolutePath() + " not available");

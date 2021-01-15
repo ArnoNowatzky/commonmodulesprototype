@@ -24,14 +24,15 @@ public class SetupModulesParamReaderTest {
 
     String descriptor = stringWriter.toString();
 
+    String url = "file://" + System.getProperty("user.home") + "/.m2/repository/de/noventi/cm/service/0.1-SNAPSHOT/service-0.1-SNAPSHOT.jar";
+
     SetupModulesParamReader setupModulesParamReader = new SetupModulesParamReader();
     CommonModules commonModules = setupModulesParamReader.read(descriptor);
     Assertions.assertEquals (1, commonModules.getCommonModule().size(), "Wrong number of modules");
     CommonModule commonModule1 = commonModules.getCommonModule().get(0);
     Assertions.assertEquals("service", commonModule1.getId(), "Id invalid");
     Assertions.assertEquals("CustomerService", commonModule1.getName(), "Name invalid");
-    Assertions.assertEquals("http://repo.intra.vsa.de:8082/artifactory/awinta-maven/de/noventi/cm/service/0.1/service-0.1.jar", commonModule1
-        .getUrl(), "URL invalid");
+    Assertions.assertEquals(url, commonModule1.getUrl(), "URL invalid");
     Assertions.assertEquals(Type.JAR, commonModule1.getType(), "Type invalid");
     Assertions.assertEquals(Action.INSTALL, commonModule1.getAction(), "Action invalid");
 
