@@ -69,3 +69,7 @@ Kubernetes: EFK, Grafana/Prometheus für Monitoring
 dotnet Framework
 
 ->dotnet Core
+
+
+# TODOS 
+- First usage of windows: is java allowed? 
