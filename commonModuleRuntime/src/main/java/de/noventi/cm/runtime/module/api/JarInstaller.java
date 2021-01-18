@@ -8,11 +8,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -88,8 +93,35 @@ public class JarInstaller implements Installer {
 
   }
 
+  @Override public void stop(File path, CommonModule module) {
+    File modulePath = new File (path, module.getId());
+    File applicationPidFile = new File(modulePath, "application.pid");
+    if (applicationPidFile.exists()) {
+      try {
+        String pid = FileUtils.readFileToString(applicationPidFile, Charset.defaultCharset());
+        log.info("Shutdown service " + path.getName() + " with pid " + pid);
 
+        if (SystemUtils.IS_OS_WINDOWS) {
+          throw new IllegalStateException("NYI");
+        }
+        else {
+          try {
+            Runtime.getRuntime().exec("kill " + pid).waitFor();
+          } catch (InterruptedException e) {
+            log.error("Error killing process with pid " + pid);
+            throw new IllegalStateException(e);
+          }
+        }
 
+      } catch (IOException e) {
+        log.error("Error reading application pid file " + applicationPidFile.getAbsolutePath());
+        throw new IllegalStateException(e);
+      }
+    }
+    else
+      log.warn("Service " + path.getAbsolutePath() + " does not contain a pidfile " + applicationPidFile.getAbsolutePath());
+
+  }
 
   private File getSingleFolder (final File inPath) {
     if (inPath.listFiles() == null)

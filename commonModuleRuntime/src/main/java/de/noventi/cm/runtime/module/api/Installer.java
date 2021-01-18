@@ -8,4 +8,6 @@ public interface Installer {
   void install (File path, CommonModule module);
 
   void start (File path, CommonModule module);
+
+  void stop (File path, CommonModule module);
 }

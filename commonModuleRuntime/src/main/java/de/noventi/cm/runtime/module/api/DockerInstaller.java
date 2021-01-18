@@ -82,9 +82,35 @@ public class DockerInstaller implements Installer {
 
   }
 
+  @Override public void stop(File path, CommonModule module) {
+    log.info("Stop module " + module.getId() + " in path " + path.getAbsolutePath());
 
+    File modulePath = new File (path, module.getId());
+    List<String> cmdarray = new ArrayList<String>();
+    cmdarray.add("docker-compose");
+    cmdarray.add("down");
+    cmdarray.add("--detach");
 
+    ProcessBuilder processBuilder = new ProcessBuilder(cmdarray);
+    processBuilder.directory(modulePath);
+    processBuilder.redirectErrorStream(true);
+    Process process = null;
+    byte[] buffer = new byte[1024];
 
+    try {
+      process = processBuilder.start();
+      InputStream in = process.getInputStream();
+      while (true) {
+        int r = in.read(buffer);
+        if (r <= 0) {
+          break;
+        }
+        System.out.write(buffer, 0, r);
+      }
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
 
+  }
 
 }

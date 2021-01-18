@@ -81,6 +81,10 @@ public class JdkInstaller implements Installer {
     throw new IllegalStateException("JDK installer does not contain a start implementation");
   }
 
+  @Override public void stop(File path, CommonModule module) {
+    throw new IllegalStateException("JDK installer does not contain a stop implementation");
+  }
+
   public File getHome (final File unzipPath) {
     if (SystemUtils.IS_OS_WINDOWS) {
       return unzipPath;
