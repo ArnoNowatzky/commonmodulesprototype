@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Org.OpenAPITools.De.Noventi.Cm.Client.Csharp.Service.Api;
-using Org.OpenAPITools.Client;
-using Org.OpenAPITools.De.Noventi.Cm.Client.Csharp.Service.Model;
+using De.Noventi.Cm.Client.Csharp.Runtime.Api;
+using De.Noventi.Cm.Client.Csharp.Runtime.Client;
+using De.Noventi.Cm.Client.Csharp.Runtime.Model;
+using De.Noventi.Cm.Client.Csharp.Service.Api;
+using De.Noventi.Cm.Client.Csharp.Service.Model;
+using De.Noventi.Cm.Client.Csharp.Service.Client;
 
 namespace Browser_Controls
 {
@@ -18,25 +21,60 @@ namespace Browser_Controls
             InitializeComponent();
         }
 
+        private SetupModulesParamDTO createAdminParam (string type)
+        {
+            SetupModulesParamDTO setupModules = new SetupModulesParamDTO();
+            setupModules.Path = "../../../../build/example";
+
+            string installationDescriptor = System.IO.File.ReadAllText("../../../../../install_jar.xml", System.Text.Encoding.Default);
+            setupModules.Descriptor = installationDescriptor;
+            return setupModules;
+        }
+
+        private void BtAdminInstall_Click (object sender, RoutedEventArgs e)
+        {
+            Debug.Print("Install clicked");
+            ModuleApi apiInstance = new ModuleApi();
+            Debug.Print($"Url {apiInstance.GetBasePath()}");
+            apiInstance.InstallModules(createAdminParam(""));
+        }
+
+        private void BtAdminStart_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.Print("Start clicked");
+            ModuleApi apiInstance = new ModuleApi();
+            apiInstance.StartModules(createAdminParam(""));
+
+        }
+
+        private void BtAdminStop_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.Print("Stop clicked");
+            ModuleApi apiInstance = new ModuleApi();
+            apiInstance.StopModules(createAdminParam(""));
+
+        }
         private void BtServiceSynch_Click(object sender, RoutedEventArgs e)
         {
             var apiInstance = new CustomerApi();
 
             try
             {
-                apiInstance.GetCustomer("1");
+                CustomerDTO customer = apiInstance.GetCustomer("1");
+                txtId.Text = customer.Id;
+                txtName.Text = customer.Name;
+                txtFirstName.Text = customer.Firstname;
             }
-            catch (ApiException exception)
+            catch (Exception exception)
             {
                 Debug.Print("Exception when calling ModuleApi.InstallModules: " + exception.Message);
-                Debug.Print("Status Code: " + exception.ErrorCode);
                 Debug.Print(exception.StackTrace);
-            }
 
-            txtId.Text = "1";
-            txtName.Text = "Name";
-            txtFirstName.Text = "First name";
-            System.Diagnostics.Debug.WriteLine("Hello from Service");
+                MessageBox.Show("Synch service: " + exception.Message, "Error", MessageBoxButton.OK);
+                txtId.Text = "";
+                txtName.Text = "";
+                txtFirstName.Text = "";
+            }
 
         }
 

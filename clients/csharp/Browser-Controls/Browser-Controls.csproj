@@ -209,9 +209,13 @@
     <Resource Include="Awinta - Anwendung.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\build\generated\openapi\src\Org.OpenAPITools\Org.OpenAPITools.csproj">
-      <Project>{b0c8aacc-461d-40e2-95f4-052230a963ce}</Project>
-      <Name>Org.OpenAPITools</Name>
+    <ProjectReference Include="..\build\generated\openapi\src\De.Noventi.Cm.Client.Csharp.Runtime\De.Noventi.Cm.Client.Csharp.Runtime.csproj">
+      <Project>{3732c322-81ab-4f99-b607-580a0450b6ac}</Project>
+      <Name>De.Noventi.Cm.Client.Csharp.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\build\generated\openapi\src\De.Noventi.Cm.Client.Csharp.Service\De.Noventi.Cm.Client.Csharp.Service.csproj">
+      <Project>{0845de5b-d411-459f-891e-17edecf62e06}</Project>
+      <Name>De.Noventi.Cm.Client.Csharp.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

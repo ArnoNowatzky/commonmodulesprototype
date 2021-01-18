@@ -128,6 +128,26 @@
                     </Button>
                 </Grid>
             </TabItem>
+            <TabItem Header="Admin">
+                <Grid Margin="50" >
+                   
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ComboBox x:Name="cboAdminType"></ComboBox>
+
+                    <Button  Grid.Row="1" Grid.Column="0" x:Name="btnInstall" Click="BtAdminInstall_Click">Install</Button>
+                    <Button Grid.Row="2" Grid.Column="0" x:Name="btnStart" Click="BtAdminStart_Click">Start</Button>
+                    <Button Grid.Row="3" Grid.Column="0" x:Name="btnStop" Click="BtAdminStop_Click">Stop</Button>
+                </Grid>
+
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

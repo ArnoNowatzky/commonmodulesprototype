@@ -40,9 +40,10 @@ openApiInputs.each {
         //verbose = true
         generatorName = "csharp"
         inputSpec = file("../../api/" + apiName + ".yaml").toString()
-        outputDir = "$buildDir/generated/openapi/".toString()
-        apiPackage = "De.Noventi.Cm.Client.Csharp." + apiName.capitalize() + ".Api"
-        modelPackage = "De.Noventi.Cm.Client.Csharp." + apiName.capitalize() + ".Model"
+        outputDir = "$buildDir/generated/openapi"
+        apiPackage = "Api"
+        modelPackage = "Model"
+        packageName = "De.Noventi.Cm.Client.Csharp." + apiName.capitalize()
 
     })
 
