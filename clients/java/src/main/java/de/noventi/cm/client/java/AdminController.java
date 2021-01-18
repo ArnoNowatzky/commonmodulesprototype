@@ -5,8 +5,6 @@ import de.noventi.cm.client.java.runtime.api.ModuleApi;
 import de.noventi.cm.client.java.runtime.model.SetupModulesParamDTO;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import javafx.collections.FXCollections;
@@ -14,7 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.controlsfx.control.Notifications;
 
 @Slf4j
@@ -35,7 +33,7 @@ public class AdminController {
 
   File examplePath = new File ("build/example");
 
-  public void load () throws ApiException {
+  public void load () {
 
     cboRuntimeType.setItems(FXCollections.observableArrayList(Arrays.asList("jar", "docker")));
     cboRuntimeType.getSelectionModel().select("jar");
@@ -46,19 +44,13 @@ public class AdminController {
 
   }
 
-
-
-  private String getInstallFile() {
-    String type = cboRuntimeType == null ? "jar" : cboRuntimeType.getSelectionModel().getSelectedItem();
-    return "/install_" + type + ".xml";
-  }
-
   private String getInstallDescription () throws IOException {
-    InputStream inputStream = getClass().getResourceAsStream(getInstallFile());
-    StringWriter stringWriter = new StringWriter();
-    IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
+    String type = cboRuntimeType == null ? "jar" : cboRuntimeType.getSelectionModel().getSelectedItem();
+    String file = "../install_" + type + ".xml";
+    File installFile = new File (file).getAbsoluteFile();
+    log.info("Using installfile " + installFile.getAbsolutePath());
 
-    String descriptor = stringWriter.toString();
+    String descriptor = FileUtils.readFileToString(installFile, Charset.defaultCharset());
     descriptor = descriptor.replace("~", System.getProperty("user.home"));
     return descriptor;
   }
@@ -76,7 +68,7 @@ public class AdminController {
       moduleApi.installModules(setupModulesParamDTO);
       log.info("Calling install finished");
     } catch (IOException e) {
-      log.error(e.getLocalizedMessage(), e);;
+      log.error(e.getLocalizedMessage(), e);
 
     } catch (ApiException e) {
       log.error("Error installing new modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e.getLocalizedMessage(), e.getCause());
@@ -90,14 +82,11 @@ public class AdminController {
     ModuleApi moduleApi = new ModuleApi();
     moduleApi.getApiClient().setReadTimeout(60000);
     log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
-    InputStream inputStream = getClass().getResourceAsStream(getInstallFile());
-    StringWriter stringWriter = new StringWriter();
+
     try {
-      IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
-
-      log.info("Send modules descriptor " + stringWriter.toString());
-
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(examplePath.getAbsolutePath());
+      String installDescription = getInstallDescription();
+      log.info("Send modules descriptor " + installDescription);
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(installDescription).path(examplePath.getAbsolutePath());
       moduleApi.startModules(setupModulesParamDTO);
     } catch (IOException e) {
       log.error(e.getLocalizedMessage(), e);
@@ -113,14 +102,11 @@ public class AdminController {
     ModuleApi moduleApi = new ModuleApi();
     moduleApi.getApiClient().setReadTimeout(60000);
     log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
-    InputStream inputStream = getClass().getResourceAsStream(getInstallFile());
-    StringWriter stringWriter = new StringWriter();
+
     try {
-      IOUtils.copy(inputStream, stringWriter, Charset.defaultCharset());
-
-      log.info("Send modules descriptor " + stringWriter.toString());
-
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(stringWriter.toString()).path(examplePath.getAbsolutePath());
+      String installDescription = getInstallDescription();
+      log.info("Send modules descriptor " + installDescription);
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(installDescription).path(examplePath.getAbsolutePath());
       moduleApi.stopModules(setupModulesParamDTO);
     } catch (IOException e) {
       log.error(e.getLocalizedMessage(), e);
