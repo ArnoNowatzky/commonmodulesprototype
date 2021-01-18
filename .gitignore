@@ -4,3 +4,4 @@ out/
 build/
 commonModuleUi/client/src/app/generated/
 *.log
+.vs/

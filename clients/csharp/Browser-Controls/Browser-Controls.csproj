@@ -208,6 +208,12 @@
   <ItemGroup>
     <Resource Include="Awinta - Anwendung.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\build\generated\openapi\src\Org.OpenAPITools\Org.OpenAPITools.csproj">
+      <Project>{b0c8aacc-461d-40e2-95f4-052230a963ce}</Project>
+      <Name>Org.OpenAPITools</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

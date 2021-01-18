@@ -87,15 +87,21 @@ import org.springframework.stereotype.Component;
         String pid = FileUtils.readFileToString(applicationPidFile, Charset.defaultCharset());
         log.info("Shutdown service " + path.getName() + " with pid " + pid);
 
+        try {
+
+          int returnCode = 0;
         if (SystemUtils.IS_OS_WINDOWS) {
-          throw new IllegalStateException("NYI");
+          returnCode = Runtime.getRuntime().exec("taskkill /F /T /PID " + pid).waitFor();
+          if (applicationPidFile.exists())
+            applicationPidFile.delete();
         } else {
-          try {
-            Runtime.getRuntime().exec("kill " + pid).waitFor();
-          } catch (InterruptedException e) {
-            log.error("Error killing process with pid " + pid);
-            throw new IllegalStateException(e);
-          }
+          returnCode = Runtime.getRuntime().exec("kill " + pid).waitFor();
+        }
+        log.info("Killing task exited with returncode " + returnCode);
+
+        } catch (InterruptedException e) {
+          log.error("Error killing process with pid " + pid);
+          throw new IllegalStateException(e);
         }
 
       } catch (IOException e) {

@@ -1,5 +1,12 @@
 ﻿using System;
 using System.Windows;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Org.OpenAPITools.De.Noventi.Cm.Client.Csharp.Service.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.De.Noventi.Cm.Client.Csharp.Service.Model;
 
 namespace Browser_Controls
 {
@@ -11,8 +18,33 @@ namespace Browser_Controls
             InitializeComponent();
         }
 
+        private void BtServiceSynch_Click(object sender, RoutedEventArgs e)
+        {
+            var apiInstance = new CustomerApi();
+
+            try
+            {
+                apiInstance.GetCustomer("1");
+            }
+            catch (ApiException exception)
+            {
+                Debug.Print("Exception when calling ModuleApi.InstallModules: " + exception.Message);
+                Debug.Print("Status Code: " + exception.ErrorCode);
+                Debug.Print(exception.StackTrace);
+            }
+
+            txtId.Text = "1";
+            txtName.Text = "Name";
+            txtFirstName.Text = "First name";
+            System.Diagnostics.Debug.WriteLine("Hello from Service");
+
+        }
+
+
         private void BtWpf_Click(object sender, RoutedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("Hello from BtWpf");
+
             Window wpfWindow = new Window();
             wpfWindow.MinHeight = 675;
             wpfWindow.MinWidth = 975;
