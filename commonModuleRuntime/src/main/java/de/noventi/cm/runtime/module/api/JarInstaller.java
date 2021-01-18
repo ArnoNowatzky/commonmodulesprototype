@@ -3,60 +3,47 @@ package de.noventi.cm.runtime.module.api;
 import de.noventi.cm.runtime.module.domain.CommonModule;
 import de.noventi.cm.runtime.module.domain.Download;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-@Slf4j
-@Component
-public class JarInstaller implements Installer {
+@Slf4j @Component public class JarInstaller implements Installer {
 
-  @Autowired
-  JdkInstaller jdkInstaller;
+  @Autowired JdkInstaller jdkInstaller;
 
   private Download download = new Download();
 
-  @Override
-  public void install (File path, CommonModule module) {
+  @Override public void install(File path, CommonModule module) {
     if (module.getId() == null)
       throw new IllegalArgumentException("Module " + module + " must contain id");
 
     log.info("Install module " + module.getId() + " in path " + path.getAbsolutePath());
 
-    File modulePath = new File (path, module.getId());
+    File modulePath = new File(path, module.getId());
 
-    File binPath = new File (modulePath, "bin");
-    if (! binPath.exists()) {
-      String url = module.getUrl();
-      download.download(binPath, url);
+    File binPath = new File(modulePath, "bin");
+    String url = module.getUrl();
+    download.download(binPath, url);
 
-      jdkInstaller.install(path, module);
-    }
-    else
-      log.info(" Path " + binPath.getAbsolutePath() + " already exists, skip installation of module " + module.getId());
+    jdkInstaller.install(path, module);
+
   }
 
   @Override public void start(File path, CommonModule module) {
     log.info("Start module " + module.getId() + " in path " + path.getAbsolutePath());
-    File jdkPath = new File (path, module.getJdk());
+    File jdkPath = new File(path, module.getJdk());
 
     File folder = getSingleFolder(jdkPath);
 
-    File modulePath = new File (path, module.getId());
-    File binPath = new File (modulePath, "bin");
+    File modulePath = new File(path, module.getId());
+    File binPath = new File(modulePath, "bin");
 
     File javaHome = jdkInstaller.getHome(folder);
     File javaBin = jdkInstaller.getJreExecutable(javaHome);
@@ -83,18 +70,17 @@ public class JarInstaller implements Installer {
           break;
         }
         String line = new String(buffer);
-        System.out.println ("->" + module.getId() + " " + line);
+        System.out.println("->" + module.getId() + " " + line);
 
       }
     } catch (IOException e) {
       throw new IllegalStateException(e);
     }
 
-
   }
 
   @Override public void stop(File path, CommonModule module) {
-    File modulePath = new File (path, module.getId());
+    File modulePath = new File(path, module.getId());
     File applicationPidFile = new File(modulePath, "application.pid");
     if (applicationPidFile.exists()) {
       try {
@@ -103,8 +89,7 @@ public class JarInstaller implements Installer {
 
         if (SystemUtils.IS_OS_WINDOWS) {
           throw new IllegalStateException("NYI");
-        }
-        else {
+        } else {
           try {
             Runtime.getRuntime().exec("kill " + pid).waitFor();
           } catch (InterruptedException e) {
@@ -117,16 +102,16 @@ public class JarInstaller implements Installer {
         log.error("Error reading application pid file " + applicationPidFile.getAbsolutePath());
         throw new IllegalStateException(e);
       }
-    }
-    else
-      log.warn("Service " + path.getAbsolutePath() + " does not contain a pidfile " + applicationPidFile.getAbsolutePath());
+    } else
+      log.warn(
+          "Service " + path.getAbsolutePath() + " does not contain a pidfile " + applicationPidFile.getAbsolutePath());
 
   }
 
-  private File getSingleFolder (final File inPath) {
+  private File getSingleFolder(final File inPath) {
     if (inPath.listFiles() == null)
       throw new IllegalStateException("No entry found in " + inPath.getAbsolutePath());
-    for (File next: inPath.listFiles()) {
+    for (File next : inPath.listFiles()) {
       if (next.isDirectory())
         return next;
     }
@@ -134,16 +119,15 @@ public class JarInstaller implements Installer {
     throw new IllegalStateException("No folder found in " + inPath.getAbsolutePath());
   }
 
-  private File getSingleFile (final File inPath) {
+  private File getSingleFile(final File inPath) {
     if (inPath.listFiles() == null)
       throw new IllegalStateException("No entry found in " + inPath.getAbsolutePath());
-    for (File next: inPath.listFiles()) {
-      if (! next.isDirectory())
+    for (File next : inPath.listFiles()) {
+      if (!next.isDirectory())
         return next;
     }
 
     throw new IllegalStateException("No folder found in " + inPath.getAbsolutePath());
   }
-
 
 }
