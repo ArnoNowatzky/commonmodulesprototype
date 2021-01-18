@@ -38,6 +38,7 @@
         </DockPanel>
         <TextBox
             x:Name="tbStartUrl"
+            Text="http://localhost:8003"
             Grid.Row="0"
             Grid.ColumnSpan="2"
             Margin="110,0,30,0"
