@@ -46,6 +46,7 @@ dependencies {
 
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    compile 'org.springframework.boot:spring-boot-starter-amqp'
     //TODO compile 'org.springframework.boot:spring-boot-starter-security'
 
 

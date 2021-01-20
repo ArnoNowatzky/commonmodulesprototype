@@ -23,3 +23,7 @@
 - Admin->Admin->Install docker (docker container ls, docker ps)
 - Admin->Start docker (docker container ls, docker ps)
 - Admin->Stop docker (docker container ls)
+
+
+- Diskussion Event (RabbitMQ)
+- Diskussion nächste Schritte

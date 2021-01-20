@@ -10,19 +10,21 @@ The following issues should be validated with this prototype:
 - **Autogenerate api client JAVA**
 - **Autogenerate api client C#**
 - **postgres database**
+  
 - Integration into Backup / Recovery
-- Central module with Event based communication
-- How to handle orgaunits
+- Central module with Event based communication (RabbitMQ)
+- How to handle orgaunits (service multitenantable machen? <-> wawi ohne tenants)
 - cef browser
 
-- API Gateway  
+- API Gateway  (Spring-Cloud-Gateway)
+- https  
 - Security with https and SingleSignOn (oAuth2 server)
 - Autogenerate documentation
 
 - Autogenerate api client C
-- Resiliencestrategies
+- Resilience
   
-- Metrics central module  
+- Metrics central module (Kibana, ElasticSearch)
 - Logging central module (Tracking)
 
 FIRST PROJECT (BETA)
@@ -34,7 +36,6 @@ FIRST PROJECT (BETA)
 - Provide an installer for the runtime
 
 PRODUCTIVE
-
 
 # Use the prototype 
 You can setup the project by calling 
