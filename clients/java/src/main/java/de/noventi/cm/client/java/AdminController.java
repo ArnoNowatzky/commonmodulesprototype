@@ -31,7 +31,11 @@ public class AdminController {
   @FXML
   private Button btnStop;
 
-  File examplePath = new File ("build/example");
+
+  private File getExamplePath () {
+    return new File ("build/example/" + cboRuntimeType.getSelectionModel().getSelectedItem());
+  }
+
 
   public void load () {
 
@@ -64,7 +68,7 @@ public class AdminController {
 
       log.info("Send modules descriptor " + description);
 
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(description).path(examplePath.getAbsolutePath());
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(description).path(getExamplePath().getAbsolutePath());
       moduleApi.installModules(setupModulesParamDTO);
       log.info("Calling install finished");
     } catch (IOException e) {
@@ -86,7 +90,7 @@ public class AdminController {
     try {
       String installDescription = getInstallDescription();
       log.info("Send modules descriptor " + installDescription);
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(installDescription).path(examplePath.getAbsolutePath());
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(installDescription).path(getExamplePath().getAbsolutePath());
       moduleApi.startModules(setupModulesParamDTO);
     } catch (IOException e) {
       log.error(e.getLocalizedMessage(), e);
@@ -106,7 +110,7 @@ public class AdminController {
     try {
       String installDescription = getInstallDescription();
       log.info("Send modules descriptor " + installDescription);
-      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(installDescription).path(examplePath.getAbsolutePath());
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(installDescription).path(getExamplePath().getAbsolutePath());
       moduleApi.stopModules(setupModulesParamDTO);
     } catch (IOException e) {
       log.error(e.getLocalizedMessage(), e);

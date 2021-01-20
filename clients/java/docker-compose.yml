@@ -1,0 +1,32 @@
+version: "3.1" 
+services:
+  postgresql:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=cm
+      - POSTGRES_PASSWORD=cm
+      - POSTGRES_DB=cm
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./build/example/postgres_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+networks:
+  default:
+    external:
+      name: cm  # create a network with 'docker network create cm'
+   

@@ -32,6 +32,9 @@ public class ModuleController implements ModuleApi {
   @Autowired
   private DockerInstaller dockerInstaller;
 
+  @Autowired
+  private PostgresInstaller postgresInstaller;
+
   @Override
   public ResponseEntity<Void> installModules(@ApiParam(value = "modules descriptor" ,required=true )  @Valid @RequestBody SetupModulesParamDTO setupModulesParamDTO) {
     try {
@@ -47,11 +50,19 @@ public class ModuleController implements ModuleApi {
           } else if (next.getType().equals(Type.DOCKER)) {
             dockerInstaller.install(path, next);
           }
+
+          if (next.isSql()) {
+            postgresInstaller.install(path, next);
+          }
         }
         else if (next.getAction().equals(Action.UNINSTALL)) {
           log.info("Uninstall module " + next);
           File modulePath = new File (path, next.getId());
           FileUtils.deleteDirectory(modulePath);
+
+          if (next.isSql()) {
+            postgresInstaller.install(path, next);
+          }
         }
       }
       log.info("installModules finished");

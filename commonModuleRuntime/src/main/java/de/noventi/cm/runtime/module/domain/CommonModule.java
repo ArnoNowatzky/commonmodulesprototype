@@ -21,9 +21,15 @@ public class CommonModule {
   @XmlElement(required = true)
   private String name;
 
+  @XmlElement
   private String url;
 
+  @XmlElement
   private String jdk; //jdk8 or jdk11....
 
+  @XmlElement
   private String description;
+
+  @XmlElement
+  private boolean sql;
 }

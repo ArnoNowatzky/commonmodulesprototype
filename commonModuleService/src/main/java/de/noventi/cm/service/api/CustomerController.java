@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class CustomerController implements CustomerApi{
+
+  @Value("${spring.datasource.url}")
+  private String datasourceUrl;
 
   private CustomerDTO getCustomer () {
     PhoneDTO phone1 = new PhoneDTO();
@@ -49,6 +53,7 @@ public class CustomerController implements CustomerApi{
 
   @Override public ResponseEntity<List<CustomerDTO>> getCustomers() {
     log.info("called getCustomers");
+    log.info("- url: " + datasourceUrl);
     return ResponseEntity.ok(Arrays.asList(getCustomer()));
   }
 

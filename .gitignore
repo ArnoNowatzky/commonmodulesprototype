@@ -5,3 +5,4 @@ build/
 commonModuleUi/client/src/app/generated/
 *.log
 .vs/
+application.pid

@@ -8,24 +8,32 @@ The following issues should be validated with this prototype:
 - **Runtime exectuable jar**
 - **Runtime docker**  
 - **Autogenerate api client JAVA**
-- Autogenerate api client C#
-- Central module with Event based communication  
- 
+- **Autogenerate api client C#**
+- **postgres database**
+- Integration into Backup / Recovery
+- Central module with Event based communication
+- How to handle orgaunits
+- cef browser
+
+- API Gateway  
+- Security with https and SingleSignOn (oAuth2 server)
+- Autogenerate documentation
 
 - Autogenerate api client C
 - Resiliencestrategies
   
 - Metrics central module  
 - Logging central module (Tracking)
-- Security with https and SingleSignOn
-- Autogenerate documentation
-- postgres database
+
+FIRST PROJECT (BETA)
+
 - Runtime kubernetes (e.g. K3s)
-- Integration into Backup / Recovery
 - Synchronize different datamodels
 - Sonarqube, check security automated
 - Ui Integration after WAWI (Polymer, WebComponents...)
 - Provide an installer for the runtime
+
+PRODUCTIVE
 
 
 # Use the prototype 
@@ -47,6 +55,26 @@ and
 ```
 in one of the client projects (client/java....) to start the client, which tests the integration
 
+# The prototype and the reality
+This prototype should validate the architecture against all existing WAWI systems.
+
+**AwintaOne**
+- Frontend written in C# 
+- Backend written in CacheDB
+
+**Infopharm**
+- Written in C, C++, C#, 
+- Tobias Essig mentioned that only C# is relevant for this scenario
+
+**Jump**
+- Frontend and backend written in Java
+
+**Pharmasoft**
+- T.B.D
+
+**Prokas**
+- T.B.D
+
 
 # Additional infos 
 - vpcmawinta01-x.intra.vsa.de contains elk stack that will be provided in Noventi
@@ -60,16 +88,22 @@ https://logz.io/blog/installing-the-elk-stack-on-windows/
 
 # Important architectural decisions
 
-Monitoring: 
+## Monitoring 
 Standalone: ELK, Grafana
 Kubernetes: EFK, Grafana/Prometheus für Monitoring
 
 
+## Event Bus
 
+
+
+
+-----
 dotnet Framework
 
 ->dotnet Core
 
 
-# TODOS 
-- First usage of windows: is java allowed? 
+#TODOs 
+- First usage of windows: is java allowed?
+- Create docker network to be reused in services: https://tjtelan.com/blog/how-to-link-multiple-docker-compose-via-network/

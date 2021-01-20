@@ -1,8 +1,9 @@
 <modules>
     <module>
-        <id>serviceDocker</id>
+        <id>service</id>
         <action>INSTALL</action>
         <type>DOCKER</type>
+        <sql>true</sql>
         <name>CustomerService</name>
         <description>
 version: '3'
@@ -12,10 +13,14 @@ services:
    image:  awinta-docker.intra.vsa.de/noventi.cm/service:0.1-SNAPSHOT
    ports:
      - "8002:8002"
+networks:
+  default:
+    external:
+      name: cm   # create a network with 'docker network create cm'
         </description>
     </module>
     <module>
-        <id>uiDocker</id>
+        <id>ui</id>
         <action>INSTALL</action>
         <type>DOCKER</type>
         <name>Customer Service with Ui</name>
@@ -27,6 +32,11 @@ services:
    image:  awinta-docker.intra.vsa.de/noventi.cm/ui:0.1-SNAPSHOT
    ports:
      - "8003:8003"
+
+networks:
+  default:
+    external:
+      name: cm  # create a network with 'docker network create cm'
         </description>
     </module>
 </modules>

@@ -57,6 +57,8 @@ public class DockerInstaller implements Installer {
     cmdarray.add("up");
     cmdarray.add("--detach");
 
+    log.info("- Commandline: " + cmdarray);
+
     ProcessBuilder processBuilder = new ProcessBuilder(cmdarray);
     processBuilder.directory(modulePath);
     processBuilder.redirectErrorStream(true);
@@ -89,7 +91,8 @@ public class DockerInstaller implements Installer {
     List<String> cmdarray = new ArrayList<String>();
     cmdarray.add("docker-compose");
     cmdarray.add("down");
-    cmdarray.add("--detach");
+
+    log.info("- Commandline: " + cmdarray);
 
     ProcessBuilder processBuilder = new ProcessBuilder(cmdarray);
     processBuilder.directory(modulePath);

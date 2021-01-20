@@ -1,2 +1,14 @@
 server:
   port: 8002
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/service
+    username: cm
+    password: cm
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      generate-ddl: true
+      ddl-auto: create
