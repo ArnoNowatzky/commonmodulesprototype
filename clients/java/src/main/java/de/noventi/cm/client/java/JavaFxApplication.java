@@ -8,7 +8,12 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javax.jms.Connection;
+import javax.jms.MessageConsumer;
+import javax.jms.Queue;
+import javax.jms.Session;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.ActiveMQConnectionFactory;
 
 @Slf4j
 public class JavaFxApplication extends Application {
@@ -20,6 +25,8 @@ public class JavaFxApplication extends Application {
   @Override public void start(Stage primaryStage) throws Exception {
 
     try {
+
+
 
       TabPane tabPane = new TabPane();
 
@@ -38,13 +45,20 @@ public class JavaFxApplication extends Application {
       AdminController adminController = loaderAdminMask.getController();
       adminController.load();
 
+      FXMLLoader loaderEventMask = getMaskLoader("event");
+      Parent rootEvent = loaderEventMask.load();
+      EventController eventController = loaderEventMask.getController();
+      eventController.load();
+
       Tab tab1 = new Tab("Service", rootService);
       Tab tab2 = new Tab("UI", rootUi);
       Tab tab3 = new Tab ("Admin", rootAdmin);
+      Tab tab4 = new Tab ("Event", rootEvent);
 
       tabPane.getTabs().add(tab1);
       tabPane.getTabs().add(tab2);
       tabPane.getTabs().add(tab3);
+      tabPane.getTabs().add(tab4);
 
       VBox vBox = new VBox(tabPane);
       Scene scene = new Scene(vBox);
@@ -60,6 +74,8 @@ public class JavaFxApplication extends Application {
     }
 
   }
+
+
 
   private FXMLLoader getMaskLoader(String name) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + name + ".fxml"));

@@ -12,7 +12,7 @@ The following issues should be validated with this prototype:
 - **postgres database**
   
 - Integration into Backup / Recovery
-- Central module with Event based communication (RabbitMQ)
+- Central module with Event based communication (Active MQ https://medium.com/@mailshine/activemq-getting-started-with-springboot-a0c3c960356e)
 - How to handle orgaunits (service multitenantable machen? <-> wawi ohne tenants)
 - cef browser
 
@@ -84,7 +84,8 @@ This prototype should validate the architecture against all existing WAWI system
 
 - Build a .net framework in c#: https://www.medo64.com/2019/04/using-visual-studio-code-for-net-framework-projects-in-c-sharp/
 
-https://logz.io/blog/installing-the-elk-stack-on-windows/
+- ELK: https://logz.io/blog/installing-the-elk-stack-on-windows/
+- ActiveMQ Springboot: https://medium.com/@mailshine/activemq-getting-started-with-springboot-a0c3c960356e
 
 
 # Important architectural decisions
@@ -108,3 +109,10 @@ dotnet Framework
 #TODOs 
 - First usage of windows: is java allowed?
 - Create docker network to be reused in services: https://tjtelan.com/blog/how-to-link-multiple-docker-compose-via-network/
+
+
+
+Hazelcast: 
+
+
+

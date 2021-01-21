@@ -8,3 +8,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/cm
     username: cm
     password: cm
+
+
+active-mq:
+  broker-url: tcp://localhost:61616
