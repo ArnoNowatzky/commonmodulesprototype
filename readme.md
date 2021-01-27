@@ -120,14 +120,41 @@ dotnet Framework
 
 ->dotnet Core
 
+# vpcmawinta01-x
+sudo yum install docker
+sudo yum install docker-compose
+sudo yum install git
 
 #TODOs 
 - First usage of windows: is java allowed?
 - Create docker network to be reused in services: https://tjtelan.com/blog/how-to-link-multiple-docker-compose-via-network/
 
 
+#Security
+ 
 
-Hazelcast: 
+öffentlicher / privater schlüssel
+
+- mit privatem Schlüssel kann man signieren, 
+- und mit dem öffentlichen Schlüssel des Gegenübers kann ich was verschlüsseln, was nur Gegenüber lesen kann oder Signatur prüfen.
+
+Zertifikat = öffentlicher Schlüssel + Metainfos
+verschiedene Arten von Zerts (TLS, andere Zertifikate erstellen)
+
+
+
+Aus dem KeyStore das Zertifikat exportieren und in einen neuen Truststore importieren
+- weil dann die Möglichkeit besteht, den KeyStore besonders zu sichern
+- spätestens dann, wenn alle Arbeitsplätze verwendet werden (nicht nur ein Server) kann dann das Zertifikat 
+
+-> AUSTAUSCHEN DES ZERTIFIKATS
+
+
+
+
+
+
+
 
 
 

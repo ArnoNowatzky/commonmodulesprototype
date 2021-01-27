@@ -38,13 +38,11 @@ public class ServiceController {
 
   private void reload() {
     ApiClient apiClient = new ApiClient();
-    apiClient.setBasePath("https://localhost:8002");
-    apiClient.setDebugging(true);
-
+    apiClient.setBasePath("https://localhost:8002"); //TODO adapt in yaml when other clients support https
 
     try {
 
-      FileInputStream fileInputStream = new FileInputStream(new File("/Users/OleyMa/vcs/wawiNeu/commonmodulesprototype/commonModuleService/src/main/resources/keystore/commonmodule.p12"));
+      FileInputStream fileInputStream = new FileInputStream(new File("build/keystore/commonmodule.p12"));
       KeyStore ks= KeyStore.getInstance("PKCS12");
       ks.load(fileInputStream,"commonmodule".toCharArray());
       Certificate cerificate = ks.getCertificate("commonmodule");

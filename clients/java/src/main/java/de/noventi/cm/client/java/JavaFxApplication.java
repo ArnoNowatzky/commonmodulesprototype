@@ -1,5 +1,6 @@
 package de.noventi.cm.client.java;
 
+import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JavaFxApplication extends Application {
 
+
+
+
   public static void main(String[] args) {
     launch(JavaFxApplication.class, args);
   }
@@ -20,8 +24,6 @@ public class JavaFxApplication extends Application {
   @Override public void start(Stage primaryStage) throws Exception {
 
     try {
-
-
 
       TabPane tabPane = new TabPane();
 
@@ -35,6 +37,11 @@ public class JavaFxApplication extends Application {
       UiController uiController = loaderUiMask.getController();
       uiController.load();
 
+      FXMLLoader loaderUiCefMask = getMaskLoader("uicef");
+      Parent rootUiCef = loaderUiCefMask.load();
+      UiCefController uiCefController = loaderUiCefMask.getController();
+      uiCefController.load();
+
       FXMLLoader loaderAdminMask = getMaskLoader("admin");
       Parent rootAdmin = loaderAdminMask.load();
       AdminController adminController = loaderAdminMask.getController();
@@ -47,13 +54,11 @@ public class JavaFxApplication extends Application {
 
       Tab tab1 = new Tab("Service", rootService);
       Tab tab2 = new Tab("UI", rootUi);
-      Tab tab3 = new Tab ("Admin", rootAdmin);
-      Tab tab4 = new Tab ("Event", rootEvent);
+      Tab tab3 = new Tab("UI CEF", rootUiCef);
+      Tab tab4 = new Tab ("Admin", rootAdmin);
+      Tab tab5 = new Tab ("Event", rootEvent);
 
-      tabPane.getTabs().add(tab1);
-      tabPane.getTabs().add(tab2);
-      tabPane.getTabs().add(tab3);
-      tabPane.getTabs().add(tab4);
+      tabPane.getTabs().addAll(tab1, tab2, tab3, tab4, tab5);
 
       VBox vBox = new VBox(tabPane);
       Scene scene = new Scene(vBox);

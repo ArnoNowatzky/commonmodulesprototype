@@ -24,6 +24,7 @@ javafx {
 
 repositories {
     mavenCentral()
+    ivy { url "https://repo.intra.vsa.de/artifactory/ivy/" }
 }
 apply {
     plugin 'java-library'
@@ -62,6 +63,8 @@ dependencies {
 
 
     compile 'commons-io:commons-io:2.7'
+
+    compile 'de.vsa:java-cef:1_0_9-80_0_4'
 
 
     testCompile('org.junit.jupiter:junit-jupiter-engine:5.2.0')
@@ -113,4 +116,11 @@ application {
 
 test {
     useJUnitPlatform()
+}
+
+processResources.doFirst {
+    project.copy {
+        from file ('../../keystore')
+        into file ('build/keystore')
+    }
 }

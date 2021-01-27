@@ -3,7 +3,7 @@ server:
 
   ssl:
     key-store-type: PKCS12
-    key-store: classpath:keystore/localhost.crt
+    key-store: file:../keystore/commonmodule.p12
     key-store-password: commonmodule
     key-alias: commonmodule
     enabled: true
