@@ -10,7 +10,8 @@
 
 - Start postgresql with docker-compose in clients/java 
 - Connect to database with http://localhost:8080/ (Adminer) and show empty
-    DatenbankSystem Postgres
+    Datenbank
+  System Postgres
     Server: postgresql
     User, Pw, Db: cm
   
@@ -18,6 +19,9 @@
 
 - Admin->Install jar (application.pid, grep)
 - Admin->Start jar (application.pid, grep)
+- Service -> Refreh
+- UI -> Refresh
+- Event -> Show  
 - Admin->Stop jar (application.pid, grep)
 
 - Admin->Admin->Install docker (docker container ls, docker ps)

@@ -98,7 +98,22 @@ Kubernetes: EFK, Grafana/Prometheus für Monitoring
 ## Event Bus
 
 
+## HTTPS Certificates
+Brauchen wir HTTPS?
+- lokaler Server nur localhost
+- beliebiger Rechner in der Apo
+- nach aussen (über secured Websocket)
 
+
+
+
+keytool -genkeypair -alias commonmodule -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore commonmodule.p12 -validity 3650
+
+
+openssl req -x509 -out localhost.crt -keyout localhost.key \
+-newkey rsa:2048 -nodes -sha256 \
+-subj '/CN=localhost' -extensions EXT -config <( \
+printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 
 -----
 dotnet Framework

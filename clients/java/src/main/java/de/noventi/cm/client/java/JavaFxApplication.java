@@ -8,12 +8,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javax.jms.Connection;
-import javax.jms.MessageConsumer;
-import javax.jms.Queue;
-import javax.jms.Session;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.ActiveMQConnectionFactory;
 
 @Slf4j
 public class JavaFxApplication extends Application {
