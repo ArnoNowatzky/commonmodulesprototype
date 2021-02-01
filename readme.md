@@ -10,21 +10,19 @@ The following issues should be validated with this prototype:
 - **Autogenerate api client JAVA**
 - **Autogenerate api client C#**
 - **postgres database**
-  
+- **Central module with Event based communication (Active MQ https://medium.com/@mailshine/activemq-getting-started-with-springboot-a0c3c960356e)**
+
+- Autogenerate documentation of cm and wawis centralized
+- Security with https and SingleSignOn (oAuth2 server)
 - Integration into Backup / Recovery
-- Central module with Event based communication (Active MQ https://medium.com/@mailshine/activemq-getting-started-with-springboot-a0c3c960356e)
+- Metrics central module (Kibana, ElasticSearch)
+ 
+
 - How to handle orgaunits (service multitenantable machen? <-> wawi ohne tenants)
 - cef browser
-
-- API Gateway  (Spring-Cloud-Gateway)
-- https  
-- Security with https and SingleSignOn (oAuth2 server)
-- Autogenerate documentation
-
 - Autogenerate api client C
 - Resilience
   
-- Metrics central module (Kibana, ElasticSearch)
 - Logging central module (Tracking)
 
 FIRST PROJECT (BETA)
