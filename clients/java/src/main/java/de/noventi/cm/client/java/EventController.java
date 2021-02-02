@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javax.jms.MessageConsumer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

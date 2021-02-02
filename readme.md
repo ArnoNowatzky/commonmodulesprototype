@@ -96,6 +96,11 @@ Kubernetes: EFK, Grafana/Prometheus für Monitoring
 ## Event Bus
 
 
+## Ressourcen 
+- Runtime benötigt 120MB RAM
+- UI benötigt 258MB
+- Service benötigt 448MB
+
 ## HTTPS Certificates
 Brauchen wir HTTPS?
 - lokaler Server nur localhost

@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  ui:
+   image:  awinta-docker.intra.vsa.de/noventi.cm/runtime:0.1-SNAPSHOT
+   ports:
+     - "8001:8001"
+   volumes:
+     - ../keystore/commonmodule.p12:/keystore/commonmodule.p12
+   environment:
+      - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12
+networks:
+  default:
+    external:
+      name: cm   # create a network with 'docker network create cm'
+
+
