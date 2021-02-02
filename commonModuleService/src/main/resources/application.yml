@@ -19,3 +19,6 @@ spring:
     hibernate:
       generate-ddl: true
       ddl-auto: create
+
+active-mq:
+  broker-url: tcp://localhost:61616

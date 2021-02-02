@@ -1,4 +1,4 @@
-package de.noventi.cm.runtime.module.scheduler;
+package de.noventi.cm.service.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class CurrentTimeProducer {
   private String topic;
 
   public void sendMessage (final String message) {
-    log.info("Send message from runtime to topic " + topic + ":" + message);
+    log.info("Send message from module service to topic " + topic + ":" + message);
     try {
       jmsTemplate.convertAndSend(topic, message);
     } catch (Exception e) {

@@ -8,10 +8,12 @@ import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.io.File;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @ComponentScan
 @EntityScan(basePackages = { "de.noventi.cm.service.db" })
+@EnableScheduling
 @Slf4j
 public class ServiceApplication {
 
