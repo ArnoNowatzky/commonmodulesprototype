@@ -42,7 +42,7 @@ public class ServiceController {
 
     try {
 
-      FileInputStream fileInputStream = new FileInputStream(new File("build/keystore/commonmodule.p12"));
+      FileInputStream fileInputStream = new FileInputStream(new File("build/example/jar/keystore/commonmodule.p12"));
       KeyStore ks= KeyStore.getInstance("PKCS12");
       ks.load(fileInputStream,"commonmodule".toCharArray());
       Certificate cerificate = ks.getCertificate("commonmodule");

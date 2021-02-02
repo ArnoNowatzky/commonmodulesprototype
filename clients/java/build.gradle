@@ -120,7 +120,11 @@ test {
 
 processResources.doFirst {
     project.copy {
-        from file ('../../keystore')
-        into file ('build/keystore')
+        from file ('../../')
+        into file ('build/example/jar')
+        include 'keystore/**'
+        eachFile { fcd ->
+            println "Copy " + fcd
+        }
     }
 }

@@ -46,6 +46,10 @@ public class CustomerController implements CustomerApi{
     return customerDTO;
   }
 
+  public CustomerController () {
+    log.info("Create CustomerController");
+  }
+
   @Override public ResponseEntity<CustomerDTO> getCustomer(@ApiParam(value = "",required=true) @PathVariable("customerId") String customerId) {
     log.info("called getCustomer " + customerId);
     return ResponseEntity.ok(getCustomer());

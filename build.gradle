@@ -10,6 +10,11 @@ def buildTasks = ['clean', 'build', 'releaseLocalSnapshot', 'dockerBuildImage']
 if (Os.isFamily(Os.FAMILY_WINDOWS))
     buildTasks = ['clean', 'build', 'releaseLocalSnapshot'] //No docker yet available
 
+task buildHelloWorld(type: GradleBuild) {
+    dir = 'commonModuleHelloWorld'
+    tasks = buildTasks
+}
+
 task buildService(type: GradleBuild) {
     dir = 'commonModuleService'
     tasks = buildTasks
@@ -48,8 +53,10 @@ task stopRuntime {
 
 }
 
+tasks.build.dependsOn(buildHelloWorld)
 tasks.build.dependsOn(buildService)
 tasks.build.dependsOn(buildUi)
 tasks.build.dependsOn(buildRuntime)
 tasks.build.dependsOn(buildJavaClient)
+
 

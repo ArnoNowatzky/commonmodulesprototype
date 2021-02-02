@@ -32,7 +32,7 @@ import org.cef.browser.CefBrowser;
     log.info("Reload webview");
 
     //to enable https
-    File currentDir = new File("build/keystore/commonmodule.p12");
+    File currentDir = new File("build/example/jar/keystore/commonmodule.p12");
     System.setProperty("javax.net.ssl.trustStore", currentDir.getAbsolutePath());
     System.setProperty("javax.net.ssl.trustStorePassword", "commonmodule");
     System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");

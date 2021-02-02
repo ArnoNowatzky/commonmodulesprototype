@@ -1,0 +1,9 @@
+server:
+  port: 8004
+
+  ssl:
+    key-store-type: PKCS12
+    key-store: file:../keystore/commonmodule.p12
+    key-store-password: commonmodule
+    key-alias: commonmodule
+    enabled: true
