@@ -1,0 +1,189 @@
+import groovy.json.JsonOutput
+
+import java.awt.Desktop
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven { url "https://repo.intra.vsa.de/artifactory/virt-only-local-maven/" }
+        maven { url "https://repo.intra.vsa.de/artifactory/maven/" }
+    }
+    dependencies {
+        classpath 'de.vsa.gradle:vsaconf:6.96'
+        classpath "de.noventi.gradle:apidocplugin:1.7-SNAPSHOT-2012081750"
+        classpath "commons-net:commons-net:3.7.2"
+    }
+}
+
+plugins {
+    id 'org.kordamp.gradle.markdown' version '2.2.0'
+    id "com.github.blueboxware.tocme" version "1.2"
+}
+apply {
+    plugin "vsa.conf"
+    plugin 'noventi-apidoc'
+}
+
+
+dependencies {
+}
+
+def templates = "src/main/resources/templates"
+def internalApiTemplates = "$buildDir/internalApiTemplates"
+Map<String, String>[] apiDocConfigs = [
+        [backToConfluenceUrl: "http://127.0.0.1:8887/",
+         baseUrl            : project.hasProperty("baseUrl") ? project.property("baseUrl") : "http://127.0.0.1:8887/",
+         templateDir        : internalApiTemplates,
+         outputDir          : "$buildDir/apidoc"
+        ]
+]
+
+Closure copyShared(String outputDir) {
+    return {
+        def sharedDir = project.file("src/main/resources/api/shared")
+        def apiDir = project.file("src/main/resources/api")
+        String[] apiSubDirNames = apiDir.list { File dir, String name -> (name != "shared" && !name.startsWith(".")) }
+        apiSubDirNames.each { String dir ->
+            project.copy {
+                from(sharedDir) {
+                    include "*"
+                }
+                into new File(outputDir, dir)
+            }
+        }
+    }
+}
+
+private String prefix(String text) {
+    boolean firstLineProcessed = false
+    return text.readLines().collect {
+        def line = (firstLineProcessed ? "    " : "") + it
+        firstLineProcessed = true
+        line
+    }.join("\n")
+}
+
+//Processes Markdown includes in the yml spec files
+Closure yamlIncludes(String yamlDir) {
+    return {
+        def tree = project.fileTree(yamlDir)
+        tree.include("**/*.yml")
+        def files = tree.files
+        def replacementFiles = project.fileTree("src/main/resources/additionalDocs")
+        replacementFiles.include("*.md")
+        Map<String, String> replacementMap = replacementFiles.files.collectEntries { [it.name - ".md", prefix(it.text)] }
+        files.each {
+            def content = it.text
+            replacementMap.keySet().collect {
+                content = content.replace("{{include_$it}}", replacementMap.get(it))
+            }
+            it.text = content
+        }
+    }
+}
+
+
+apidoc {
+    baseUrl = apiDocConfigs[0].baseUrl
+    backToConfluenceUrl = apiDocConfigs[0].backToConfluenceUrl
+    apiRootDir = file("src/main/resources/api")
+    templateDir = internalApiTemplates
+    additionalDirsToUpload = [file(apiDocConfigs[0].outputDir + "/additionalDocs")]
+}
+
+
+tasks.register("copyTemplates", Copy) {
+    from(templates) {
+        include "docs.html", "header.html"
+    }
+    into internalApiTemplates
+}
+
+
+afterEvaluate {
+    tasks.generateApiDoc.dependsOn copyTemplates
+    tasks.uploadApiDoc.dependsOn markdownToHtml
+
+    tasks.generateApiDoc.doFirst(copyShared(apiDocConfigs[0].outputDir))
+    tasks.generateApiDoc.doLast(yamlIncludes(apiDocConfigs[0].outputDir))
+
+    tasks.build.dependsOn("generateApiDoc", "markdownToHtml")
+    tasks.checkTocs.enabled(false)
+}
+
+def additionalDocsDir = file("src/main/resources/additionalDocs")
+def mdDirWithToc = file("build/mdtmp")
+mdDirWithToc.mkdirs()
+
+markdownToHtml {
+    sourceDir = mdDirWithToc
+    doFirst {
+        //Fixes nested lists bug in gradle markdown plugin, adds an additional level for all non root level list items
+        def mdFiles = fileTree(mdDirWithToc)
+        mdFiles.include("*.md")
+        mdFiles.files.each {
+            String newContent = ""
+            it.text.eachLine { line ->
+                String replacement = ""
+                if (line.contains("  -")) {
+                    def index = line.lastIndexOf("  -")
+                    index += 2
+                    index *= 2
+                    for (int i = 0; i < index; i++) {
+                        replacement += " "
+                    }
+                }
+                newContent += line.replace("  -", replacement + "-") + "\n"
+            }
+            it.text = newContent
+        }
+    }
+
+}
+
+def markdownFiles = fileTree(additionalDocsDir)
+markdownFiles.include("*.md")
+String[] markdownFilesStrings = markdownFiles.getFiles().collect { mdDirWithToc.absolutePath + (it.absolutePath - additionalDocsDir.absolutePath) }
+markdownFilesStrings += "readme.md"
+
+tocme {
+    bold = false
+    levels = levels("1-4")
+    docs(markdownFilesStrings)
+}
+
+tasks.register("copyMds", Copy) {
+    from(additionalDocsDir) {
+        include "**"
+    }
+    into(mdDirWithToc)
+
+}
+
+afterEvaluate {
+    tasks.insertTocs.dependsOn("copyMds")
+    tasks.markdownToHtml.dependsOn(tasks.insertTocs)
+}
+
+task serve {
+    doFirst {
+        SimpleHttpFileServerFactory factory = new SimpleHttpFileServerFactory()
+        HttpFileServer server = factory.start(project.file("build/apidoc"), 8887)
+        println "Content root = " + server.contentRoot
+        println("Server Started on 8887 ctrc+c to kill it")
+
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            desktop.browse(URI.create("http://localhost:8887/index.html"))
+        }
+
+        java.lang.Thread.sleep(Long.MAX_VALUE);
+    }
+}
+
+
+
+
+
+ 

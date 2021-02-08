@@ -24,12 +24,34 @@ services:
       timeout: 5s
       retries: 5
 
-
-  adminer:
-    image: adminer
-    restart: always
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgresql
+      DB_DATABASE: cm
+      DB_USER: cm
+      DB_SCHEMA: public
+      DB_PASSWORD: cm
+      KEYCLOAK_USER: cm
+      KEYCLOAK_PASSWORD: cm
     ports:
       - 8080:8080
+      - 9990:9990
+
+#  adminer:
+    #    image: adminer
+    #restart: always
+      #ports:
+      #- 8080:8080
+
+# rabbitmq:
+#   image: bitnami/rabbitmq
+#  ports:
+#    - "15672:15672"
+#  environment:
+#    - RABBITMQ_DEFAULT_USER=cm
+#    - RABBITMQ_DEFAULT_PASS=cm
 
 networks:
   default:

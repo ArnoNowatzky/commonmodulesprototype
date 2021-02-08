@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NOVENTI API Documentation Overview</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap"
+        rel="stylesheet">
+  <link href="apidoc.css" rel="stylesheet"/>
+  <style type="text/css">
+      .apiTable {
+          width: 900px;
+          box-shadow: 3px 3px 7px 0 rgb(202, 201, 202);
+          border-radius: 5px;
+          border-collapse: collapse;
+      }
+
+      .apiTable, .apiTd {
+          border: 1px solid lightgray;
+      }
+
+      .apiTd {
+          padding: 10px;
+          vertical-align: top;
+      }
+
+      .apiTd .textBullets {
+          padding: 2px 0px 10px 25px;
+      }
+
+      .apiTd ul {
+          margin: 0;
+      }
+
+      .apiTd p {
+          margin-top: 7px;
+      }
+
+      .apiVersionState {
+          color: #4389d2;
+      }
+
+      #main h2 {
+          margin-top: 30px;
+      }
+  </style>
+
+</head>
+<body>
+<div class="withBgImage">
+  {{include_header.html}}
+</div>
+<div id="main">
+  <h1>NOVENTI Connect Public API Developer Documentation</h1>
+
+  <p>
+    Welcome to the developer documentation. Here you find everything you need to use the
+    public NOVENTI APIs.
+  </p>
+  <p>Most APIs are related to the <b>DDAP</b>. What is this?</p>
+  <p> It's short for <b>Die Deutsche Apotheken Plattform</b>,
+    which is our name for the system for connecting to pharmacies, sending preorders and orders,
+    searching for pharmacies and articles and handling the medication plan. It includes the backend
+    and the web frontend the pharmacy uses.</p>
+  <p>The following APIs and versions are available:</p>
+  {{api-dir-list}}
+  <p align="right">This documentation was generated on {{timestamp}}</p>
+</div>
+{{include_footer.html}}
+</body>
+<script>
+  const suffixRegex = /^\d+(?:\.\d+)*(-\w+\d?)?/
+
+  function getVersionArray(version) {
+    const versionNumberRegex = /^(\d+)\.(\d+)\.(\d+)/
+    return version.match(versionNumberRegex);
+  }
+
+  fetch('apistatus.json')
+  .then(response => response.json())
+  .then(data => {
+    const titles = document.querySelectorAll(".apiTd>b");
+    const versions = document.querySelectorAll(".apiTd>ul");
+    for (let i = 0; i < titles.length; i++) {
+      const title = titles[i].innerHTML;
+      const versionUl = versions[i];
+      const versionStatusList = data[title];
+      if (versionStatusList) {
+        const versionList = versionUl.querySelectorAll(".textBullets>a")
+        for (const versionListElement of versionList) {
+          const version = versionListElement.innerHTML;
+          let state = versionStatusList[version]
+
+          if (!state) {
+            const suffixMatches = version.match(suffixRegex);
+            if (suffixMatches[1]) {
+              state = versionStatusList[suffixMatches[0].replace(suffixMatches[1], '')];
+            } else {
+              const versionItems = getVersionArray(version);
+              const matchingVersions = Object.keys(versionStatusList).filter(function(v){
+                const statusVersionItems = getVersionArray(v);
+                return statusVersionItems[1] === versionItems[1] &&
+                    statusVersionItems[2] === versionItems[2];
+              });
+              if (matchingVersions) {
+                state = versionStatusList[matchingVersions[0]];
+              }
+            }
+          }
+          if (state) {
+            let span = document.createElement("span");
+            span.classList.add("apiVersionState")
+            span.append(state)
+            versionListElement.parentElement.appendChild(document.createTextNode(": "))
+            versionListElement.parentElement.appendChild(span)
+          }
+        }
+      }
+    }
+  })
+  .catch(error => console.error(error))
+</script>
+</html>

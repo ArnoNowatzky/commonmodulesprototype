@@ -72,15 +72,8 @@ dependencies {
 
 
 
-def dir = project.file("../../api/".toString())
-def openApiInputs = []
-dir.eachFileRecurse(groovy.io.FileType.FILES) { file ->
-    if (file.getName().endsWith(".yaml"))
-        openApiInputs << file
-}
-
-
-
+def openApiInputs = ['../../api/src/main/resources/api/service/service.yaml',
+                     '../../api/src/main/resources/api/runtime/runtime.yaml']
 // Iterate on all swagger files and generate a task for each one with the nomenclature openApiGenerate + swagger name
 openApiInputs.each {
     def apiName = it.getName().replace(".yaml", "");
@@ -88,7 +81,7 @@ openApiInputs.each {
     def openApiGenerateTask = tasks.create("openApiGenerate" + apiName.capitalize(), org.openapitools.generator.gradle.plugin.tasks.GenerateTask.class, {
         //verbose = true
         generatorName = "java"
-        inputSpec = file("../../api/" + apiName + ".yaml").toString()
+        inputSpec = file(it.toString()).absolutePath
         outputDir = "$buildDir/generated/openapi/".toString()
         apiPackage = "de.noventi.cm.client.java." + apiName + ".api"
         modelPackage = "de.noventi.cm.client.java." + apiName + ".model"

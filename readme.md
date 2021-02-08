@@ -54,6 +54,12 @@ and
 ```
 in one of the client projects (client/java....) to start the client, which tests the integration
 
+
+# Ports and adresses
+
+Keycloak: http://localhost:8080/auth 
+
+
 # The prototype and the reality
 This prototype should validate the architecture against all existing WAWI systems.
 

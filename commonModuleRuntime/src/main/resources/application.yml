@@ -17,6 +17,5 @@ spring:
     username: cm
     password: cm
 
-
 active-mq:
   broker-url: tcp://localhost:61616

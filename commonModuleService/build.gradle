@@ -73,7 +73,7 @@ springBoot {
 openApiGenerate {
     generatorName = "spring"
     library = "spring-boot"
-    inputSpec = file('../api/service.yaml').toString()
+    inputSpec = file('../api/src/main/resources/api/service/service.yaml').toString()
     outputDir = "$buildDir/generated/openapi".toString()
     apiPackage = "de.noventi.cm.service.api"
     modelPackage = "de.noventi.cm.service.model"

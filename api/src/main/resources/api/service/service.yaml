@@ -81,12 +81,12 @@ components:
           type: "string"
 
         address:
-          $ref: "#/components/schema/AddressDTO"
+          $ref: "#/components/schemas/AddressDTO"
 
         phones:
           type: array
           items:
-            $ref: "#/components/schema/PhoneDTO"
+            $ref: "#/components/schemas/PhoneDTO"
 
 
     AddressDTO:

@@ -30,6 +30,13 @@ task buildRuntime(type: GradleBuild) {
     tasks = ['clean', 'build', 'releaseLocalSnapshot']
 }
 
+/**TODO activate when possible with gradle 6
+
+task buildApi(type: GradleBuild) {
+    dir = 'api'
+    tasks = ['clean', 'build']
+}**/
+
 task startRuntime {
     doFirst {
         println "Start the runtime"
@@ -58,5 +65,6 @@ tasks.build.dependsOn(buildService)
 tasks.build.dependsOn(buildUi)
 tasks.build.dependsOn(buildRuntime)
 tasks.build.dependsOn(buildJavaClient)
+//tasks.build.dependsOn(buildApi)
 
 
