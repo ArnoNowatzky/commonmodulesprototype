@@ -50,6 +50,7 @@ import lombok.extern.slf4j.Slf4j;
       }
     });
 
+
     webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
       public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
         if (webEngine.getLoadWorker().getException() != null && newState == Worker.State.FAILED) {
@@ -57,6 +58,7 @@ import lombok.extern.slf4j.Slf4j;
         }
       }
     });
+
     webview.getEngine().load("https://localhost:8003");
   }
 }

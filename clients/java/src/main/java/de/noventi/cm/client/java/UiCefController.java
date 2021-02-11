@@ -1,22 +1,15 @@
 package de.noventi.cm.client.java;
 
-import com.jogamp.opengl.awt.GLJPanel;
 import java.io.File;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
 import javafx.embed.swing.SwingNode;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebErrorEvent;
-import javafx.scene.web.WebEvent;
-import javafx.scene.web.WebView;
+import javax.swing.*;
 import lombok.extern.slf4j.Slf4j;
 import org.cef.CefApp;
 import org.cef.CefClient;
+import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 
 @Slf4j public class UiCefController {
@@ -37,12 +30,27 @@ import org.cef.browser.CefBrowser;
     System.setProperty("javax.net.ssl.trustStorePassword", "commonmodule");
     System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
 
+    log.info("JavaLibraryPath = " + System.getProperty("java.library.path"));
+
     SwingNode swingNode = new SwingNode();
 
-    CefApp cefApp = CefApp.getInstance();
+    CefSettings cefSettings = new CefSettings();
+    cefSettings.log_severity = CefSettings.LogSeverity.LOGSEVERITY_VERBOSE;
+    cefSettings.resources_dir_path = "/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework/Resources";
+    cefSettings.locales_dir_path = "/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework/Resources";
+    cefSettings.ignore_certificate_errors = true;
+    cefSettings.log_file = new File ("build/journey.log").getAbsolutePath();
+
+    log.info("Create cefapp");
+    CefApp cefApp = CefApp.getInstance(cefSettings);
+    log.info("Create cefclient" + cefApp.getVersion().getCefVersion() + "-" + cefApp.getVersion().getChromeVersion() + "-" + cefApp.getVersion().getJcefVersion());
+    
     CefClient cefClient = cefApp.createClient();
-    CefBrowser cefBrowser = cefClient.createBrowser("https://localhost:8003", true, false);
-    swingNode.setContent( (GLJPanel) cefBrowser.getUIComponent() );
+    log.info("Create cefbrowser");
+    //CefBrowser cefBrowser = cefClient.createBrowser("https://localhost:8003", true, false);
+    CefBrowser cefBrowser = cefClient.createBrowser("https://jenkins.intra.vsa.de", true, false);
+    log.info("Render browser");
+    swingNode.setContent((JComponent)cefBrowser.getUIComponent() );
     root.setCenter(swingNode);
   }
 }

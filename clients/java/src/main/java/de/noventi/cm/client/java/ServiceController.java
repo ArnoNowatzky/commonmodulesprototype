@@ -49,17 +49,30 @@ public class ServiceController {
       ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(cerificate.getEncoded());
       apiClient.setSslCaCert(byteArrayInputStream);
       CustomerApi customerApi = new CustomerApi(apiClient);
+      if (ApplicationContext.getToken() != null) {
+        log.info("Add token " + ApplicationContext.getToken());
+        customerApi.getApiClient().addDefaultHeader("Authorization", "Bearer " + ApplicationContext.getToken());
+      }
+      else
+        log.info ("No token available");
 
       log.info("Basepath of customer: " + customerApi.getApiClient().getBasePath());
       CustomerDTO customer = customerApi.getCustomer("1");
       lblId.setText(customer.getId());
       lblName.setText(customer.getName());
       lblFirstname.setText(customer.getFirstname());
+    } catch (de.noventi.cm.client.java.service.ApiException e) {
+      lblFirstname.setText("");
+      lblName.setText("");
+      lblId.setText("");
+      String completeError = e.getLocalizedMessage() + "-" + e.getResponseBody();
+      log.error("Error fetching customer data: " + completeError, e);
+      Notifications.create().title("Synch data").text("Error synching data: " + completeError).showError();
     } catch (Exception e) {
       lblFirstname.setText("");
       lblName.setText("");
       lblId.setText("");
-      log.error("Error fetching customer data: " + e.getLocalizedMessage(), e);
+      log.error("Error fetching customer data: " + e.getLocalizedMessage() , e);
       Notifications.create().title("Synch data").text("Error synching data: " + e.getLocalizedMessage()).showError();
     }
 

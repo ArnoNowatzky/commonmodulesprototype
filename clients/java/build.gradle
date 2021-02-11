@@ -4,6 +4,7 @@ buildscript {
         jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
+
     }
 
     dependencies {
@@ -25,6 +26,7 @@ javafx {
 repositories {
     mavenCentral()
     ivy { url "https://repo.intra.vsa.de/artifactory/ivy/" }
+    maven {url = 'https://jitpack.io'}
 }
 apply {
     plugin 'java-library'
@@ -44,6 +46,7 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
+    compile 'com.auth0:java-jwt:3.10.3'
 
     compile 'io.gsonfire:gson-fire:1.8.0'
     compile 'com.squareup.okhttp3:okhttp:4.9.0'
@@ -63,25 +66,24 @@ dependencies {
 
 
     compile 'commons-io:commons-io:2.7'
-
-    compile 'de.vsa:java-cef:1_0_9-80_0_4'
-
+    compile fileTree(dir: '/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Java', include: '*.jar')
 
     testCompile('org.junit.jupiter:junit-jupiter-engine:5.2.0')
 }
 
 
 
-def openApiInputs = ['../../api/src/main/resources/api/service/service.yaml',
-                     '../../api/src/main/resources/api/runtime/runtime.yaml']
+File[] openApiInputs = [project.file('../../api/src/main/resources/api/service/service.yaml').absoluteFile,
+                        project.file('../../api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
 // Iterate on all swagger files and generate a task for each one with the nomenclature openApiGenerate + swagger name
-openApiInputs.each {
-    def apiName = it.getName().replace(".yaml", "");
+openApiInputs.each {File file->
+    println file.class
+    def apiName = file.getName().replace(".yaml", "");
 
     def openApiGenerateTask = tasks.create("openApiGenerate" + apiName.capitalize(), org.openapitools.generator.gradle.plugin.tasks.GenerateTask.class, {
         //verbose = true
         generatorName = "java"
-        inputSpec = file(it.toString()).absolutePath
+        inputSpec = file.absolutePath
         outputDir = "$buildDir/generated/openapi/".toString()
         apiPackage = "de.noventi.cm.client.java." + apiName + ".api"
         modelPackage = "de.noventi.cm.client.java." + apiName + ".model"
@@ -120,4 +122,8 @@ processResources.doFirst {
             println "Copy " + fcd
         }
     }
+}
+
+tasks.run {
+    jvmArgs('-Djava.library.path=/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Java')
 }

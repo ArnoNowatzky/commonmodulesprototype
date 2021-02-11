@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:8002
 security:
-  - BasicAuth
+  - bearerAuth: []
 
 paths:
   /customer/findAll:
@@ -63,9 +63,10 @@ paths:
 
 components:
   securitySchemes:
-    BasicAuth:
+    BearerAuth:
       type: http
-      scheme: basic
+      scheme: bearer
+      bearerFormat: JWT
 
   schemas:
     CustomerDTO:

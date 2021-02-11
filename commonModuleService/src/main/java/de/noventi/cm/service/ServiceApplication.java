@@ -11,7 +11,7 @@ import java.io.File;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@ComponentScan
+@ComponentScan(basePackages = "de.noventi.cm")
 @EntityScan(basePackages = { "de.noventi.cm.service.db" })
 @EnableScheduling
 @Slf4j

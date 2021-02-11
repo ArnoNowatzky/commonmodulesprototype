@@ -15,6 +15,11 @@ task buildHelloWorld(type: GradleBuild) {
     tasks = buildTasks
 }
 
+task buildBase (type: GradleBuild) {
+    dir = 'commonModuleBase'
+    tasks = ['clean', 'build', 'releaseLocalSnapshot'] 
+}
+
 task buildService(type: GradleBuild) {
     dir = 'commonModuleService'
     tasks = buildTasks
@@ -60,11 +65,15 @@ task stopRuntime {
 
 }
 
+tasks.buildService.dependsOn tasks.buildBase
+tasks.buildUi.dependsOn tasks.buildBase
+
 tasks.build.dependsOn(buildHelloWorld)
 tasks.build.dependsOn(buildService)
 tasks.build.dependsOn(buildUi)
 tasks.build.dependsOn(buildRuntime)
 tasks.build.dependsOn(buildJavaClient)
+tasks.build.dependsOn(buildBase)
 //tasks.build.dependsOn(buildApi)
 
 

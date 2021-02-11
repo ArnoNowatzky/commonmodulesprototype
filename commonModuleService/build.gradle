@@ -55,6 +55,8 @@ dependencies {
     compile 'io.swagger:swagger-annotations:1.5.22'
     compile 'javax.validation:validation-api:2.0.1.Final'
 
+    compile 'de.noventi.cm:base:0.1-SNAPSHOT'
+
     //TODO discuss compile 'org.springframework.boot:spring-boot-starter-actuator'
 
 

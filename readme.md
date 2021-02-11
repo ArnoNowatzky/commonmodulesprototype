@@ -11,29 +11,56 @@ The following issues should be validated with this prototype:
 - **Autogenerate api client C#**
 - **postgres database**
 - **Central module with Event based communication (Active MQ https://medium.com/@mailshine/activemq-getting-started-with-springboot-a0c3c960356e)**
-
-- Autogenerate documentation of cm and wawis centralized
-- Security with https and SingleSignOn (oAuth2 server)
-- Integration into Backup / Recovery
-- Metrics central module (Kibana, ElasticSearch)
- 
-
-- How to handle orgaunits (service multitenantable machen? <-> wawi ohne tenants)
-- cef browser
-- Autogenerate api client C
-- Resilience
+- **Autogenerate documentation of cm and wawis centralized**
+- **Native browser component**
+- **Security with https and jwt**
   
-- Logging central module (Tracking)
+- Browser JCEF -> C# OK, Java TODO      **!!!!**
 
-FIRST PROJECT (BETA)
 
-- Runtime kubernetes (e.g. K3s)
-- Synchronize different datamodels
+- Security with https and SingleSignOn (oAuth2 server)   
+    -> Wie bekome ich den integrierten Browser mit Infos gefüttert (Zertifikat)
+    -> Token holen, GUI mit Token aufrufen      **!!!!**
+- https://www.freecodecamp.org/news/how-to-setup-jwt-authorization-and-authentication-in-spring/
+
+
+- https://objex.medium.com/openapi-3-1f4ddd7a4934 JWT in OpenAPI
+- https://connect2id.com/products/nimbus-jose-jwt -> Handeln von jwt
+
+- BearerToken
+- Splitten (->3x)
+- Header extrahieren: 
+- ist es ein JWT Token
+- ist der Algorithmus derjenige, den ich unterstütze alg, darf nicht NONE sein
+- Signatur prüfen (3. Block) ->asynchrone Verschlüsselung
+- Content vertrauen, Payload aufdröseln
+- Gültigkeitsdatum validieren
+- z.B. IK prüfen
+-> bei Rollen muss man sich nicht um Lifecycle kümmern
+  
+-> oAuth Token anschauen
+
+-> was ist wenn in der Zwischenzeit Rollen ändern
+-> sind CommonModules in Jobs involviert? Wawi muss sich um Tokens kümmern in dem 
+Kontext von zeitgetriggered Dingen 
+
+  
+
+bei UI: Authentication Header im http request
+Refresh: JavaScript-API
+    
+  
+# Optional
+- Metrics central module (Kibana, ElasticSearch)
+- Runtime spring boot native images 
+- Runtime application server (Grundrauschen groß, alle gleiche Versionen, Deploymentmonolith)
+- Integration into Backup / Recovery
+- Autogenerate api client C
+- Logging central module (Tracing)   -> https://www.jaegertracing.io/ Konzept
+- Runtime kubernetes (e.g. K3s)     
 - Sonarqube, check security automated
-- Ui Integration after WAWI (Polymer, WebComponents...)
-- Provide an installer for the runtime
+- Provide an installer for the runtime 
 
-PRODUCTIVE
 
 # Use the prototype 
 You can setup the project by calling 
@@ -57,7 +84,12 @@ in one of the client projects (client/java....) to start the client, which tests
 
 # Ports and adresses
 
-Keycloak: http://localhost:8080/auth 
+Keycloak: http://localhost:8080/auth (cm/cm)
+
+KeyCloak for C#: https://www.youtube.com/watch?v=k_iwekNh-_A
+KeyCloak for WPF: https://stackoverflow.com/questions/63044966/keycloak-in-c-sharp-wpf-application-how-can-i-access-the-roles-of-a-given-user
+https://login-master.com/blog/keycloak-net-adapter-in-microsoft-visual-studio-nutzen/
+https://dzone.com/articles/adding-authentication-to-a-native-desktop-c-app-wi
 
 
 # The prototype and the reality
