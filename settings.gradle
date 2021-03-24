@@ -1,0 +1,5 @@
+include 'commonModuleBase'
+include 'commonModuleHelloWorld'
+include 'commonModuleRuntime'
+include 'commonModuleService'
+include 'commonModuleUi'
