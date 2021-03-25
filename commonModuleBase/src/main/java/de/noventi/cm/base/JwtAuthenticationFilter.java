@@ -33,10 +33,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
       DecodedJWT decodedJWT = JWT.decode(jwt);
       if (decodedJWT.getType() == null || ! decodedJWT.getType().equalsIgnoreCase("JWT"))
-        throw new IllegalStateException("No valid JWT token found");
+        throw new IllegalStateException("No valid JWT token found (" + decodedJWT.getType() + ")");
 
-      if (decodedJWT.getAlgorithm() == null || !decodedJWT.getType().equalsIgnoreCase("HS512"))
-        throw new IllegalStateException("No valid JWT algorithm found");
+      if (decodedJWT.getAlgorithm() == null || !decodedJWT.getAlgorithm().equalsIgnoreCase("HS512"))
+        throw new IllegalStateException("No valid JWT algorithm found (" + decodedJWT.getType() + ")");
 
       System.out.println ("Header     : " + decodedJWT.getHeader());
       System.out.println ("Signature  : " + decodedJWT.getSignature());

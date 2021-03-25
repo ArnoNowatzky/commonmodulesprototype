@@ -6,6 +6,6 @@
         <jdk>jdk8</jdk>
         <name>CustomerService</name>
         <sql>true</sql>
-        <url>file://~/.m2/repository/de/noventi/cm/service/0.1-SNAPSHOT/service-0.1-SNAPSHOT.jar</url>
+        <url>file://~/.m2/repository/de/noventi/cm/commonModuleService/0.1-SNAPSHOT/commonModuleService-0.1-SNAPSHOT.jar</url>
     </module>
 </modules>

@@ -39,7 +39,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
           Platform.runLater(new Runnable() {
             @Override public void run() {
               try {
-                log.info("Message recieved: " + textMessage.getText());
+                log.debug("Message recieved: " + textMessage.getText());
                 messages.add(textMessage.getText());
               } catch (JMSException e) {
                 log.error(e.getLocalizedMessage(), e);

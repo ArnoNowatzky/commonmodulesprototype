@@ -5,12 +5,7 @@ import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javax.swing.*;
 import lombok.extern.slf4j.Slf4j;
-import org.cef.CefApp;
-import org.cef.CefClient;
-import org.cef.CefSettings;
-import org.cef.browser.CefBrowser;
 
 @Slf4j public class UiCefController {
 
@@ -34,7 +29,7 @@ import org.cef.browser.CefBrowser;
 
     SwingNode swingNode = new SwingNode();
 
-    CefSettings cefSettings = new CefSettings();
+    /**CefSettings cefSettings = new CefSettings();
     cefSettings.log_severity = CefSettings.LogSeverity.LOGSEVERITY_VERBOSE;
     cefSettings.resources_dir_path = "/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework/Resources";
     cefSettings.locales_dir_path = "/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework/Resources";
@@ -51,6 +46,6 @@ import org.cef.browser.CefBrowser;
     CefBrowser cefBrowser = cefClient.createBrowser("https://jenkins.intra.vsa.de", true, false);
     log.info("Render browser");
     swingNode.setContent((JComponent)cefBrowser.getUIComponent() );
-    root.setCenter(swingNode);
+    root.setCenter(swingNode);**/
   }
 }

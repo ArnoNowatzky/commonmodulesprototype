@@ -1,28 +1,6 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
-        maven { url "https://repo.intra.vsa.de/artifactory/maven/" }
-    }
-
-    dependencies {
-        classpath 'de.vsa.gradle:vsareleasemaven:6.101'
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.4.1'
-    }
-}
-
 plugins {
     id 'com.bmuschko.docker-spring-boot-application' version '6.6.1'
 }
-
-repositories {
-    mavenCentral()
-}
-
-group = 'de.noventi.cm'
-version = 0.1
 
 apply {
     plugin 'java-library'
@@ -91,3 +69,5 @@ configurations {
 test {
     useJUnitPlatform()
 }
+
+tasks.build.dependsOn tasks.releaseLocalSnapshot

@@ -16,7 +16,7 @@ public class SchedulerTask {
 
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-  @Scheduled(fixedRate = 50000)
+  @Scheduled(fixedRate = 300000)
   public void reportCurrentTime () {
     String message = "The time on module service is now " + dateFormat.format(new Date());
     log.info(message);

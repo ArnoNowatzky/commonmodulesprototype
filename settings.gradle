@@ -1,5 +1,7 @@
 include 'commonModuleBase'
 include 'commonModuleHelloWorld'
-include 'commonModuleRuntime'
 include 'commonModuleService'
 include 'commonModuleUi'
+include 'commonModuleRuntime'
+include 'clients:java'
+rootProject.name = 'commonmodulesprototype'

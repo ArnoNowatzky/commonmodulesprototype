@@ -1,29 +1,6 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
-        maven { url "https://repo.intra.vsa.de/artifactory/maven/" }
-    }
-
-    dependencies {
-        classpath 'de.vsa.gradle:vsareleasemaven:6.101'
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.4.1'
-        classpath 'org.openapitools:openapi-generator-gradle-plugin:4.3.1'
-    }
-}
-
 plugins {
     id 'com.bmuschko.docker-spring-boot-application' version '6.6.1'
 }
-
-repositories {
-    mavenCentral()
-}
-
-group = 'de.noventi.cm'
-version = 0.1
 
 apply {
     plugin 'java-library'
@@ -32,6 +9,8 @@ apply {
     plugin 'io.spring.dependency-management'
     plugin 'vsa.releasemaven'
 }
+
+println "Applying vsa.releasemaven"
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -55,7 +34,7 @@ dependencies {
     compile 'io.swagger:swagger-annotations:1.5.22'
     compile 'javax.validation:validation-api:2.0.1.Final'
 
-    compile 'de.noventi.cm:base:0.1-SNAPSHOT'
+    compile 'de.noventi.cm:commonModuleBase:0.1-SNAPSHOT'
 
     //TODO discuss compile 'org.springframework.boot:spring-boot-starter-actuator'
 
@@ -135,3 +114,5 @@ configurations {
 test {
     useJUnitPlatform()
 }
+
+tasks.build.dependsOn tasks.releaseLocalSnapshot
