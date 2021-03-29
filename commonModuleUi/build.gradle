@@ -1,5 +1,5 @@
 plugins {
-    id 'com.bmuschko.docker-spring-boot-application' version '6.6.1'
+    id 'com.google.cloud.tools.jib' version '2.6.0'
     id "com.github.node-gradle.node" version "2.2.4"
 }
 
@@ -113,22 +113,34 @@ sourceSets {
 
 tasks.compileJava.dependsOn tasks.openApiGenerate
 
-println "Docker user = " + project.properties['awinta_dockerUser']
+println "Docker user = " + project.properties['awinta.dockerUser']
+println "Docker pwd = " + project.properties['awinta.dockerPassword']
 
-docker {
-    registryCredentials {
-        url = 'https://awinta-docker.intra.vsa.de/'
-        username = project.properties['awinta_dockerUser']
-        password = project.properties['awinta_dockerPassword']
+jib {
+    to {
+        image = project.provider {"awinta-docker.intra.vsa.de/noventi.cm/commonmoduleui:" + version}
+        auth {
+            username = project.properties['awinta.dockerUser']
+            password = project.properties['awinta.dockerPassword']
+        }
+
     }
-    springBootApplication {
-        baseImage = 'openjdk:14'
-        ports = [8003]
-        images = ["awinta-docker.intra.vsa.de/noventi.cm/ui:${jar.archiveVersion.get()}"]
+    from {
+        image = 'docker.intra.vsa.de/amazoncorretto:11.0.9-alpine'
+        auth {
+            username = project.properties['awinta.dockerUser']
+            password = project.properties['awinta.dockerPassword']
+        }
+    }
+    container {
+        mainClass = 'de.noventi.cm.ui.UiApplication'
+        args = ["-Dspring.datasource.url=jdbc:postgresql://postgresql:5432/service", "-Dactive-mq.broker-url=tcp://activemq:61616"]
+        ports = ['8003/tcp']
     }
 }
 
-tasks.dockerBuildImage.dependsOn classes, bootJar
+
+tasks.jibDockerBuild.dependsOn classes, bootJar
 
 configurations {
     [apiElements, runtimeElements].each {

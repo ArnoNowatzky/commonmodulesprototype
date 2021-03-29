@@ -5,7 +5,6 @@ public class ApplicationContext {
   private static String token;
   private static String mandantID = "12345";
 
-
   public static void setToken(String token) {
     ApplicationContext.token = token;
   }
@@ -23,4 +22,5 @@ public class ApplicationContext {
   public static void setMandantID(String mandantID) {
     ApplicationContext.mandantID = mandantID;
   }
+
 }

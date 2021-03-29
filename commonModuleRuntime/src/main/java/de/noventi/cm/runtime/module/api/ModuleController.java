@@ -2,6 +2,8 @@ package de.noventi.cm.runtime.module.api;
 
 import de.noventi.cm.runtime.api.ModuleApi;
 import de.noventi.cm.runtime.model.SetupModulesParamDTO;
+import de.noventi.cm.runtime.model.StatusModuleReturnDTO;
+import de.noventi.cm.runtime.model.StatusModulesReturnDTO;
 import de.noventi.cm.runtime.module.domain.Action;
 import de.noventi.cm.runtime.module.domain.CommonModule;
 import de.noventi.cm.runtime.module.domain.CommonModules;
@@ -73,6 +75,21 @@ public class ModuleController implements ModuleApi {
     return new ResponseEntity<Void>( HttpStatus.OK );
   }
 
+  private boolean isModuleAffected (SetupModulesParamDTO setupModulesParamDTO, CommonModule commonModule) {
+    boolean isAffected = false;
+    if (setupModulesParamDTO.getAffectedModules() == null ||setupModulesParamDTO.getAffectedModules().isEmpty()) {
+      log.info("Common Module " + commonModule.getId() + " is affected because affected modules is empty, defaulting to all modules");
+      isAffected = true;
+    }
+    else {
+      isAffected = setupModulesParamDTO.getAffectedModules().contains(commonModule.getId());
+      log.info("Common Module " + commonModule.getId() + " is affected: " + isAffected + "(affected modules: " + setupModulesParamDTO.getAffectedModules() + ")");
+    }
+
+    return isAffected;
+
+  }
+
   @Override
   public ResponseEntity<Void> startModules(@ApiParam(value = "modules descriptor" ,required=true )  @Valid @RequestBody SetupModulesParamDTO setupModulesParamDTO) {
     try {
@@ -82,7 +99,8 @@ public class ModuleController implements ModuleApi {
 
       ExecutorService executorService = Executors.newCachedThreadPool();
       for (CommonModule next : commonModules.getCommonModule()) {
-        if (next.getAction().equals(Action.INSTALL)) {
+        if (isModuleAffected(setupModulesParamDTO, next) &&
+            next.getAction().equals(Action.INSTALL)) {
           executorService.execute(new Runnable() {
             @Override public void run() {
               log.info("Start module " + next);
@@ -110,38 +128,52 @@ public class ModuleController implements ModuleApi {
 
     ExecutorService executorService = Executors.newCachedThreadPool();
     for (CommonModule next : commonModules.getCommonModule()) {
-      executorService.execute(new Runnable() {
-        @Override public void run() {
-          log.info("Stop module " + next);
-          if (next.getType().equals(Type.JAR)) {
-            jarInstaller.stop(path, next);
-          } else if (next.getType().equals(Type.DOCKER)) {
-            dockerInstaller.stop(path, next);
+      if (isModuleAffected(setupModulesParamDTO, next)) {
+        executorService.execute(new Runnable() {
+          @Override public void run() {
+            log.info("Stop module " + next);
+            if (next.getType().equals(Type.JAR)) {
+              jarInstaller.stop(path, next);
+            } else if (next.getType().equals(Type.DOCKER)) {
+              dockerInstaller.stop(path, next);
+            }
           }
-        }
-      });
+        });
+      }
 
     }
     log.info("stopModules finished");
 
     return new ResponseEntity<Void>( HttpStatus.OK );
-    //application.pid
+  }
+
+  private Installer getTypicalInstaller (final CommonModule module) {
+    if (module.getType().equals(Type.JAR))
+      return jarInstaller;
+    else if (module.getType().equals(Type.DOCKER))
+        return dockerInstaller;
+    else
+      throw new IllegalStateException("No implementation for installer " + module.getType() + " found");
+  }
+
+  public ResponseEntity<StatusModulesReturnDTO> statusModules(@ApiParam(value = "modules descriptor" ,required=true )  @Valid @RequestBody SetupModulesParamDTO setupModulesParamDTO) {
+    File path = new File(setupModulesParamDTO.getPath());
+    CommonModules commonModules = setupModulesParamReader.read(setupModulesParamDTO.getDescriptor());
+
+    StatusModulesReturnDTO statusModulesReturnDTO = new StatusModulesReturnDTO();
+
+
+    for (CommonModule next: commonModules.getCommonModule()) {
+      Installer installer = getTypicalInstaller(next);
+      ModuleStatus state = installer.getState(path, next);
+      StatusModuleReturnDTO statusModuleReturnDTO = new StatusModuleReturnDTO();
+      statusModuleReturnDTO.setId(next.getId());
+      statusModuleReturnDTO.setRunning(state.isRunning());
+      statusModuleReturnDTO.setInstanceId(state.getInstanceId());
+      statusModulesReturnDTO.addModulesItem(statusModuleReturnDTO);
+    }
+
+    return ResponseEntity.ok(statusModulesReturnDTO);
+
   }
 }
-
-/**
- *   schemas:
- *     ModuleDTO:
- *       type: "object"
- *       properties:
- *         id:
- *           type: "string"
- *         url:
- *           type: "string"
- *
- *     ModuleType:
- *       type: string
- *       enum:
- *         - jar
- *         - docker
- */

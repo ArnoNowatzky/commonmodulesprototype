@@ -26,6 +26,8 @@ public class PostgresInstaller implements Installer{
     }
 
 
+    log.info ("Create database " + module.getId() + " finished");
+
   }
 
   @Override public void start(File path, CommonModule module) {
@@ -34,5 +36,11 @@ public class PostgresInstaller implements Installer{
 
   @Override public void stop(File path, CommonModule module) {
 
+  }
+
+  @Override public ModuleStatus getState(File path, CommonModule module) {
+    ModuleStatus moduleStatus = new ModuleStatus();
+    //TODO implement
+    return moduleStatus;
   }
 }

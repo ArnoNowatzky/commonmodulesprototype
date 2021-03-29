@@ -10,4 +10,6 @@ public interface Installer {
   void start (File path, CommonModule module);
 
   void stop (File path, CommonModule module);
+
+  ModuleStatus getState (File path, CommonModule module);
 }

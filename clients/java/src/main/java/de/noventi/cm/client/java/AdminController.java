@@ -1,14 +1,11 @@
 package de.noventi.cm.client.java;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import de.noventi.cm.client.java.runtime.ApiClient;
 import de.noventi.cm.client.java.runtime.ApiException;
 import de.noventi.cm.client.java.runtime.api.ModuleApi;
 import de.noventi.cm.client.java.runtime.model.SetupModulesParamDTO;
+import de.noventi.cm.client.java.runtime.model.StatusModuleReturnDTO;
+import de.noventi.cm.client.java.runtime.model.StatusModulesReturnDTO;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,28 +13,29 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.controlsfx.control.Notifications;
 
 @Slf4j public class AdminController {
-
-  private String SECRET = "Common Modules are cool";
-
-  @FXML private  TextField txtUsername;
-  @FXML private  TextField txtPassword;
-  @FXML private  Button btnLogin;
-  @FXML private  Button btnLogout;
-
-  @FXML private ComboBox<String>cboAuthenticationType;
 
   @FXML private ComboBox<String> cboRuntimeType;
 
@@ -47,31 +45,80 @@ import org.controlsfx.control.Notifications;
 
   @FXML private Button btnStop;
 
+  @FXML private Button btnStatus;
+
+  @FXML
+  private TableView<StatusModuleReturnDTO> tabModules;
+
+  private ObservableList<StatusModuleReturnDTO> modules = FXCollections.observableArrayList();
+
   private File getExamplePath() {
     return new File("build/example/" + cboRuntimeType.getSelectionModel().getSelectedItem());
   }
 
   public void load() {
 
-    cboAuthenticationType.setItems(FXCollections.observableArrayList(Arrays.asList("own", "oauth2")));
-    cboAuthenticationType.getSelectionModel().select("own");
-
-
     cboRuntimeType.setItems(FXCollections.observableArrayList(Arrays.asList("jar", "docker")));
     cboRuntimeType.getSelectionModel().select("jar");
 
-    btnInstall.setOnAction(event -> install());
-    btnStart.setOnAction(event -> start());
-    btnStop.setOnAction(event -> stop());
-    btnLogin.setOnAction(event -> login());
-    btnLogout.setOnAction(event -> logout());
+    TableColumn<StatusModuleReturnDTO, String> moduleColumn = new TableColumn<>("module");
+    moduleColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+    TableColumn<StatusModuleReturnDTO, String> runningColumn = new TableColumn<>("running");
+    runningColumn.setCellValueFactory(new PropertyValueFactory<>("running"));
+    TableColumn<StatusModuleReturnDTO, String> instanceIdColumn = new TableColumn<>("instance ID");
+    instanceIdColumn.setCellValueFactory(new PropertyValueFactory<>("instanceId"));
 
+    TableColumn<StatusModuleReturnDTO, Void> startStopColumn = new TableColumn<>("start/Stop");
+    startStopColumn.setCellFactory(new Callback<>() {
+      @Override public TableCell<StatusModuleReturnDTO, Void> call(TableColumn<StatusModuleReturnDTO, Void> param) {
+        final TableCell<StatusModuleReturnDTO, Void> cell = new TableCell<>() {
+          private final Button btn = new Button();
+          {
+            btn.setOnAction((ActionEvent event) -> {
+              StatusModuleReturnDTO data = getTableView() != null ? getTableView().getItems().get(getIndex()) : null;
+              String action = btn.getText();
+              System.out.println (action + " on " + data.getId());
+              if (data.getRunning() != null && data.getRunning().equals(Boolean.TRUE)) {
+                stopAllModules(Arrays.asList(data.getId()));
+              }
+              else {
+                startAllModules(Arrays.asList(data.getId()));
+              }
+
+            });
+          }
+
+          @Override public void updateItem(Void item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty) {
+              setGraphic(null);
+            } else {
+              StatusModuleReturnDTO data = getTableView() != null ? getTableView().getItems().get(getIndex()) : null;
+
+              btn.setText(data.getRunning() != null && data.getRunning().equals(Boolean.TRUE) ? "Stop" : "Start");
+              setGraphic(btn);
+            }
+          }
+        };
+        return cell;
+      }
+    });
+
+    tabModules.getColumns().addAll(moduleColumn, runningColumn, instanceIdColumn, startStopColumn);
+    tabModules.setPlaceholder(new Label("No data loaded. Press button 'Get status' to get data"));
+    tabModules.setItems(modules);
+
+
+
+    btnInstall.setOnAction(event -> installAllModules());
+    btnStart.setOnAction(event -> startAllModules(null));
+    btnStop.setOnAction(event -> stopAllModules(null));
+    btnStatus.setOnAction(event -> getStatus());
   }
 
 
-
   private String getInstallDescription() throws IOException {
-    String type = cboRuntimeType == null ? "jar" : cboRuntimeType.getSelectionModel().getSelectedItem();
+    String type = (cboRuntimeType == null ||cboRuntimeType.getSelectionModel().getSelectedItem() == null) ? "jar" : cboRuntimeType.getSelectionModel().getSelectedItem();
     String file = "../install_" + type + ".xml";
     File installFile = new File(file).getAbsoluteFile();
     log.info("Using installfile " + installFile.getAbsolutePath());
@@ -96,14 +143,38 @@ import org.controlsfx.control.Notifications;
     }
     apiClient.setReadTimeout(60000);
     ModuleApi moduleApi = new ModuleApi(apiClient);
+    log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
     return moduleApi;
 
   }
 
-  public void install() {
+  public void getStatus() {
+    ModuleApi moduleApi = createModuleApi();
+    try {
+      String description = getInstallDescription();
+
+      log.info("Send modules descriptor " + description);
+
+      SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(description)
+          .path(getExamplePath().getAbsolutePath());
+      StatusModulesReturnDTO statusModulesReturnDTO = moduleApi.statusModules(setupModulesParamDTO);
+      this.modules.setAll(statusModulesReturnDTO.getModules());
+      log.info("Calling get status finished (" + this.modules.size() + ")");
+    } catch (ApiException e) {
+      log.error(
+          "Error getting status of modules " + e.getResponseBody() + "-" + moduleApi.getApiClient().getBasePath() + ":" + e
+              .getLocalizedMessage(), e.getCause());
+      Notifications.create().title("Status modules").text("Error getting status of modules: " + e.getLocalizedMessage()).showError();
+    } catch (Exception e) {
+      log.error(e.getLocalizedMessage(), e);
+    }
+
+  }
+
+
+  public void installAllModules() {
 
     ModuleApi moduleApi = createModuleApi();
-    log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
 
     try {
       String description = getInstallDescription();
@@ -126,7 +197,7 @@ import org.controlsfx.control.Notifications;
 
   }
 
-  public void start() {
+  public void startAllModules(final List<String> moduleIds) {
     ModuleApi moduleApi = createModuleApi();
     log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
 
@@ -134,7 +205,7 @@ import org.controlsfx.control.Notifications;
       String installDescription = getInstallDescription();
       log.info("Send modules descriptor " + installDescription);
       SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(installDescription)
-          .path(getExamplePath().getAbsolutePath());
+          .path(getExamplePath().getAbsolutePath()).affectedModules(moduleIds);
       moduleApi.startModules(setupModulesParamDTO);
     } catch (IOException e) {
       log.error(e.getLocalizedMessage(), e);
@@ -149,61 +220,8 @@ import org.controlsfx.control.Notifications;
 
   }
 
-  public void logout() {
-    ApplicationContext.setToken(null);
-  }
 
-  public void login () {
-    String authentication = cboAuthenticationType.getSelectionModel().getSelectedItem();
-    log.info("Login of authentication type " + authentication);
-    if (authentication.equalsIgnoreCase("own")) {
-      //create jwt myself, can be validated via https://jwt.io/
-      String token = JWT.create().withClaim("username", txtUsername.getText()).withClaim("role", txtUsername.getText())
-        .withClaim("mandant", ApplicationContext.getMandantID()).withExpiresAt(new Date(System.currentTimeMillis() + 900000))
-        .sign(Algorithm.HMAC512(ApplicationContext.getMandantID()));
-      log.info("Created token " + token);
-      ApplicationContext.setToken(token);
-      try {
-        DecodedJWT jwt = JWT.decode(token);
-        System.out.println ("Header     : " + jwt.getHeader());
-        System.out.println ("Signature  : " + jwt.getSignature());
-        System.out.println ("Payload    : " + jwt.getPayload());
-        System.out.println ("Type       : " + jwt.getType());
-        System.out.println ("Expiration : " + jwt.getExpiresAt());
-        System.out.println ("Algorithm  : " + jwt.getAlgorithm());
-        System.out.println ("Mandant    : " + ApplicationContext.getMandantID());
-        for (String next: jwt.getClaims().keySet()) {
-          System.out.println ("Claim      : " + next);
-          Claim claim = jwt.getClaim(next);
-          System.out.println("Value       : " + claim.asString());
-        }
-
-        Algorithm algorithm = Algorithm.HMAC512(ApplicationContext.getMandantID());
-        algorithm.verify(jwt);
-        System.out.println ("Verify secret OK");
-
-        //Fails:
-        //algorithm = Algorithm.HMAC512("Hallo");
-        //algorithm.verify(jwt);
-        //System.out.println ("Verify Hallo OK");
-
-
-
-      } catch (JWTDecodeException exception){
-        log.error(exception.getLocalizedMessage());
-        //Invalid token
-      }
-
-
-
-    }
-    else {
-      //oauth2
-
-    }
-  }
-
-  public void stop() {
+  public void stopAllModules(final List<String> modulesIds) {
     ModuleApi moduleApi = createModuleApi();
     log.info("Basepath of runtime: " + moduleApi.getApiClient().getBasePath());
 
@@ -211,7 +229,7 @@ import org.controlsfx.control.Notifications;
       String installDescription = getInstallDescription();
       log.info("Send modules descriptor " + installDescription);
       SetupModulesParamDTO setupModulesParamDTO = new SetupModulesParamDTO().descriptor(installDescription)
-          .path(getExamplePath().getAbsolutePath());
+          .path(getExamplePath().getAbsolutePath()).affectedModules(modulesIds);
       moduleApi.stopModules(setupModulesParamDTO);
     } catch (IOException e) {
       log.error(e.getLocalizedMessage(), e);

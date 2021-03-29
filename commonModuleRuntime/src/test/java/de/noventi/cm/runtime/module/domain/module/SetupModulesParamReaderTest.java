@@ -24,7 +24,7 @@ public class SetupModulesParamReaderTest {
 
     String descriptor = stringWriter.toString();
 
-    String url = "file://" + System.getProperty("user.home") + "/.m2/repository/de/noventi/cm/service/0.1-SNAPSHOT/service-0.1-SNAPSHOT.jar";
+    String url = "file://" + System.getProperty("user.home") + "/.m2/repository/de/noventi/cm/commonModuleService/0.1-SNAPSHOT/commonModuleService-0.1-SNAPSHOT.jar";
 
     SetupModulesParamReader setupModulesParamReader = new SetupModulesParamReader();
     CommonModules commonModules = setupModulesParamReader.read(descriptor);

@@ -45,13 +45,13 @@ public class DockerInstaller implements Installer {
         }
       }
     }
-    log.info("Install module " + module.getId() + " in path " + path.getAbsolutePath());
+    log.info("Install module " + module.getId() + " in path " + path.getAbsolutePath() + " finished");
   }
 
   @Override public void start(File path, CommonModule module) {
-    log.info("Start module " + module.getId() + " in path " + path.getAbsolutePath());
-
     File modulePath = new File (path, module.getId());
+    log.info("Start module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath());
+
     List<String> cmdarray = new ArrayList<String>();
     cmdarray.add("docker-compose");
     cmdarray.add("up");
@@ -61,6 +61,8 @@ public class DockerInstaller implements Installer {
 
     ProcessBuilder processBuilder = new ProcessBuilder(cmdarray);
     processBuilder.directory(modulePath);
+    processBuilder.inheritIO();
+    processBuilder.redirectOutput();
     processBuilder.redirectErrorStream(true);
     Process process = null;
     byte[] buffer = new byte[1024];
@@ -80,14 +82,18 @@ public class DockerInstaller implements Installer {
     }
 
 
+    log.info("Start module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + "finished");
+
+
 
 
   }
 
   @Override public void stop(File path, CommonModule module) {
-    log.info("Stop module " + module.getId() + " in path " + path.getAbsolutePath());
 
     File modulePath = new File (path, module.getId());
+    log.info("Stop module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath());
+
     List<String> cmdarray = new ArrayList<String>();
     cmdarray.add("docker-compose");
     cmdarray.add("down");
@@ -96,6 +102,8 @@ public class DockerInstaller implements Installer {
 
     ProcessBuilder processBuilder = new ProcessBuilder(cmdarray);
     processBuilder.directory(modulePath);
+    processBuilder.inheritIO();
+    processBuilder.redirectOutput();
     processBuilder.redirectErrorStream(true);
     Process process = null;
     byte[] buffer = new byte[1024];
@@ -114,6 +122,23 @@ public class DockerInstaller implements Installer {
       throw new IllegalStateException(e);
     }
 
+    log.info("Stop module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + "finished");
+
+  }
+
+  @Override public ModuleStatus getState(File path, CommonModule module) {
+    ModuleStatus moduleStatus = new ModuleStatus();
+    File modulePath = new File (path, module.getId());
+    log.info("Get state of module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath());
+
+
+
+    moduleStatus.setRunning(true);
+    moduleStatus.setInstanceId("TODO");
+
+    log.info("Get state of module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + "finished");
+
+    return moduleStatus;
   }
 
 }

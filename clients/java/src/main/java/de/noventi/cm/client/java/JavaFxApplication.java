@@ -1,13 +1,11 @@
 package de.noventi.cm.client.java;
 
-import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -53,13 +51,20 @@ public class JavaFxApplication extends Application {
       EventController eventController = loaderEventMask.getController();
       eventController.load();
 
-      Tab tab1 = new Tab("Service", rootService);
-      Tab tab2 = new Tab("UI", rootUi);
-      Tab tab3 = new Tab("UI CEF", rootUiCef);
-      Tab tab4 = new Tab ("Admin", rootAdmin);
-      Tab tab5 = new Tab ("Event", rootEvent);
+      FXMLLoader loaderLoginMask = getMaskLoader("login");
+      Parent rootLogin = loaderLoginMask.load();
+      LoginController loginController = loaderLoginMask.getController();
+      loginController.load();
 
-      tabPane.getTabs().addAll(tab1, tab2, tab3, tab4, tab5);
+      Tab tabLogin = new Tab("Login",rootLogin);
+      Tab tabAdmin = new Tab ("Admin", rootAdmin);
+
+      Tab tabService = new Tab("Service", rootService);
+      Tab tabUi = new Tab("UI", rootUi);
+      Tab tabUiCef = new Tab("UI CEF", rootUiCef);
+      Tab tabEvent = new Tab ("Event", rootEvent);
+
+      tabPane.getTabs().addAll(tabLogin, tabAdmin, tabService, tabUi, tabUiCef, tabEvent);
 
       VBox vBox = new VBox(tabPane);
       Scene scene = new Scene(vBox);

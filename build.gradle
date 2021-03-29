@@ -11,11 +11,21 @@ buildscript {
         classpath 'de.vsa.gradle:vsareleasemaven:6.101'
         classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.4.1'
         classpath 'org.openapitools:openapi-generator-gradle-plugin:4.3.1'
+        classpath("com.google.guava:guava:30.1.1-jre")
     }
 }
 
 
+
+
 allprojects {
+
+    configurations.all {
+        resolutionStrategy {
+            force 'com.google.guava:guava:23.6.1-jre'
+        }
+    }
+
     group = 'de.noventi.cm'
     version = '0.1'
 

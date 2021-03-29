@@ -50,7 +50,7 @@ public class JdkInstaller implements Installer {
       return;
     }
 
-    log.info("Install jdk " + module.getJdk());
+    log.info("Installation of jdk " + module.getJdk());
 
     HashMap<String, String> jdkPerVersion = getJdkPerVersion();
 
@@ -61,9 +61,10 @@ public class JdkInstaller implements Installer {
       throw new IllegalArgumentException("No jdk found for <" + module.getJdk() + ", the following jdks can be handled: " + jdkPerVersion + ">");
 
     if (! jdkPath.exists()) {
-      log.info("Install jdk " + url + " to " + jdkPath);
+      log.info("Download of jdk " + url + " to " + jdkPath + "...");
       File downloadedJdkZip = this.download.download(jdkPath, url); //TODO use jre
       try {
+        log.info("Unzipping of jdk " + url + " to " + jdkPath + "...");
         Unzip.unzipFileIntoDirectory(new ZipFile(downloadedJdkZip), jdkPath);
       } catch (IOException e) {
         throw new IllegalStateException("File " + downloadedJdkZip.getAbsolutePath() + " does not seem to be a zipfile");
@@ -73,8 +74,7 @@ public class JdkInstaller implements Installer {
     else
       log.info("Jdk installation path " + jdkPath.getAbsolutePath() + " already exists");
 
-
-
+    log.info("Installation of jdk " + module.getJdk() + " finished");
   }
 
   @Override public void start(File path, CommonModule module) {
@@ -109,6 +109,11 @@ public class JdkInstaller implements Installer {
       throw new IllegalStateException("Jre bin file not available: " + exe.toString());
     }
     return exe;
+  }
+
+  @Override public ModuleStatus getState(File path, CommonModule module) {
+    ModuleStatus moduleStatus = new ModuleStatus();
+    return moduleStatus;
   }
 
 }

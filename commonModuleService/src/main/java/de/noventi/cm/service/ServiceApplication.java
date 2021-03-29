@@ -18,7 +18,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class ServiceApplication {
 
   public static void main (final String [] args) {
-    log.info("Application Pid: " + new File("application.pid").getAbsoluteFile().getAbsolutePath());
+    log.info("Application Pid  : " + new File("application.pid").getAbsoluteFile().getAbsolutePath());
+    log.info("Arguments        : " + String.join(" ", args));
+    log.info("Environment      : " + System.getenv());
     SpringApplication springApplication = new SpringApplication(ServiceApplication.class);
     springApplication.addListeners(new ApplicationPidFileWriter());
     springApplication.run(args);

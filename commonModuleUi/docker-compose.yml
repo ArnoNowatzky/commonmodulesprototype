@@ -2,7 +2,7 @@ version: '3'
 
 services:
   ui:
-   image:  awinta-docker.intra.vsa.de/noventi.cm/ui:0.1-SNAPSHOT
+   image:  awinta-docker.intra.vsa.de/noventi.cm/commonmoduleui:0.1-SNAPSHOT
    ports:
      - "8003:8003"
    volumes:

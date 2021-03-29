@@ -24,9 +24,9 @@ import org.springframework.stereotype.Component;
     if (module.getId() == null)
       throw new IllegalArgumentException("Module " + module + " must contain id");
 
-    log.info("Install module " + module.getId() + " in path " + path.getAbsolutePath());
-
     File modulePath = new File(path, module.getId());
+
+    log.info("Install module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath());
 
     File binPath = new File(modulePath, "bin");
     String url = module.getUrl();
@@ -34,15 +34,19 @@ import org.springframework.stereotype.Component;
 
     jdkInstaller.install(path, module);
 
+    log.info("Install module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + " finished");
+
+
   }
 
   @Override public void start(File path, CommonModule module) {
-    log.info("Start module " + module.getId() + " in path " + path.getAbsolutePath());
     File jdkPath = new File(path, module.getJdk());
 
     File folder = getSingleFolder(jdkPath);
 
     File modulePath = new File(path, module.getId());
+    log.info("Start module " + module.getId() + " in modulepath " + path.getAbsolutePath());
+
     File binPath = new File(modulePath, "bin");
 
     File javaHome = jdkInstaller.getHome(folder);
@@ -77,10 +81,15 @@ import org.springframework.stereotype.Component;
       throw new IllegalStateException(e);
     }
 
+    log.info("Start module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + " finished");
+
+
   }
 
   @Override public void stop(File path, CommonModule module) {
     File modulePath = new File(path, module.getId());
+    log.info("Stop module " + module.getId() + " in modulepath " + path.getAbsolutePath());
+
     File applicationPidFile = new File(modulePath, "application.pid");
     if (applicationPidFile.exists()) {
       try {
@@ -109,9 +118,32 @@ import org.springframework.stereotype.Component;
         throw new IllegalStateException(e);
       }
     } else
-      log.warn(
-          "Service " + path.getAbsolutePath() + " does not contain a pidfile " + applicationPidFile.getAbsolutePath());
+      log.warn("Module in modulepath " + modulePath.getAbsolutePath() + " does not contain a pidfile " + applicationPidFile.getAbsolutePath());
 
+    log.info("Stop module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + " finished");
+
+
+
+  }
+
+  @Override public ModuleStatus getState (File path, CommonModule module) {
+    File modulePath = new File(path, module.getId());
+    log.info("Get state of module " + module.getId() + " in modulepath " + path.getAbsolutePath());
+
+    File applicationPidFile = new File(modulePath, "application.pid");
+    ModuleStatus moduleStatus = new ModuleStatus();
+    if (applicationPidFile.exists()) {
+      try {
+        moduleStatus.setRunning(true);
+        moduleStatus.setInstanceId(FileUtils.readFileToString(applicationPidFile, Charset.defaultCharset()));
+      } catch (IOException e) {
+        log.error("Error reading application pid file " + applicationPidFile.getAbsolutePath());
+        throw new IllegalStateException(e);
+      }
+    }
+    log.info("Get state of module " + module.getId() + " in modulepath " + path.getAbsolutePath() + " finished");
+
+    return moduleStatus;
   }
 
   private File getSingleFolder(final File inPath) {
