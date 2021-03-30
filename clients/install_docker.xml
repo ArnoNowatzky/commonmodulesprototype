@@ -10,9 +10,13 @@ version: '3'
 
 services:
   service:
-   image:  awinta-docker.intra.vsa.de/noventi.cm/commonModuleService:0.1-SNAPSHOT
+   image:  awinta-docker.intra.vsa.de/noventi.cm/commonmoduleservice:0.1-SNAPSHOT
    ports:
      - "8002:8002"
+   volumes:
+     - ../keystore/commonmodule.p12:/keystore/commonmodule.p12
+   environment:
+     - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12
 networks:
   default:
     external:
@@ -29,9 +33,13 @@ version: '3'
 
 services:
   ui:
-   image:  awinta-docker.intra.vsa.de/noventi.cm/commonModuleUi:0.1-SNAPSHOT
+   image:  awinta-docker.intra.vsa.de/noventi.cm/commonmoduleui:0.1-SNAPSHOT
    ports:
      - "8003:8003"
+   volumes:
+     - ../keystore/commonmodule.p12:/keystore/commonmodule.p12
+   environment:
+     - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12
 
 networks:
   default:

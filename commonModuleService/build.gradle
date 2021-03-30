@@ -103,11 +103,6 @@ jib {
     }
 }
 
-//TODO eleganter machen?
-tasks.jib.doFirst {
-    File applicationYaml = project.file ("build/docker/resources/application.yml")
-    applicationYaml.text = applicationYaml.text.replace("jdbc:postgresql://localhost:5432/service", "jdbc:postgresql://postgresql:5432/service")
-}
 
 
 //TODO https://stackoverflow.com/questions/61197984/bootjar-mavenjar-artifact-wasnt-produced-by-this-build
@@ -125,3 +120,4 @@ test {
 }
 
 tasks.build.dependsOn tasks.releaseLocalSnapshot
+tasks.build.dependsOn tasks.jib

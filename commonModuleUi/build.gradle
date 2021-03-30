@@ -134,7 +134,8 @@ jib {
     }
     container {
         mainClass = 'de.noventi.cm.ui.UiApplication'
-        args = ["-Dspring.datasource.url=jdbc:postgresql://postgresql:5432/service", "-Dactive-mq.broker-url=tcp://activemq:61616"]
+        environment = ['SPRING_DATASOURCE_URL':'jdbc:postgresql://postgresql:5432/service',
+                       'ACTIVE-MQ_BROKER-URL':'tcp://activemq:61616']
         ports = ['8003/tcp']
     }
 }
@@ -157,3 +158,4 @@ test {
 
 
 tasks.build.dependsOn tasks.releaseLocalSnapshot
+tasks.build.dependsOn tasks.jib

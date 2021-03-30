@@ -2,14 +2,20 @@ package de.noventi.cm.runtime.module.api;
 
 import de.noventi.cm.runtime.module.domain.CommonModule;
 import de.noventi.cm.runtime.module.domain.Download;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -77,12 +83,20 @@ public class DockerInstaller implements Installer {
         }
         System.out.write(buffer, 0, r);
       }
-    } catch (IOException e) {
+
+      int returncode = process.waitFor();
+      log.info("Start module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + " finished with returncode " + returncode);
+      if (returncode != 0) {
+        String text = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8)).lines().collect(
+            Collectors.joining("\n"));
+        log.error("Error when starting module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + ":" + text);
+      }
+    } catch (IOException | InterruptedException e) {
       throw new IllegalStateException(e);
     }
 
 
-    log.info("Start module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + "finished");
+    log.info("Start module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + " finished");
 
 
 

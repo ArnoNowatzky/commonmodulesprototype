@@ -93,9 +93,19 @@ test {
 }
 
 processResources.doFirst {
+
     project.copy {
         from file ('../../')
         into file ('build/example/jar')
+        include 'keystore/**'
+        eachFile { fcd ->
+            println "Copy " + fcd
+        }
+    }
+
+    project.copy {
+        from file ('../../')
+        into file ('build/example/docker')
         include 'keystore/**'
         eachFile { fcd ->
             println "Copy " + fcd
