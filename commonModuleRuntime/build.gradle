@@ -28,6 +28,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-activemq'
     //TODO compile 'org.springframework.boot:spring-boot-starter-security'
 
+    compile 'com.github.docker-java:docker-java-core:3.2.7'
+    compile 'com.github.docker-java:docker-java-transport-zerodep:3.2.7'
 
     compile 'io.swagger:swagger-annotations:1.5.22'
     compile 'javax.validation:validation-api:2.0.1.Final'

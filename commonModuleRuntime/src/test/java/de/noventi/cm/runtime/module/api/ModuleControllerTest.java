@@ -1,11 +1,5 @@
 package de.noventi.cm.runtime.module.api;
 
-import de.noventi.cm.runtime.model.SetupModulesParamDTO;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ModuleControllerTest {
 
   @Autowired
-  private ModuleController moduleController;
+  private ModulesController modulesController;
 
   /**@Test  TODO make integration test
 public void installJar () throws IOException {

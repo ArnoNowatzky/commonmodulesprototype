@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         classpath 'de.vsa.gradle:vsaconf:6.96'
-        classpath "de.noventi.gradle:apidocplugin:1.7-SNAPSHOT-2012081750"
+        classpath "de.noventi.gradle:apidocplugin:1.11"
         classpath "commons-net:commons-net:3.7.2"
     }
 }

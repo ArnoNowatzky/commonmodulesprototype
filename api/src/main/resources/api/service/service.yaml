@@ -4,12 +4,12 @@ info:
   title: "customer api"
   description: "API of service example customer"
 servers:
-  - url: http://localhost:8002
+  - url: http://localhost:8002/v1
 security:
   - bearerAuth: []
 
 paths:
-  /customer/findAll:
+  /customers:
     get:
       tags:
         - customer
@@ -26,11 +26,12 @@ paths:
                   $ref: "#/components/schemas/CustomerDTO"
                 
 
-  /customer/{customerId}:
+  /customers/{customerId}:
     get:
       tags:
         - customer
       operationId: "getCustomer"
+      description: "returns the customer with the parameterized customerId"
       parameters:
         - in: path
           name: customerId
@@ -45,11 +46,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/CustomerDTO"
 
-  /customer:
     put:
       tags:
         - customer
       operationId: "setCustomer"
+      description: "updates the customer with the parameterized customerId"
+      parameters:
+        - in: path
+          name: customerId
+          schema:
+            type: string
+          required: true
       requestBody:
         description: changed customer
         required: true
@@ -73,18 +80,24 @@ components:
       type: "object"
       properties:
         id:
+          description: "technical id"
           type: "string"
         title:
+          description: "mr / mrs. ...."
           type: "string"
         name:
+          description: "surename of the customer"
           type: "string"
         firstname:
+          description: "firstname(s) of the customer"
           type: "string"
 
         address:
+          description: "the postal address of the customer"
           $ref: "#/components/schemas/AddressDTO"
 
         phones:
+          description: "list of phonenumbers to communicate with the customer"
           type: array
           items:
             $ref: "#/components/schemas/PhoneDTO"
@@ -94,18 +107,27 @@ components:
       type: "object"
       properties:
         id:
+          description: "technial ID"
           type: "string"
-        address:
+        street:
+          description: "name of the street"
+          type: "string"
+        housenumber:
+          description: "the housenumber of the customer (plus additional infos) (which level)"
           type: "string"
         postcode:
+          description: "postal code"
           type: "string"
         city:
+          description: "name of the city, auto added by postal code"
           type: "string"
 
     PhoneDTO:
       type: "object"
       properties:
         number:
+          description: "the phone number"
           type: "string"
         phonetype:
+          description: "the phone type (mobile, work, private....)"
           type: "string"

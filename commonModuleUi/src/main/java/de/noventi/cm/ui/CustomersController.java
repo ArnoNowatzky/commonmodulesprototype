@@ -1,6 +1,6 @@
 package de.noventi.cm.ui;
 
-import de.noventi.cm.ui.api.CustomerApi;
+import de.noventi.cm.ui.api.CustomersApi;
 import de.noventi.cm.ui.model.AddressDTO;
 import de.noventi.cm.ui.model.CustomerDTO;
 import de.noventi.cm.ui.model.PhoneDTO;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class CustomerController implements CustomerApi {
+public class CustomersController implements CustomersApi {
 
   private CustomerDTO getCustomer () {
     PhoneDTO phone1 = new PhoneDTO();
@@ -53,7 +53,7 @@ public class CustomerController implements CustomerApi {
     return ResponseEntity.ok(Arrays.asList(getCustomer()));
   }
 
-  @Override public ResponseEntity<Void> setCustomer(@ApiParam(value = "changed customer" ,required=true )  @Valid @RequestBody CustomerDTO customerDTO) {
+  @Override public ResponseEntity<Void> setCustomer(@ApiParam(value = "",required=true) @PathVariable("customerId") String customerId,@ApiParam(value = "changed customer" ,required=true )  @Valid @RequestBody CustomerDTO customerDTO) {
     log.info("called setCustomer " + customerDTO.getId());
     return ResponseEntity.ok().build();
   }

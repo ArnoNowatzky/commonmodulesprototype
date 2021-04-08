@@ -1,23 +1,26 @@
 package de.noventi.cm.runtime.module.api;
 
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.ListContainersCmd;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientImpl;
+import com.github.dockerjava.transport.DockerHttpClient;
+import com.github.dockerjava.zerodep.ZerodepDockerHttpClient;
 import de.noventi.cm.runtime.module.domain.CommonModule;
-import de.noventi.cm.runtime.module.domain.Download;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -145,10 +148,23 @@ public class DockerInstaller implements Installer {
     File modulePath = new File (path, module.getId());
     log.info("Get state of module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath());
 
+    DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
 
+    DockerHttpClient httpClient = new ZerodepDockerHttpClient.Builder().dockerHost(config.getDockerHost()).sslConfig(config.getSSLConfig()).build();
+    DockerClient dockerClient = DockerClientImpl.getInstance(config, httpClient);
+    ListContainersCmd listContainersCmd = dockerClient.listContainersCmd();
 
-    moduleStatus.setRunning(true);
-    moduleStatus.setInstanceId("TODO");
+    for (Container next: listContainersCmd.exec()) {
+      log.info("Container: " + next.getId() + "-" + next.getLabels().get("com.docker.compose.project") + "-" + next.getState());
+      String instanceId = next.getId();
+      String moduleId = next.getLabels().get("com.docker.compose.project");
+      String state = next.getState();
+      if (moduleId.equals(module.getId())) {
+        moduleStatus.setInstanceId(instanceId);
+        moduleStatus.setRunning(state.trim().equals("running"));
+        break;
+      }
+    }
 
     log.info("Get state of module " + module.getId() + " in modulepath " + modulePath.getAbsolutePath() + "finished");
 

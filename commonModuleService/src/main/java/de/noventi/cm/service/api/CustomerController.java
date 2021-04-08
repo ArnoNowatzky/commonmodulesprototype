@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class CustomerController implements CustomerApi{
+public class CustomerController implements CustomersApi{
 
   @Value("${spring.datasource.url}")
   private String datasourceUrl;
@@ -61,7 +61,7 @@ public class CustomerController implements CustomerApi{
     return ResponseEntity.ok(Arrays.asList(getCustomer()));
   }
 
-  @Override public ResponseEntity<Void> setCustomer(@ApiParam(value = "changed customer" ,required=true )  @Valid @RequestBody CustomerDTO customerDTO) {
+  @Override public ResponseEntity<Void> setCustomer(@ApiParam(value = "",required=true) @PathVariable("customerId") String customerId,@ApiParam(value = "changed customer" ,required=true )  @Valid @RequestBody CustomerDTO customerDTO) {
     log.info("called setCustomer " + customerDTO.getId());
     return ResponseEntity.ok().build();
   }
