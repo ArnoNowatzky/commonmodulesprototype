@@ -69,6 +69,11 @@ common modules and point of sale documentation.
 # Native browser component
 # Security with https and jwt
 
+#Collect operatingsystem infos 
+On http://vpcmawinta01-x.intra.vsa.de:5601 we have established a ELK Stack where you can see environment infos 
+which are provided by the prototype. 
+
+
 # Datacenter components on vpcmawinta01-x
 This vm is a CentOS7 VM and contains all datacenter components of the new architecture of the common modules.
 If you don't have access on this machine send your public key to thomas.wieschke or markus.oley and we install it.
@@ -76,7 +81,11 @@ Following commands were executed:
 * export http_proxy=http://proxy.vsa.de:8080 -> ~/.bashrc
 * proxy=http://proxy.vsa.de:8080 -> /etc/yum.conf
 * Anleitung https://docs.docker.com/engine/install/centos/
-* Anleitung https://docs.docker.com/network/proxy/
+* mkdir /etc/systemd/system/docker.service.d
+* [Service]
+  Environment="http_proxy=http://proxy.vsa.de:8080"
+  Environment="https_proxy=http://proxy.vsa.de:8080"
+  Environment="no_proxy=vsa.de" ->   /etc/systemd/system/docker.service.d/service-overrides.conf
 * sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-Linux-x86_64" --proxy http://proxy.vsa.de:8080 -o /usr/local/bin/docker-compose
 * sudo yum install git
 * sudo systemctl start docker
