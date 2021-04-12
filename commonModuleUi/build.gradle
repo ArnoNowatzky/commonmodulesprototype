@@ -28,7 +28,7 @@ dependencies {
     implementation 'org.openapitools:jackson-databind-nullable:0.2.1' //TODO unused import, check how to get rid of
 
     compile project(':commonModuleBase')
-    
+
     compile 'org.springframework.boot:spring-boot-starter-web'
     //compile 'org.springframework.boot:spring-boot-starter-security'
 
@@ -115,23 +115,26 @@ sourceSets {
 
 tasks.compileJava.dependsOn tasks.openApiGenerate
 
-println "Docker user = " + project.properties['awinta.dockerUser']
-println "Docker pwd = " + project.properties['awinta.dockerPassword']
+String dockerUser = project.properties['awinta_dockerUser']
+String dockerPwd = project.properties['awinta_dockerPassword']
+
+println "Docker user = " + dockerUser
+println "Docker pwd = " + dockerPwd
 
 jib {
     to {
         image = project.provider {"awinta-docker.intra.vsa.de/noventi.cm/commonmoduleui:" + version}
         auth {
-            username = project.properties['awinta.dockerUser']
-            password = project.properties['awinta.dockerPassword']
+            username = dockerUser
+            password = dockerPwd
         }
 
     }
     from {
         image = 'docker.intra.vsa.de/amazoncorretto:11.0.9-alpine'
         auth {
-            username = project.properties['awinta.dockerUser']
-            password = project.properties['awinta.dockerPassword']
+            username = dockerUser
+            password = dockerPwd
         }
     }
     container {
