@@ -27,6 +27,8 @@ dependencies {
 
     implementation 'org.openapitools:jackson-databind-nullable:0.2.1' //TODO unused import, check how to get rid of
 
+    compile project(':commonModuleBase')
+    
     compile 'org.springframework.boot:spring-boot-starter-web'
     //compile 'org.springframework.boot:spring-boot-starter-security'
 

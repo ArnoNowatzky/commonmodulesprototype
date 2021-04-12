@@ -28,7 +28,7 @@ public class CustomersController implements CustomersApi {
     phone2.setNumber("+4998765432");
 
     AddressDTO addressDTO = new AddressDTO();
-    addressDTO.setAddress("Prototypweg 1");
+    addressDTO.setStreet("Prototypweg 1");
     addressDTO.setId("1");
     addressDTO.setCity("Prototuebingen");
     addressDTO.setPostcode("12345");

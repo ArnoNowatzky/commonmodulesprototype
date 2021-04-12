@@ -1,5 +1,7 @@
 package de.noventi.cm.runtime;
 
+import de.noventi.cm.runtime.monitoring.MonitoringData;
+import de.noventi.cm.runtime.monitoring.MonitoringRuntime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +17,8 @@ public class RuntimeApplication {
 
   public static void main(final String[] args) {
     SpringApplication.run(RuntimeApplication.class, args);
+    MonitoringData monitoringData = new MonitoringData();
+    log.info(monitoringData.toString());
   }
 
 

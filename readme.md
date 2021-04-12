@@ -71,8 +71,12 @@ common modules and point of sale documentation.
 
 #Collect operatingsystem infos 
 On http://vpcmawinta01-x.intra.vsa.de:5601 we have established a ELK Stack where you can see environment infos 
-which are provided by the prototype. 
+which are collected by the prototype. (username: elastic, password: changeme)
+The elasticsearch is accessible via://vpcmawinta01-x.intra.vsa.de:9200/
 
+(MetricBeat:     http://vpcmawinta01-x.intra.vsa.de:5601/app/home#/tutorial/systemMetrics)
+
+Hardware is stored on vpcmawinta01-x.intra.vsa.de:9200/wawi/cm/hardware
 
 # Datacenter components on vpcmawinta01-x
 This vm is a CentOS7 VM and contains all datacenter components of the new architecture of the common modules.
