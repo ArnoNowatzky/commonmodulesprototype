@@ -1,14 +1,17 @@
 package de.noventi.cm.service.api;
 
-import de.noventi.cm.service.model.AddressDTO;
+import de.noventi.cm.service.db.Customer;
+import de.noventi.cm.service.db.CustomerRepository;
 import de.noventi.cm.service.model.CustomerDTO;
-import de.noventi.cm.service.model.PhoneDTO;
 import io.swagger.annotations.ApiParam;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,30 +24,10 @@ public class CustomerController implements CustomersApi{
   @Value("${spring.datasource.url}")
   private String datasourceUrl;
 
-  private CustomerDTO getCustomer () {
-    PhoneDTO phone1 = new PhoneDTO();
-    phone1.setPhonetype("PRIVAT");
-    phone1.setNumber("+491234567890");
+  @Autowired
+  private CustomerRepository customerRepository;
 
-    PhoneDTO phone2 = new PhoneDTO();
-    phone2.setPhonetype("WORK");
-    phone2.setNumber("+4998765432");
-
-    AddressDTO addressDTO = new AddressDTO();
-    addressDTO.setStreet("Prototypweg 1");
-    addressDTO.setId("1");
-    addressDTO.setCity("Prototuebingen");
-    addressDTO.setPostcode("12345");
-
-    CustomerDTO customerDTO = new CustomerDTO();
-    customerDTO.setId("1");
-    customerDTO.setName("Mustermann");
-    customerDTO.setFirstname("Michael");
-    customerDTO.setAddress(addressDTO);
-    customerDTO.addPhonesItem(phone1);
-    customerDTO.addPhonesItem(phone2);
-    return customerDTO;
-  }
+  private CustomerMapper customerMapper = new CustomerMapper();
 
   public CustomerController () {
     log.info("Create CustomerController");
@@ -52,17 +35,41 @@ public class CustomerController implements CustomersApi{
 
   @Override public ResponseEntity<CustomerDTO> getCustomer(@ApiParam(value = "",required=true) @PathVariable("customerId") String customerId) {
     log.info("called getCustomer " + customerId);
-    return ResponseEntity.ok(getCustomer());
+
+    if (customerId.startsWith("W")) {
+      log.info("without database");
+      String realId = customerId.substring(1);
+      CustomerDTO customerDTO = new CustomerDTO();
+      customerDTO.setFirstname("Sherlock " + realId.trim());
+      return ResponseEntity.ok(customerDTO);
+    }
+    Optional<Customer> byId = customerRepository.findById(customerId);
+    if (byId.isPresent()) {
+      log.info("Found customer " + byId.get().getId());
+      return ResponseEntity.ok(customerMapper.toCustomerDTO(byId.get()));
+    }
+    else {
+      log.error("No customer found for id " + customerId);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
   }
 
   @Override public ResponseEntity<List<CustomerDTO>> getCustomers() {
     log.info("called getCustomers");
     log.info("- url: " + datasourceUrl);
-    return ResponseEntity.ok(Arrays.asList(getCustomer()));
+
+    Iterable<Customer> iterable = customerRepository.findAll();
+    List<CustomerDTO> result = new ArrayList<CustomerDTO>();
+    for (Customer next: iterable) {
+      result.add(customerMapper.toCustomerDTO(next));
+    }
+    return ResponseEntity.ok(result);
   }
 
   @Override public ResponseEntity<Void> setCustomer(@ApiParam(value = "",required=true) @PathVariable("customerId") String customerId,@ApiParam(value = "changed customer" ,required=true )  @Valid @RequestBody CustomerDTO customerDTO) {
     log.info("called setCustomer " + customerDTO.getId());
+    if (true)
+      throw new IllegalStateException("TODO");
     return ResponseEntity.ok().build();
   }
 }

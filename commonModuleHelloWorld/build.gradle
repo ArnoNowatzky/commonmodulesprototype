@@ -1,5 +1,5 @@
 plugins {
-    id 'com.bmuschko.docker-spring-boot-application' version '6.6.1'
+    id 'com.google.cloud.tools.jib' version '2.6.0'
 }
 
 apply {
@@ -39,22 +39,35 @@ springBoot {
     mainClassName = 'de.noventi.cm.hello.HelloWorldApplication'
 }
 
-println "Docker user = " + project.properties['awinta_dockerUser']
+String dockerUser = project.properties['awinta_dockerUser']
+String dockerPwd = project.properties['awinta_dockerPassword']
 
-docker {
-    registryCredentials {
-        url = 'https://awinta-docker.intra.vsa.de/'
-        username = project.properties['awinta_dockerUser']
-        password = project.properties['awinta_dockerPassword']
+println "Docker user = " + dockerUser
+println "Docker pwd = " + dockerPwd
+
+jib {
+    to {
+        image = project.provider {"awinta-docker.intra.vsa.de/noventi.cm/commonmoduleservice:" + version}
+        auth {
+            username = dockerUser
+            password = dockerPwd
+        }
+
     }
-    springBootApplication {
-        baseImage = 'openjdk:14'
-        ports = [8002]
-        images = ["awinta-docker.intra.vsa.de/noventi.cm/hello:${jar.archiveVersion.get()}"]
+    from {
+        image = 'docker.intra.vsa.de/amazoncorretto:11.0.9-alpine'
+        auth {
+            username = dockerUser
+            password = dockerPwd
+        }
+    }
+    container {
+        mainClass = 'de.noventi.cm.service.ServiceApplication'
+        environment = ['SPRING_DATASOURCE_URL':'jdbc:postgresql://postgresql:5432/service',
+                       'ACTIVE-MQ_BROKER-URL':'tcp://activemq:61616']
+        ports = ['8002/tcp']
     }
 }
-
-tasks.dockerBuildImage.dependsOn classes, bootJar
 
 //TODO https://stackoverflow.com/questions/61197984/bootjar-mavenjar-artifact-wasnt-produced-by-this-build
 configurations {
@@ -70,4 +83,6 @@ test {
     useJUnitPlatform()
 }
 
+tasks.jibDockerBuild.dependsOn classes, bootJar
 tasks.build.dependsOn tasks.releaseLocalSnapshot
+tasks.build.dependsOn tasks.jibDockerBuild

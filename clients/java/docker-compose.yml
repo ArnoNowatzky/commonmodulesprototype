@@ -12,49 +12,26 @@ services:
     environment:
       - POSTGRES_USER=cm
       - POSTGRES_PASSWORD=cm
-      - POSTGRES_DB=cm
+      - POSTGRES_DB=service
 
     ports:
       - "5432:5432"
     volumes:
       - ./postgres_db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cm"]
+      test: ["CMD-SHELL", "pg_isready -U cm -d service"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgresql
-      DB_DATABASE: cm
-      DB_USER: cm
-      DB_SCHEMA: public
-      DB_PASSWORD: cm
-      KEYCLOAK_USER: cm
-      KEYCLOAK_PASSWORD: cm
+  commonModuleService:
+    image: awinta-docker.intra.vsa.de/noventi.cm/commonmoduleservice:0.1-SNAPSHOT
     ports:
-      - 8080:8080
-      - 9990:9990
-
-#  adminer:
-    #    image: adminer
-    #restart: always
-      #ports:
-      #- 8080:8080
-
-# rabbitmq:
-#   image: bitnami/rabbitmq
-#  ports:
-#    - "15672:15672"
-#  environment:
-#    - RABBITMQ_DEFAULT_USER=cm
-#    - RABBITMQ_DEFAULT_PASS=cm
-
-networks:
-  default:
-    external:
-      name: cm  # create a network with 'docker network create cm'
-   
+      - "8002:8002"
+    volumes:
+      - ../../keystore/commonmodule.p12:/keystore/commonmodule.p12
+    environment:
+      - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12
+    depends_on:
+      postgresql:
+         condition: service_healthy

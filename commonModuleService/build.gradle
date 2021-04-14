@@ -122,5 +122,6 @@ test {
     useJUnitPlatform()
 }
 
+tasks.jibDockerBuild.dependsOn classes, bootJar
 tasks.build.dependsOn tasks.releaseLocalSnapshot
-tasks.build.dependsOn tasks.jib
+tasks.build.dependsOn tasks.jibDockerBuild

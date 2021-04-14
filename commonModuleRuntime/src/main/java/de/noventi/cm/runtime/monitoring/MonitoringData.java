@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.util.Date;
 import liquibase.pro.packaged.T;
 import lombok.Data;
 import lombok.ToString;
@@ -50,6 +51,8 @@ public class MonitoringData {
 
   private double temperature;
 
+  private Date collectionDate;
+
   private String runtimeVersion;
 
   public MonitoringData () {
@@ -91,6 +94,7 @@ public class MonitoringData {
     this.physicalCPUs = processor.getPhysicalProcessorCount();
 
     this.temperature = hardware.getSensors().getCpuTemperature();
+    this.collectionDate = new Date();
 
     InputStream resourceAsStream = getClass().getResourceAsStream("/runtime.version");
     if (resourceAsStream != null) {

@@ -18,6 +18,9 @@ import org.controlsfx.control.Notifications;
 
 @Slf4j
 public class ServiceController {
+
+  private Services services = new Services();
+
   @FXML
   private Label lblId;
 
@@ -37,25 +40,9 @@ public class ServiceController {
 
 
   private void reload() {
-    ApiClient apiClient = new ApiClient();
-    apiClient.setBasePath("https://localhost:8002"); //TODO adapt in yaml when other clients support https
 
     try {
-
-      FileInputStream fileInputStream = new FileInputStream(new File("build/example/jar/keystore/commonmodule.p12"));
-      KeyStore ks= KeyStore.getInstance("PKCS12");
-      ks.load(fileInputStream,"commonmodule".toCharArray());
-      Certificate cerificate = ks.getCertificate("commonmodule");
-      ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(cerificate.getEncoded());
-      apiClient.setSslCaCert(byteArrayInputStream);
-      CustomerApi customerApi = new CustomerApi(apiClient);
-      if (ApplicationContext.getToken() != null) {
-        log.info("Add token " + ApplicationContext.getToken());
-        customerApi.getApiClient().addDefaultHeader("Authorization", "Bearer " + ApplicationContext.getToken());
-      }
-      else
-        log.info ("No token available");
-
+      CustomerApi customerApi = services.getCustomerApi(Services.BASEURL_SERVICE_LOCAL);
       log.info("Basepath of customer: " + customerApi.getApiClient().getBasePath());
       CustomerDTO customer = customerApi.getCustomer("1");
       lblId.setText(customer.getId());

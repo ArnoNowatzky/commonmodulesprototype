@@ -63,7 +63,7 @@ import lombok.extern.slf4j.Slf4j;
   }
 
   public void logout() {
-    ApplicationContext.setToken(null);
+    ApplicationContext.logout();
     lblLoggedInData.setText(getLoginData());
   }
 
@@ -72,11 +72,7 @@ import lombok.extern.slf4j.Slf4j;
     log.info("Login of authentication type " + authentication);
     if (authentication.equalsIgnoreCase("own")) {
       //create jwt myself, can be validated via https://jwt.io/
-      String token = JWT.create().withClaim("username", txtUsername.getText()).withClaim("role", txtUsername.getText())
-        .withClaim("mandant", ApplicationContext.getMandantID()).withExpiresAt(new Date(System.currentTimeMillis() + 900000))
-        .sign(Algorithm.HMAC512(ApplicationContext.getMandantID()));
-      log.info("Created token " + token);
-      ApplicationContext.setToken(token);
+      String token = ApplicationContext.login(ApplicationContext.getMandantID(), txtUsername.getText(), txtUsername.getText());
       try {
         DecodedJWT jwt = JWT.decode(token);
         Algorithm algorithm = Algorithm.HMAC512(ApplicationContext.getMandantID());

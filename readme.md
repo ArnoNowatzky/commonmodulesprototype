@@ -73,10 +73,10 @@ common modules and point of sale documentation.
 On http://vpcmawinta01-x.intra.vsa.de:5601 we have established a ELK Stack where you can see environment infos 
 which are collected by the prototype. (username: elastic, password: changeme)
 The elasticsearch is accessible via://vpcmawinta01-x.intra.vsa.de:9200/
+Data is stored on vpcmawinta01-x.intra.vsa.de:9200/wawi/cm/hardware
+You can get an overview here: http://vpcmawinta01-x.intra.vsa.de:5601/app/discover
 
 (MetricBeat:     http://vpcmawinta01-x.intra.vsa.de:5601/app/home#/tutorial/systemMetrics)
-
-Hardware is stored on vpcmawinta01-x.intra.vsa.de:9200/wawi/cm/hardware
 
 # Datacenter components on vpcmawinta01-x
 This vm is a CentOS7 VM and contains all datacenter components of the new architecture of the common modules.
@@ -108,7 +108,6 @@ docker-compose up -d
 
 #TODOS
 - Browser JCEF -> C# OK, Java TODO      **!!!!**
-- Metrics central module (Kibana, ElasticSearch)
 - Runtime spring boot native images 
 - Runtime application server (Grundrauschen groﬂ, alle gleiche Versionen, Deploymentmonolith)
 - Integration into Backup / Recovery

@@ -26,10 +26,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request,
       HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
-    log.info("doFilterInternal called");
+
+    log.debug("doFilterInternal called");
     try {
       String jwt = getJwtFromRequest(request);
-      log.info("Recieved jwt " + jwt);
 
       DecodedJWT decodedJWT = JWT.decode(jwt);
       if (decodedJWT.getType() == null || ! decodedJWT.getType().equalsIgnoreCase("JWT"))
@@ -38,25 +38,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       if (decodedJWT.getAlgorithm() == null || !decodedJWT.getAlgorithm().equalsIgnoreCase("HS512"))
         throw new IllegalStateException("No valid JWT algorithm found (" + decodedJWT.getType() + ")");
 
-      System.out.println ("Header     : " + decodedJWT.getHeader());
-      System.out.println ("Signature  : " + decodedJWT.getSignature());
-      System.out.println ("Payload    : " + decodedJWT.getPayload());
-      System.out.println ("Type       : " + decodedJWT.getType());
-      System.out.println ("Expiration : " + decodedJWT.getExpiresAt());
-      System.out.println ("Algorithm  : " + decodedJWT.getAlgorithm());
-      for (String next: decodedJWT.getClaims().keySet()) {
-        System.out.println ("Claim      : " + next);
-        Claim claim = decodedJWT.getClaim(next);
-        System.out.println("Value       : " + claim.asString());
-      }
+
 
       String mandant = decodedJWT.getClaim("mandant").asString();
       String username = decodedJWT.getClaim("username").asString();
       String role = decodedJWT.getClaim("role").asString();
 
-      log.info("Mandant  : " + mandant);
-      log.info("Username : " + username);
-      log.info("Role     : " + role);
+      if (log.isDebugEnabled()) {
+        log.debug("Header     : " + decodedJWT.getHeader());
+        log.debug("Signature  : " + decodedJWT.getSignature());
+        log.debug("Payload    : " + decodedJWT.getPayload());
+        log.debug("Type       : " + decodedJWT.getType());
+        log.debug("Expiration : " + decodedJWT.getExpiresAt());
+        log.debug("Algorithm  : " + decodedJWT.getAlgorithm());
+        for (String next : decodedJWT.getClaims().keySet()) {
+          log.debug("Claim      : " + next);
+          Claim claim = decodedJWT.getClaim(next);
+          log.debug("Value       : " + claim.asString());
+        }
+
+        log.debug("Mandant  : " + mandant);
+        log.debug("Username : " + username);
+        log.debug("Role     : " + role);
+      }
+
 
       Algorithm algorithm = Algorithm.HMAC512(mandant);
       algorithm.verify(decodedJWT);

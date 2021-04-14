@@ -1,6 +1,7 @@
 package de.noventi.cm.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -16,6 +17,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @Slf4j
 public class ServiceApplication {
+
+  public ServiceApplication (@Autowired final TestDataCreator testDataCreator) {
+    testDataCreator.create();
+  }
 
   public static void main (final String [] args) {
     log.info("Application Pid  : " + new File("application.pid").getAbsoluteFile().getAbsolutePath());
