@@ -34,6 +34,7 @@ public class CustomerController implements CustomersApi{
   }
 
   @Override public ResponseEntity<CustomerDTO> getCustomer(@ApiParam(value = "",required=true) @PathVariable("customerId") String customerId) {
+    long currentTime = System.currentTimeMillis();
     log.info("called getCustomer " + customerId);
 
     if (customerId.startsWith("W")) {
@@ -45,7 +46,8 @@ public class CustomerController implements CustomersApi{
     }
     Optional<Customer> byId = customerRepository.findById(customerId);
     if (byId.isPresent()) {
-      log.info("Found customer " + byId.get().getId());
+      long duration = System.currentTimeMillis() - currentTime;
+      log.info("Found customer " + byId.get().getId() + "(" + duration + " ms)");
       return ResponseEntity.ok(customerMapper.toCustomerDTO(byId.get()));
     }
     else {

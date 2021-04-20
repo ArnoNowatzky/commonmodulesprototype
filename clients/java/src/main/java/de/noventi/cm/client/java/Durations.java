@@ -1,15 +1,19 @@
 package de.noventi.cm.client.java;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
-
+import org.apache.commons.io.FileUtils;
 
 public class Durations {
 
   @Getter
+
   private HashMap<String, Duration> durations = new HashMap<>();
 
   public void start (final String id) {
@@ -27,8 +31,20 @@ public class Durations {
   }
 
   public String toString () {
+
+    System.out.println (durations);
     List<Duration> sorted = new ArrayList<Duration>(durations.values());
     Collections.sort(sorted);
     return sorted.toString();
+  }
+
+  public File save (final File toFile) {
+    toFile.getParentFile().mkdirs();
+    try {
+      FileUtils.writeStringToFile(toFile, toString().replace("[\n", "").replace("]","").replace(",",""), Charset.defaultCharset());
+      return toFile;
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
   }
 }

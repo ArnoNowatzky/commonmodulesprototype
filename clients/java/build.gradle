@@ -11,6 +11,7 @@ apply {
     plugin 'java-library'
     plugin 'org.openapi.generator'
     plugin 'application'
+    plugin 'docker-compose'
 }
 
 ext.lombokVersion = '1.18.6'
@@ -21,9 +22,11 @@ targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
 
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
 
     compile 'com.auth0:java-jwt:3.10.3'
 
@@ -43,11 +46,12 @@ dependencies {
 
     compile 'io.swagger:swagger-annotations:1.5.22'
 
-
     compile 'commons-io:commons-io:2.7'
     compile fileTree(dir: '/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Java', include: '*.jar')
 
     testCompile('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+    testCompile 'org.apache.poi:poi:4.1.2'
+    testCompile 'org.apache.poi:poi-ooxml:4.1.2'
 }
 
 
@@ -116,3 +120,5 @@ processResources.doFirst {
 tasks.run {
     jvmArgs('-Djava.library.path=/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Java')
 }
+
+dockerCompose.isRequiredBy(test)
