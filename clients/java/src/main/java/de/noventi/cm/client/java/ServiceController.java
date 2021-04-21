@@ -1,9 +1,9 @@
 package de.noventi.cm.client.java;
 
 import de.noventi.cm.client.java.runtime.ApiException;
-import de.noventi.cm.client.java.service.ApiClient;
-import de.noventi.cm.client.java.service.api.CustomerApi;
-import de.noventi.cm.client.java.service.model.CustomerDTO;
+import de.noventi.cm.client.java.example.ApiClient;
+import de.noventi.cm.client.java.example.api.CustomerApi;
+import de.noventi.cm.client.java.example.model.CustomerDTO;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +48,7 @@ public class ServiceController {
       lblId.setText(customer.getId());
       lblName.setText(customer.getName());
       lblFirstname.setText(customer.getFirstname());
-    } catch (de.noventi.cm.client.java.service.ApiException e) {
+    } catch (de.noventi.cm.client.java.example.ApiException e) {
       lblFirstname.setText("");
       lblName.setText("");
       lblId.setText("");

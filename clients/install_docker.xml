@@ -10,7 +10,7 @@ version: '3'
 
 services:
   service:
-   image:  awinta-docker.intra.vsa.de/noventi.cm/commonmoduleservice:0.1-SNAPSHOT
+   image:  awinta-docker.intra.vsa.de/noventi.cm/commonmoduleexample:0.1-SNAPSHOT
    ports:
      - "8002:8002"
    volumes:

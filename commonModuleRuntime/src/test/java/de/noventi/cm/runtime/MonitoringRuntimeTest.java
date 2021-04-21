@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 public class MonitoringRuntimeTest {
 
-  @Test
+  /**@Test
   public void call () {
     MonitoringRuntime monitoringRuntime = new MonitoringRuntime();
     monitoringRuntime.sendData();
 
-  }
+  }**/
 }

@@ -1,7 +1,7 @@
 package de.noventi.cm.client.java;
 
-import de.noventi.cm.client.java.service.ApiClient;
-import de.noventi.cm.client.java.service.api.CustomerApi;
+import de.noventi.cm.client.java.example.ApiClient;
+import de.noventi.cm.client.java.example.api.CustomerApi;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;

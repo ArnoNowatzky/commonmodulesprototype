@@ -24,8 +24,8 @@ services:
       timeout: 5s
       retries: 5
 
-  commonModuleService:
-    image: awinta-docker.intra.vsa.de/noventi.cm/commonmoduleservice:0.1-SNAPSHOT
+  commonModuleExample:
+    image: awinta-docker.intra.vsa.de/noventi.cm/commonmoduleexample:0.1-SNAPSHOT
     ports:
       - "8002:8002"
     volumes:

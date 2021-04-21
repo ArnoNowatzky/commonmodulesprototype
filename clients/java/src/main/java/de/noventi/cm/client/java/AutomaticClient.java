@@ -1,8 +1,8 @@
 package de.noventi.cm.client.java;
 
-import de.noventi.cm.client.java.service.ApiException;
-import de.noventi.cm.client.java.service.api.CustomerApi;
-import de.noventi.cm.client.java.service.model.CustomerDTO;
+import de.noventi.cm.client.java.example.ApiException;
+import de.noventi.cm.client.java.example.api.CustomerApi;
+import de.noventi.cm.client.java.example.model.CustomerDTO;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import lombok.extern.slf4j.Slf4j;

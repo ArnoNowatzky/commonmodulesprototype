@@ -56,7 +56,7 @@ dependencies {
 
 
 
-File[] openApiInputs = [project.file('../../api/src/main/resources/api/service/service.yaml').absoluteFile,
+File[] openApiInputs = [project.file('../../api/src/main/resources/api/example/example.yaml').absoluteFile,
                         project.file('../../api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
 // Iterate on all swagger files and generate a task for each one with the nomenclature openApiGenerate + swagger name
 openApiInputs.each {File file->
@@ -122,3 +122,4 @@ tasks.run {
 }
 
 dockerCompose.isRequiredBy(test)
+tasks.composeUp.dependsOn project(':commonModuleExample').tasks.jibDockerBuild

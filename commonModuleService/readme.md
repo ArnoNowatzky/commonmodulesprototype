@@ -1,1 +1,0 @@
-This project provides an example REST common module
