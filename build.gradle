@@ -17,6 +17,13 @@ buildscript {
 }
 
 
+task dockerInfo {
+    doLast {
+        exec { executable('docker'); args('-v')}
+        exec { executable('docker-compose'); args('-v')}
+    }
+}
+
 
 
 allprojects {
