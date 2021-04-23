@@ -1,72 +1,96 @@
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: "customer api"
-  description: "API of service example customer"
+  title: "medication plans api"
+  description: "API of service example medication plans"
 servers:
   - url: http://localhost:8002/v1
 security:
   - bearerAuth: []
 
 paths:
-  /customers:
+  /medicationcontainers:
     get:
       tags:
-        - customer
-      operationId: "getCustomers"
-      description: "returns all customers of the system"
+        - medications
+      operationId: "getMedicationContainers"
+      description: "returns all medication containers"
       responses:
         '200':
-          description: list of customers
+          description: list of medication containers
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/CustomerDTO"
+                  $ref: "#/components/schemas/MedicationcontainerDTO"
                 
 
-  /customers/{customerId}:
+  /medicationcontainers/findByCustomerId/{consumerId}:
     get:
       tags:
-        - customer
-      operationId: "getCustomer"
-      description: "returns the customer with the parameterized customerId"
+        - medications
+      operationId: "findMedicationContainersByConsumer"
+      description: "returns the medication containers of the parameterized medication consumer"
       parameters:
         - in: path
-          name: customerId
+          name: consumerId
           schema:
             type: string
           required: true
       responses:
         '200':
-          description: list of tasks
+          description: list of medication containers
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerDTO"
+                type: array
+                items:
+                  $ref: "#/components/schemas/MedicationcontainerDTO"
+
+
+
+  /medicationcontainers/{containerId}:
+    get:
+      tags:
+        - medications
+      operationId: "getMedicationContainer"
+      description: "returns medication container with the parameterized containerId"
+      parameters:
+        - in: path
+          name: containerId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: medication container
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MedicationcontainerDTO"
 
     put:
       tags:
-        - customer
-      operationId: "setCustomer"
-      description: "updates the customer with the parameterized customerId"
+        - medications
+      operationId: "updateMedicationContainer"
+      description: "updates the medication container with the parameterized containerId"
       parameters:
         - in: path
-          name: customerId
+          name: containerId
           schema:
             type: string
           required: true
       requestBody:
-        description: changed customer
+        description: updated container
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CustomerDTO'
+              $ref: '#/components/schemas/MedicationcontainerDTO'
       responses:
-        '201':
-          description: Created
+        '200':
+          description: Updated
 
 components:
   securitySchemes:
@@ -76,61 +100,42 @@ components:
       bearerFormat: JWT
 
   schemas:
-    CustomerDTO:
+    MedicationcontainerDTO:
       type: "object"
       properties:
         id:
           description: "technical id"
           type: "string"
-        title:
-          description: "mr / mrs. ...."
-          type: "string"
-        name:
-          description: "surename of the customer"
-          type: "string"
-        firstname:
-          description: "firstname(s) of the customer"
+
+        consumerId:
+          description: "consumer id equals customer id from wawi"
           type: "string"
 
-        address:
-          description: "the postal address of the customer"
-          $ref: "#/components/schemas/AddressDTO"
+        consumerName:
+          description: "surename of the medication consumer"
+          type: "string"
 
-        phones:
+        consumerFirstname:
+          description: "firstname(s) of the medication consumer"
+          type: "string"
+
+        medications:
           description: "list of phonenumbers to communicate with the customer"
           type: array
           items:
-            $ref: "#/components/schemas/PhoneDTO"
+            $ref: "#/components/schemas/MedicationDTO"
 
 
-    AddressDTO:
+    MedicationDTO:
       type: "object"
       properties:
         id:
           description: "technial ID"
           type: "string"
-        street:
-          description: "name of the street"
-          type: "string"
-        housenumber:
-          description: "the housenumber of the customer (plus additional infos) (which level)"
-          type: "string"
-        postcode:
-          description: "postal code"
-          type: "string"
-        city:
-          description: "name of the city, auto added by postal code"
+        pharmacode:
+          description: "pharmacode"
           type: "string"
 
-    PhoneDTO:
-      type: "object"
-      properties:
-        id:
-          description: "technial ID"
-          type: "string"
-        number:
-          description: "the phone number"
-          type: "string"
-        phonetype:
-          description: "the phone type (mobile, work, private....)"
+        name:
+          description: "name of the medication"
           type: "string"

@@ -1,7 +1,7 @@
 package de.noventi.cm.client.java;
 
 import de.noventi.cm.client.java.example.ApiClient;
-import de.noventi.cm.client.java.example.api.CustomerApi;
+import de.noventi.cm.client.java.example.api.MedicationsApi;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +14,7 @@ public class Services {
 
   public final static String BASEURL_SERVICE_LOCAL = "https://localhost:8002";
 
-  public CustomerApi getCustomerApi (final String basePath) {
+  public MedicationsApi getCustomerApi (final String basePath) {
     ApiClient apiClient = new ApiClient();
     apiClient.setBasePath(basePath);
 
@@ -26,7 +26,7 @@ public class Services {
       Certificate cerificate = ks.getCertificate("commonmodule");
       ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(cerificate.getEncoded());
       apiClient.setSslCaCert(byteArrayInputStream);
-      CustomerApi customerApi = new CustomerApi(apiClient);
+      MedicationsApi customerApi = new MedicationsApi(apiClient);
       if (ApplicationContext.getToken() != null) {
         log.info("Add token " + ApplicationContext.getToken());
         customerApi.getApiClient().addDefaultHeader("Authorization", "Bearer " + ApplicationContext.getToken());

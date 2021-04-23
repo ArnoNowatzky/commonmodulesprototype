@@ -1,10 +1,8 @@
 package de.noventi.cm.example;
 
-import de.noventi.cm.example.db.Address;
-import de.noventi.cm.example.db.Customer;
-import de.noventi.cm.example.db.CustomerRepository;
-import de.noventi.cm.example.db.Phone;
-import de.noventi.cm.example.db.PhoneType;
+import de.noventi.cm.example.db.Medication;
+import de.noventi.cm.example.db.MedicationContainer;
+import de.noventi.cm.example.db.MedicationContainerRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,45 +15,36 @@ import org.springframework.stereotype.Service;
 public class TestDataCreator {
 
   @Autowired
-  private CustomerRepository customerRepository;
+  private MedicationContainerRepository medicationContainerRepository;
 
   public void create () {
-    List<Customer> customerList = new ArrayList<>();
+    List<MedicationContainer> medicationContainerList = new ArrayList<>();
     for (int i = 0; i < 1000; i++) {
 
-      Address address = new Address();
-      address.setId(Integer.toString(i));
-      address.setCity("London");
-      address.setPostcode("W1K 7JB");
-      address.setStreet("Baker Street");
-      address.setHousenumber("221B");
+      MedicationContainer medicationContainer = new MedicationContainer();
+      medicationContainer.setId(Integer.toString(i));
+      medicationContainer.setConsumerId("Holmes " + i);
+      medicationContainer.setConsumerName("Holmes " + i);
+      medicationContainer.setConsumerFirstname("Sherlock " + i);
 
-      Customer customer = new Customer();
-      customer.setId(Integer.toString(i));
-      customer.setName("Holmes " + i);
-      customer.setFirstname("Sherlock " + i);
-      customer.setTitle("Mr.");
-      customer.setAddress(address);
+      List<Medication> medications = new ArrayList<>();
+      Medication medication1 = new Medication();
+      medication1.setId(UUID.randomUUID().toString());
+      medication1.setName("RULID 300");
+      medication1.setPharmacode("04462016");
+      medications.add(medication1);
+      Medication medication2 = new Medication();
+      medication2.setId(UUID.randomUUID().toString());
+      medication2.setName("SIMVA ARISTO 40MG");
+      medication2.setPharmacode("09900751");
+      medications.add(medication2);
 
-      List<Phone> phones = new ArrayList<>();
-      Phone phone = new Phone();
-      phone.setId(UUID.randomUUID().toString());
-      phone.setType(PhoneType.MOBILE);
-      phone.setNumber("12877125871258");
-      phones.add(phone);
-      Phone phone2 = new Phone();
-      phone2.setId(UUID.randomUUID().toString());
-      phone2.setType(PhoneType.WORK);
-      phone2.setNumber("127127512875124");
-      phones.add(phone2);
-
-      customer.setPhones(phones);
-      customerList.add(customer);
+      medicationContainerList.add(medicationContainer);
 
     }
 
-    log.info("Creating "+ customerList.size() + " customers for test");
-    customerRepository.deleteAll();
-    customerRepository.saveAll(customerList);
+    log.info("Creating "+ medicationContainerList.size() + " medicationcontainers for test");
+    medicationContainerRepository.deleteAll();
+    medicationContainerRepository.saveAll(medicationContainerList);
   }
 }

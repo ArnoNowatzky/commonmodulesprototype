@@ -1,5 +1,6 @@
 package de.noventi.cm.example.db;
 
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,20 +11,19 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Customer {
+public class MedicationContainer {
 
   @Id
   private String id;
 
-  private String title;
+  private String consumerId;
 
-  private String name;
+  private String consumerName;
 
-  private String firstname;
+  private String consumerFirstname;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  private Address address;
+  private Date consumerBirthday;
 
   @OneToMany(cascade = CascadeType.ALL)
-  private List<Phone> phones;
+  private List<Medication> medications;
 }

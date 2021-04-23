@@ -4,16 +4,8 @@
         <action>INSTALL</action>
         <type>JAR</type>
         <jdk>jdk11</jdk>
-        <name>CustomerService</name>
+        <name>ExampleService</name>
         <sql>true</sql>
-        <url>file:///~/.m2/repository/de/noventi/cm/commonModuleService/0.1-SNAPSHOT/commonModuleService-0.1-SNAPSHOT.jar</url>
-    </module>
-    <module>
-        <id>ui</id>
-        <action>INSTALL</action>
-        <type>JAR</type>
-        <jdk>jdk11</jdk>
-        <name>Customer Service with Ui</name>
-        <url>file:///~/.m2/repository/de/noventi/cm/commonModuleUi/0.1-SNAPSHOT/commonModuleUi-0.1-SNAPSHOT.jar</url>
+        <url>file:///~/.m2/repository/de/noventi/cm/commonModuleExample/0.1-SNAPSHOT/commonModuleExample-0.1-SNAPSHOT.jar </url>
     </module>
 </modules>

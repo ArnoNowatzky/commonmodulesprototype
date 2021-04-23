@@ -1,8 +1,8 @@
 package de.noventi.cm.client.java;
 
 import de.noventi.cm.client.java.example.ApiException;
-import de.noventi.cm.client.java.example.api.CustomerApi;
-import de.noventi.cm.client.java.example.model.CustomerDTO;
+import de.noventi.cm.client.java.example.api.MedicationsApi;
+import de.noventi.cm.client.java.example.model.MedicationcontainerDTO;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -32,16 +32,16 @@ public class AutomaticClient {
 
       Durations durationsService = new Durations();
 
-      CustomerApi customerApi = services.getCustomerApi(Services.BASEURL_SERVICE_LOCAL);
+      MedicationsApi medicationsApi = services.getCustomerApi(Services.BASEURL_SERVICE_LOCAL);
       for (int i = 0; i < NUMBER_SERVICECALLS; i++) {
         String id = String.format("%04d", i);
         String searchedId = String.valueOf(i);
         durationsService.start(id);
-        CustomerDTO customer = customerApi.getCustomer(searchedId);
+        MedicationcontainerDTO medicationContainer = medicationsApi.getMedicationContainer(searchedId);
         durationsService.stop(id);
 
-        if (!customer.getFirstname().equals("Sherlock " + i))
-          throw new IllegalStateException("Error on " + i + ". servicecall, firstname " + customer.getFirstname() + " does not match the expected name");
+        if (!medicationContainer.getConsumerFirstname().equals("Sherlock " + i))
+          throw new IllegalStateException("Error on " + i + ". servicecall, firstname " + medicationContainer.getConsumerFirstname() + " does not match the expected name");
       }
 
       durationsService.save(new File (folder, "service_" + ProcessHandle.current().pid() + "_" + uuid));

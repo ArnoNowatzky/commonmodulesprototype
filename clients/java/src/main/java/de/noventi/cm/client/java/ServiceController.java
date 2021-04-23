@@ -1,18 +1,11 @@
 package de.noventi.cm.client.java;
 
+import de.noventi.cm.client.java.example.api.MedicationsApi;
+import de.noventi.cm.client.java.example.model.MedicationcontainerDTO;
 import de.noventi.cm.client.java.runtime.ApiException;
-import de.noventi.cm.client.java.example.ApiClient;
-import de.noventi.cm.client.java.example.api.CustomerApi;
-import de.noventi.cm.client.java.example.model.CustomerDTO;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.security.KeyStore;
-import java.security.cert.Certificate;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javax.net.ssl.KeyManager;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.control.Notifications;
 
@@ -42,12 +35,12 @@ public class ServiceController {
   private void reload() {
 
     try {
-      CustomerApi customerApi = services.getCustomerApi(Services.BASEURL_SERVICE_LOCAL);
-      log.info("Basepath of customer: " + customerApi.getApiClient().getBasePath());
-      CustomerDTO customer = customerApi.getCustomer("1");
+      MedicationsApi medicationsApi = services.getCustomerApi(Services.BASEURL_SERVICE_LOCAL);
+      log.info("Basepath of customer: " + medicationsApi.getApiClient().getBasePath());
+      MedicationcontainerDTO customer = medicationsApi.getMedicationContainer("1");
       lblId.setText(customer.getId());
-      lblName.setText(customer.getName());
-      lblFirstname.setText(customer.getFirstname());
+      lblName.setText(customer.getConsumerName());
+      lblFirstname.setText(customer.getConsumerFirstname());
     } catch (de.noventi.cm.client.java.example.ApiException e) {
       lblFirstname.setText("");
       lblName.setText("");

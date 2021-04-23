@@ -23,28 +23,4 @@ networks:
       name: cm   # create a network with 'docker network create cm'
         </description>
     </module>
-    <module>
-        <id>ui</id>
-        <action>INSTALL</action>
-        <type>DOCKER</type>
-        <name>Customer Service with Ui</name>
-        <description>
-version: '3'
-
-services:
-  ui:
-   image:  awinta-docker.intra.vsa.de/noventi.cm/commonmoduleui:0.1-SNAPSHOT
-   ports:
-     - "8003:8003"
-   volumes:
-     - ../keystore/commonmodule.p12:/keystore/commonmodule.p12
-   environment:
-     - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12
-
-networks:
-  default:
-    external:
-      name: cm  # create a network with 'docker network create cm'
-        </description>
-    </module>
 </modules>

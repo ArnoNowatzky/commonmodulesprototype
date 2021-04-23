@@ -33,5 +33,5 @@ services:
     environment:
       - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12
     depends_on:
-      - postgresql:
+      postgresql:
          condition: service_healthy

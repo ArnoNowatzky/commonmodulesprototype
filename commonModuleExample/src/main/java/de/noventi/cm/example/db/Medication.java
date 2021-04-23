@@ -8,13 +8,13 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Phone {
+public class Medication {
 
   @Id
   private String id;
 
-  @Enumerated(EnumType.STRING)
-  private PhoneType type;
+  private String pharmacode;
 
-  private String number;
+  private String name;
+
 }
