@@ -29,7 +29,7 @@ pipeline {
 
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
-                      bat 'gradlew clean dockerInfo build  -s'
+                      bat 'gradlew clean build  -s'
                     }
 
                 }
