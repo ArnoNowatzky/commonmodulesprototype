@@ -1,4 +1,4 @@
-version: "3.1" 
+version: "3.7"
 services:
   activemq: 
     image: rmohr/activemq
@@ -32,6 +32,3 @@ services:
       - ../../keystore/commonmodule.p12:/keystore/commonmodule.p12
     environment:
       - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12
-    depends_on:
-      postgresql:
-         condition: service_healthy
