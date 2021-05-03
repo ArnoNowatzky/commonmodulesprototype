@@ -16,7 +16,7 @@ pipeline {
   stages { 
     stage('Run Tests') {
         parallel {
-            /**stage ('Tests On Windows') {
+            stage ('Tests On Windows') {
                 agent {
                     label 'sam-windows'
                 }
@@ -33,7 +33,7 @@ pipeline {
                     }
 
                 }
-            }**/
+            }
 
             stage ('Tests On Linux') {
                 agent {
