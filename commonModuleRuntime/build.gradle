@@ -142,12 +142,9 @@ jib {
 
     }
     from {
-        image = 'amazoncorretto:11.0.11'
-        auth {
-            username = dockerUser
-            password = dockerPwd
-        }
+        image = System.env['GIT_BRANCH'] == null ? 'amazoncorretto:11.0.11' : 'docker.intra.vsa.de/amazoncorretto:11.0.9-alpine'
     }
+
     container {
         mainClass = 'de.noventi.cm.runtime.RuntimeApplication'
         environment = ['SPRING_DATASOURCE_URL':'jdbc:postgresql://postgresql:5432/service',
