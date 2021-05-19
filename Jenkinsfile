@@ -34,7 +34,7 @@ pipeline {
                     }
 
                     dir("${env.WORKSPACE}/api"){
-                        bat 'gradlew clean build -s'
+                        bat '..\\gradlew clean build -s'
                     }
 
                 }
@@ -58,7 +58,7 @@ pipeline {
                     }
 
                     dir("${env.WORKSPACE}/api"){
-                        sh './gradlew clean build -s'
+                        sh '../gradlew clean build -s'
                     }
 
                 }
