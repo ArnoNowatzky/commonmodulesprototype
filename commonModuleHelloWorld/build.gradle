@@ -6,7 +6,7 @@ apply {
     plugin 'java-library'
     plugin 'org.springframework.boot'
     plugin 'io.spring.dependency-management'
-    plugin 'vsa.releasemaven'
+    plugin 'maven-publish'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -55,7 +55,7 @@ jib {
 
     }
     from {
-        image = 'docker.intra.vsa.de/amazoncorretto:11.0.9-alpine'
+        image = 'amazoncorretto:11.0.11'
         auth {
             username = dockerUser
             password = dockerPwd
@@ -84,5 +84,5 @@ test {
 }
 
 tasks.jibDockerBuild.dependsOn classes, bootJar
-tasks.build.dependsOn tasks.releaseLocalSnapshot
+tasks.build.dependsOn tasks.publishToMavenLocal
 tasks.build.dependsOn tasks.jibDockerBuild

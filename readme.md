@@ -5,7 +5,7 @@ The underlying architecture concept is located under https://confluence.intra.vs
 # Prerequisites
 This projects needs the following things to be installed:
 
-- JDK 11
+- JDK 11-14 (15 not yet supported to older spring version.... to be done)
 - docker
 - docker-compose
 

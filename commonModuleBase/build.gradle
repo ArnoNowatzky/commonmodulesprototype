@@ -1,6 +1,6 @@
 apply {
     plugin 'java-library'
-    plugin 'vsa.releasemaven'
+    plugin 'maven-publish'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -29,4 +29,4 @@ dependencies {
     testCompile('org.junit.jupiter:junit-jupiter-engine:5.2.0')
 }
 
-tasks.build.dependsOn tasks.releaseLocalSnapshot
+tasks.build.dependsOn tasks.publishToMavenLocal
