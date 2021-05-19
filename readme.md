@@ -1,84 +1,32 @@
 
-This is a complete prototype for handling common modules in *WawiNeu*
+This is a complete prototype for handling common modules with the new architecture in project *WawiNeu*
+The underlying architecture concept is located under https://confluence.intra.vsa.de/display/UPA/Common+Modules+-+Architekturkonzept_DRAFT.
 
-# Initially build and run the prototype
-You can build the project by calling
-```
- ./gradlew build 
-```
-in the root project. Afterwards you can start
-```
- ./gradlew bootRun 
-```
-in commonModuleRuntime to start the common modules runtime
+# Prerequisites
+This projects needs the following things to be installed:
 
-and
-```
- ./gradlew run 
-```
-in one of the client projects (client/java....) to start the client, which tests the integration
+- JDK 11
+- docker
+- docker-compose
 
-# Central module with REST
-The subproject 'commonModuleService' provides a customerservice with a REST api. 
-It uses the [openapi spec](api/src/main/api/service/service.yaml) to define the API. 
-The module itself is uploaded to mavenlocal (~/.m2/repository/de/noventi/cm/commonModuleService/)
-to be installable in the further prototype
+# Structure
+The prototype contains of the following parts:
+* *api*: API definitions from CM side
+* *clients*: Default client implementation side of WAWI. They do not contain the complete target technology stack,
+  but the stack, which can be provided without having the WAWI
+* *commonModuleBase*: Basic implementations which can be used in all common modules
+* *commonModuleExample*: Example common module containing REST API, Event implementation and a browser component,
+  which can be used in embedded browser to be shown
+* *commonModuleHelloWorld*: A simple hello world common module to check the base resource needs without any techstack
+* *commonModuleRuntime*: initial implementation of the NCI, containing the cm side of installation,
+  databasehandling, the event broker and REST API to start/stop common modules as executable jar,
+  as dockerimage
+* *datacenter*: contains all components, which are located in datacenter
+* *documentation*: the architecture concept doctoolchain (to be done)
+* *keystore*: keys/certificates for https
+* *template*: templating for new cm projects (to be done)
 
-# Central module with UI
-The subproject 'commonModuleUi' provides a customerservice with a REST api and an angular app to administrate customers.
-It uses the [openapi spec](api/src/main/api/service/service.yaml) to define the API
-The module itself is uploaded to mavenlocal (~/.m2/repository/de/noventi/cm/commonModuleUi/) 
-to be installable in the further prototype. 
-
-# Central module with Event based communication 
-(Active MQ https://medium.com/@mailshine/activemq-getting-started-with-springboot-a0c3c960356e)
-
-# Runtime exectuable jar
-The subproject 'commonModuleRuntime' provides a small runtime which enables starting independent services.
-1. In subproject clients/java call `docker-compose up`. This starts a postgres database, an acivemq broker, 
-   a keycloak and other things important for running the prototype. This must only be done once.
-2. In another tab of your terminal call `./gradlew :commonModuleRuntime:bootRun` to start the runtime itself. 
-3. In a third tab of your terminal start call `./gradlew :clients:java:run` to start the small java client.
-4. In the client step to tab 'Admin' and select 'jar' in the combobox. 
-5. Install all modules by clicking button *Install all modules*. This installs everything under _clients/java/build/example/jar_
-6. Start all modules by clicking button *Start all modules*
-7. When clicking on button *Get status* you see the state of the installed modules. 
-8. You can start/stop one dedicated service by clicking button *Stop/Start* in the list.
-
-# Runtime docker
-The subproject 'commonModuleRuntime' provides a small runtime which enables starting independent services.
-1. In subproject clients/java call `docker-compose up`. This starts a postgres database, an acivemq broker,
-   a keycloak and other things important for running the prototype. This must only be done once.
-2. In another tab of your terminal call `./gradlew :commonModuleRuntime:bootRun` to start the runtime itself.
-3. In a third tab of your terminal start call `./gradlew :clients:java:run` to start the small java client.
-4. In the client step to tab 'Admin' and select 'docker' in the combobox.
-5. Install all modules by clicking button *Install all modules*. This installs everything under _clients/java/build/example/jar_
-6. Start all modules by clicking button *Start all modules*
-7. When clicking on button *Get status* you see the state of the installed modules.
-8. You can start/stop one dedicated service by clicking button *Stop/Start* in the list.
-
-# Autogenerate documentation of common module
-After initially build the project you only have to call 
-```
-./gradlew :api:serve
-``` 
-and your browser is opened with the generated documentation.
-This should show the possibility to automatically generate api documentation from spec and can be used for both 
-common modules and point of sale documentation.
-
-# Native browser component
-# Security with https and jwt
-
-#Collect operatingsystem infos 
-On http://vpcmawinta01-x.intra.vsa.de:5601 we have established a ELK Stack where you can see environment infos 
-which are collected by the prototype. (username: elastic, password: changeme)
-The elasticsearch is accessible via://vpcmawinta01-x.intra.vsa.de:9200/
-Data is stored on vpcmawinta01-x.intra.vsa.de:9200/wawi/cm/hardware
-You can get an overview here: http://vpcmawinta01-x.intra.vsa.de:5601/app/discover
-
-(MetricBeat:     http://vpcmawinta01-x.intra.vsa.de:5601/app/home#/tutorial/systemMetrics)
-
-# Datacenter components on vpcmawinta01-x
+# Datacenter components at vpcmawinta01-x
 This vm is a CentOS7 VM and contains all datacenter components of the new architecture of the common modules.
 If you don't have access on this machine send your public key to thomas.wieschke or markus.oley and we install it.
 Following commands were executed:
@@ -99,44 +47,94 @@ Following commands were executed:
 
 In `/work/commonmodulesprototype` this git repository is cloned.`
 
-In directory `datacenter` all the components which are hosted in datacenter are contained. 
-They can be started by stepping to subdirectory and call  
+In directory `datacenter` all the components which are hosted in datacenter are contained.
+They can be started by stepping to subdirectory and call
 ```
 docker-compose up -d
 ```
 
-
 #TODOS
 - Browser JCEF -> C# OK, Java TODO      **!!!!**
-- Runtime spring boot native images 
+- Runtime spring boot native images
 - Runtime application server (Grundrauschen groß, alle gleiche Versionen, Deploymentmonolith)
 - Integration into Backup / Recovery
 - Autogenerate api client C
 - Logging central module (Tracing)   -> https://www.jaegertracing.io/ Konzept
-- Runtime kubernetes (e.g. K3s)     
+- Runtime kubernetes (e.g. K3s)
 - Sonarqube, check security automated
 - Provide an installer for the runtime
-- First usage of windows: is java allowed?
+- First usage of windows: question: is java allowed?
 
-# The prototype and the reality
-This prototype should validate the architecture against all existing WAWI systems.
+# Prototype in Action
 
-**AwintaOne**
-- Frontend written in C# 
-- Backend written in CacheDB
+## Initially build and run the prototype
+You can build the project by calling
+```
+ ./gradlew build 
+```
+in the root project. Afterwards you can start
+```
+ ./gradlew bootRun 
+```
+in commonModuleRuntime to start the common modules runtime
 
-**Infopharm**
-- Written in C, C++, C#, 
-- Tobias Essig mentioned that only C# is relevant for this scenario
+and
+```
+ ./gradlew run 
+```
+in one of the client projects (client/java....) to start the client, which tests the integration
 
-**Jump**
-- Frontend and backend written in Java
+## Runtime exectuable jar
+The subproject 'commonModuleRuntime' provides a small runtime which enables starting independent services.
+1. In subproject clients/java call `docker-compose up`. This starts a postgres database, an acivemq broker, 
+   a keycloak and other things important for running the prototype. This must only be done once.
+2. In another tab of your terminal call `./gradlew :commonModuleRuntime:bootRun` to start the runtime itself. 
+3. In a third tab of your terminal start call `./gradlew :clients:java:run` to start the small java client.
+4. In the client step to tab 'Admin' and select 'jar' in the combobox. 
+5. Install all modules by clicking button *Install all modules*. This installs everything under _clients/java/build/example/jar_
+6. Start all modules by clicking button *Start all modules*
+7. When clicking on button *Get status* you see the state of the installed modules. 
+8. You can start/stop one dedicated service by clicking button *Stop/Start* in the list.
 
-**Pharmasoft**
-- T.B.D
+## Runtime docker
+The subproject 'commonModuleRuntime' provides a small runtime which enables starting independent services.
+1. In subproject clients/java call `docker-compose up`. This starts a postgres database, an acivemq broker,
+   a keycloak and other things important for running the prototype. This must only be done once.
+2. In another tab of your terminal call `./gradlew :commonModuleRuntime:bootRun` to start the runtime itself.
+3. In a third tab of your terminal start call `./gradlew :clients:java:run` to start the small java client.
+4. In the client step to tab 'Admin' and select 'docker' in the combobox.
+5. Install all modules by clicking button *Install all modules*. This installs everything under _clients/java/build/example/jar_
+6. Start all modules by clicking bu tton *Start all modules*
+7. When clicking on button *Get status* you see the state of the installed modules.
+8. You can start/stop one dedicated service by clicking button *Stop/Start* in the list.
 
-**Prokas**
-- T.B.D
+## Autogenerate documentation of common module
+After initially build the project you only have to call 
+```
+./gradlew :api:serve
+``` 
+and your browser is opened with the generated documentation.
+This should show the possibility to automatically generate api documentation from spec and can be used for both 
+common modules and point of sale documentation.
+
+## Native browser component
+to be done
+
+## Security with https and jwt
+to be done
+
+##Collect operatingsystem infos 
+On http://vpcmawinta01-x.intra.vsa.de:5601 we have established a ELK Stack where you can see environment infos 
+which are collected by the prototype. (username: elastic, password: changeme)
+The elasticsearch is accessible via://vpcmawinta01-x.intra.vsa.de:9200/
+Data is stored on vpcmawinta01-x.intra.vsa.de:9200/wawi/cm/hardware
+You can get an overview here: http://vpcmawinta01-x.intra.vsa.de:5601/app/discover
+
+(MetricBeat:     http://vpcmawinta01-x.intra.vsa.de:5601/app/home#/tutorial/systemMetrics)
+
+
+
+
 
 
 

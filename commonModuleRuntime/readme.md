@@ -1,4 +1,5 @@
-This project provides an example runtime to handle the common commonModules locally in the pharmacy
+This project provides an example runtime to handle the common commonModules locally in the pharmacy.
+
 
 # Handling the database 
 Call ```docker-compose up``` in current directory to start the database server.

@@ -1,1 +1,0 @@
-- Check up-to-date-check of openapi generators, always clean necessary at the moment
