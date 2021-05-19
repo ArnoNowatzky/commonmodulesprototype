@@ -6,4 +6,4 @@ Call
 ./gradlew build serve 
 `
 
-to build html based api documentation and start a local webserver to serve it. 
+in api project to build html based api documentation and start a local webserver to serve it. 

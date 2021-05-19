@@ -28,8 +28,13 @@ pipeline {
                 }
 
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
-                      bat 'gradlew clean build  -s'
+
+                    dir("${env.WORKSPACE}"){
+                        bat 'gradlew clean dockerInfo build -s'
+                    }
+
+                    dir("${env.WORKSPACE}/api"){
+                        bat 'gradlew clean build -s'
                     }
 
                 }
@@ -48,8 +53,12 @@ pipeline {
                 }
 
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'awintaDocker', usernameVariable: 'ORG_GRADLE_PROJECT_awinta_dockerUser', passwordVariable: 'ORG_GRADLE_PROJECT_awinta_dockerPassword')]) {
+                    dir("${env.WORKSPACE}"){
                       sh './gradlew clean dockerInfo build -s'
+                    }
+
+                    dir("${env.WORKSPACE}/api"){
+                        sh './gradlew clean build -s'
                     }
 
                 }
