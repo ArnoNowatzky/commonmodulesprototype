@@ -1,0 +1,11 @@
+<modules>
+    <module>
+        <id>example</id>
+        <action>INSTALL</action>
+        <type>JAR</type>
+        <jdk>jdk11</jdk>
+        <name>ExampleService</name>
+        <sql>true</sql>
+        <url>file:///~/.m2/repository/de/noventi/cm/commonModuleExample/0.1-SNAPSHOT/commonModuleExample-0.1-SNAPSHOT.jar</url>
+    </module>
+</modules>

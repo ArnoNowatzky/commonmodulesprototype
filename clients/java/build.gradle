@@ -1,0 +1,130 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+plugins {
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+javafx {
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing', 'javafx.media', 'javafx.web']
+    version = "11.0.2" //12-ea+8"
+}
+
+apply {
+    plugin 'java-library'
+    plugin 'org.openapi.generator'
+    plugin 'application'
+    plugin 'docker-compose'
+}
+
+ext.lombokVersion = '1.18.6'
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+
+dependencies {
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+
+    compile 'com.auth0:java-jwt:3.10.3'
+
+    compile 'io.gsonfire:gson-fire:1.8.0'
+    compile 'com.squareup.okhttp3:okhttp:4.9.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile 'javax.annotation:javax.annotation-api:1.3.2'
+    compile 'com.google.code.findbugs:jsr305:3.0.2' //Nullable
+    compile 'org.controlsfx:controlsfx:11.0.0'
+    compile 'org.apache.activemq:activemq-client:5.16.0'
+
+    compile 'org.slf4j:slf4j-api:1.7.25'
+
+    runtime 'ch.qos.logback:logback-core:1.2.3'
+    runtime 'ch.qos.logback:logback-classic:1.2.3'
+
+    compile 'io.swagger:swagger-annotations:1.5.22'
+
+    compile 'commons-io:commons-io:2.7'
+    compile fileTree(dir: '/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Java', include: '*.jar')
+
+    testCompile('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+    testCompile 'org.apache.poi:poi:4.1.2'
+    testCompile 'org.apache.poi:poi-ooxml:4.1.2'
+}
+
+
+
+File[] openApiInputs = [project.file('../../api/src/main/resources/api/example/example.yaml').absoluteFile,
+                        project.file('../../api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
+// Iterate on all swagger files and generate a task for each one with the nomenclature openApiGenerate + swagger name
+openApiInputs.each {File file->
+    def apiName = file.getName().replace(".yaml", "");
+
+    def openApiGenerateTask = tasks.create("openApiGenerate" + apiName.capitalize(), org.openapitools.generator.gradle.plugin.tasks.GenerateTask.class, {
+        //verbose = true
+        generatorName = "java"
+        inputSpec = file.absolutePath
+        outputDir = "$buildDir/generated/openapi/".toString()
+        apiPackage = "de.noventi.cm.client.java." + apiName + ".api"
+        modelPackage = "de.noventi.cm.client.java." + apiName + ".model"
+        configOptions = [
+                dateLibrary: "java8"
+        ]
+    })
+
+    openApiGenerateTask.outputs.upToDateWhen { false }
+    openApiGenerateTask.outputs.cacheIf { false }
+    tasks.compileJava.dependsOn openApiGenerateTask
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("$buildDir/generated/openapi/src/main/java")
+        }
+    }
+}
+
+application {
+    mainClass = 'de.noventi.cm.client.java.Application'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources.doFirst {
+
+    project.copy {
+        from file ('../../')
+        into file ('build/example/jar')
+        include 'keystore/**'
+        eachFile { fcd ->
+            println "Copy " + fcd
+        }
+    }
+
+    project.copy {
+        from file ('../../')
+        into file ('build/example/docker')
+        include 'keystore/**'
+        eachFile { fcd ->
+            println "Copy " + fcd
+        }
+    }
+}
+
+tasks.run {
+    jvmArgs('-Djava.library.path=/Users/OleyMa/vcs/wawiNeu/journey/jcef_app.app/Contents/Java')
+}
+
+dockerCompose.isRequiredBy(test)
+tasks.composeUp.dependsOn project(':commonModuleExample').tasks.jibDockerBuild
+
+//Disable integration tests with docker on windows until docker is possible in nightly build
+tasks.composeUp.onlyIf {! Os.isFamily(Os.FAMILY_WINDOWS)}
+tasks.test.onlyIf {! Os.isFamily(Os.FAMILY_WINDOWS)}
