@@ -25,10 +25,10 @@ services:
       retries: 5
 
   commonModuleExample:
-    image: awinta-docker.intra.vsa.de/noventi.cm/commonmoduleexample:0.1-SNAPSHOT
+    image: awinta-docker.intra.vsa.de/noventi.cm/commonmoduleexample:0.1
     ports:
       - "8002:8002"
     volumes:
-      - ../../keystore/commonmodule.p12:/keystore/commonmodule.p12
+      - ../../../keystore/commonmodule.p12:/keystore/commonmodule.p12
     environment:
       - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12

@@ -1,0 +1,1 @@
+Project contains dummy clients implementation for a WAWI implemented in CSharp (like AwintaOne)

@@ -1,0 +1,1 @@
+Project contains dummy server implementations for a WAWI implemented in C (like Prokas/Pharmasoft)
