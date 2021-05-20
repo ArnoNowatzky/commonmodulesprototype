@@ -116,9 +116,11 @@ sourceSets {
 
 tasks.compileJava.dependsOn tasks.openApiGenerate
 
-String dockerUser = project.properties['awinta_dockerUser']
-String dockerPwd = project.properties['awinta_dockerPassword']
+String dockerBaseImage = System.getenv('GIT_BRANCH') ? 'docker.intra.vsa.de/amazoncorretto:11.0.9-alpine' : 'amazoncorretto:11.0.11'
+String dockerUser = project.properties['cm.docker.user']
+String dockerPwd = project.properties['cm.docker.pwd']
 
+println "Docker baseimage = " + dockerBaseImage
 println "Docker user = " + dockerUser
 println "Docker pwd = " + dockerPwd
 
@@ -132,7 +134,11 @@ jib {
 
     }
     from {
-        image = System.env['GIT_BRANCH'] == null ? 'amazoncorretto:11.0.11' : 'docker.intra.vsa.de/amazoncorretto:11.0.9-alpine'
+        image = dockerBaseImage
+        auth {
+            username = dockerUser
+            password = dockerPwd
+        }
     }
 
     container {

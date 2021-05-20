@@ -9,7 +9,7 @@ This projects needs the following things to be installed:
 - docker
 - docker-compose
 
-# Structure
+# Structure of project
 The prototype contains of the following parts:
 * *api*: API definitions from CM side
 * *clients*: Default client implementation side of WAWI. They do not contain the complete target technology stack,
@@ -18,7 +18,7 @@ The prototype contains of the following parts:
 * *commonModuleExample*: Example common module containing REST API, Event implementation and a browser component,
   which can be used in embedded browser to be shown
 * *commonModuleHelloWorld*: A simple hello world common module to check the base resource needs without any techstack
-* *commonModuleRuntime*: initial implementation of the NCI, containing the cm side of installation,
+* *commonModuleNCI*: initial implementation of the NCI, containing the cm side of installation,
   databasehandling, the event broker and REST API to start/stop common modules as executable jar,
   as dockerimage
 * *datacenter*: contains all components, which are located in datacenter
@@ -53,19 +53,16 @@ They can be started by stepping to subdirectory and call
 docker-compose up -d
 ```
 
-#TODOS
-- Browser JCEF -> C# OK, Java TODO      **!!!!**
-- Runtime spring boot native images
-- Runtime application server (Grundrauschen groß, alle gleiche Versionen, Deploymentmonolith)
-- Integration into Backup / Recovery
-- Autogenerate api client C
-- Logging central module (Tracing)   -> https://www.jaegertracing.io/ Konzept
-- Runtime kubernetes (e.g. K3s)
-- Sonarqube, check security automated
-- Provide an installer for the runtime
-- First usage of windows: question: is java allowed?
-
 # Prototype in Action
+
+## Preconfigurations
+To avoid anonymous pull of docker hub images configure your personal dockerhub credentials to 
+`~/.gradle/gradle.properties` like
+
+```
+cm.docker.user=[USER]
+cm.docker.pwd=[PWD]
+```
 
 ## Initially build and run the prototype
 You can build the project by calling
@@ -76,7 +73,7 @@ in the root project. Afterwards you can start
 ```
  ./gradlew bootRun 
 ```
-in commonModuleRuntime to start the common modules runtime
+in commonModuleNCI to start the common modules runtime
 
 and
 ```
@@ -85,7 +82,7 @@ and
 in one of the client projects (client/java....) to start the client, which tests the integration
 
 ## Runtime exectuable jar
-The subproject 'commonModuleRuntime' provides a small runtime which enables starting independent services.
+The subproject 'commonModuleNCI' provides a small runtime which enables starting independent services.
 1. In subproject clients/java call `docker-compose up`. This starts a postgres database, an acivemq broker, 
    a keycloak and other things important for running the prototype. This must only be done once.
 2. In another tab of your terminal call `./gradlew :commonModuleRuntime:bootRun` to start the runtime itself. 
@@ -97,10 +94,10 @@ The subproject 'commonModuleRuntime' provides a small runtime which enables star
 8. You can start/stop one dedicated service by clicking button *Stop/Start* in the list.
 
 ## Runtime docker
-The subproject 'commonModuleRuntime' provides a small runtime which enables starting independent services.
+The subproject 'commonModuleNCI' provides a small runtime which enables starting independent services.
 1. In subproject clients/java call `docker-compose up`. This starts a postgres database, an acivemq broker,
    a keycloak and other things important for running the prototype. This must only be done once.
-2. In another tab of your terminal call `./gradlew :commonModuleRuntime:bootRun` to start the runtime itself.
+2. In another tab of your terminal call `./gradlew :commonModuleNCI:bootRun` to start the runtime itself.
 3. In a third tab of your terminal start call `./gradlew :clients:java:run` to start the small java client.
 4. In the client step to tab 'Admin' and select 'docker' in the combobox.
 5. Install all modules by clicking button *Install all modules*. This installs everything under _clients/java/build/example/jar_

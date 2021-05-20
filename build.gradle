@@ -14,7 +14,6 @@ buildscript {
     }
 }
 
-
 task dockerInfo {
     doLast {
         exec { executable('docker'); args('-v')}

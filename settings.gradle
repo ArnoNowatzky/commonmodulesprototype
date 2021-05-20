@@ -1,7 +1,7 @@
 include 'commonModuleBase'
 include 'commonModuleHelloWorld'
 include 'commonModuleExample'
-include 'commonModuleRuntime'
+include 'commonModuleNCI'
 include 'clients:java'
 include 'clients:csharp'
 include 'clients:c'
