@@ -18,7 +18,7 @@ public class SchedulerTask {
 
   @Scheduled(fixedRate = 5000)
   public void reportCurrentTime () {
-    String message = "The time on module runtime is now " + dateFormat.format(new Date());
+    String message = "The time in nci is now " + dateFormat.format(new Date());
     log.info(message);
     currentTimeProducer.sendMessage(message);
   }

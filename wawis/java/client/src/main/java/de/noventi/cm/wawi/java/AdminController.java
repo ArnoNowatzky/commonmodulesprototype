@@ -1,11 +1,11 @@
 package de.noventi.cm.wawi.java;
 
-import de.noventi.cm.wawi.java.runtime.ApiClient;
-import de.noventi.cm.wawi.java.runtime.ApiException;
-import de.noventi.cm.wawi.java.runtime.api.ModuleApi;
-import de.noventi.cm.wawi.java.runtime.model.SetupModulesParamDTO;
-import de.noventi.cm.wawi.java.runtime.model.StatusModuleReturnDTO;
-import de.noventi.cm.wawi.java.runtime.model.StatusModulesReturnDTO;
+import de.noventi.cm.wawi.java.nci.ApiClient;
+import de.noventi.cm.wawi.java.nci.ApiException;
+import de.noventi.cm.wawi.java.nci.api.ModuleApi;
+import de.noventi.cm.wawi.java.nci.model.SetupModulesParamDTO;
+import de.noventi.cm.wawi.java.nci.model.StatusModuleReturnDTO;
+import de.noventi.cm.wawi.java.nci.model.StatusModulesReturnDTO;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;

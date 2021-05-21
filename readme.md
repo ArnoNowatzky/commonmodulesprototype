@@ -101,6 +101,7 @@ services:
 4. In another terminal call './gradlew :wawis:java:server:bootRun' to start the server part of the java WAWI dummy
 5. In another terminall call './gradlew :wawis:java:client:run' to start the client part of the java WAWI dummy
  
+Example URLs for accessing REST API see in chapter APIs
 If you want to see outgoing REST API switch to Tab 'Service'
 If you want to see the UI of the CM in client with embedded browser of the language itself (e.g. JavaFX) switch to Tab 'UI' and click 'Reload'
 Showing REST-API Call from CM to WAWI does not work in this context, but works in Chrome.

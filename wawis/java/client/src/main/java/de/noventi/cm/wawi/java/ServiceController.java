@@ -2,7 +2,7 @@ package de.noventi.cm.wawi.java;
 
 import de.noventi.cm.wawi.java.example.api.MedicationsApi;
 import de.noventi.cm.wawi.java.example.model.MedicationcontainerDTO;
-import de.noventi.cm.wawi.java.runtime.ApiException;
+import de.noventi.cm.wawi.java.nci.ApiException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
