@@ -466,7 +466,7 @@
     /***/
     function _(module, exports, __webpack_require__) {
       __webpack_require__(
-      /*! /Users/OleyMa/vcs/wawiNeu/commonmodulesprototype/commonModuleUi/node_modules/@angular-devkit/build-angular/src/webpack/es5-polyfills.js */
+      /*! /Users/OleyMa/vcs/wawiNeu/commonmodulesprototype/commonModuleExample/node_modules/@angular-devkit/build-angular/src/webpack/es5-polyfills.js */
       "voQr");
 
       __webpack_require__(
@@ -474,7 +474,7 @@
       "R0gw");
 
       module.exports = __webpack_require__(
-      /*! /Users/OleyMa/vcs/wawiNeu/commonmodulesprototype/commonModuleUi/src/polyfills.ts */
+      /*! /Users/OleyMa/vcs/wawiNeu/commonmodulesprototype/commonModuleExample/src/polyfills.ts */
       "hN/g");
       /***/
     },

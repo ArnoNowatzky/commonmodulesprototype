@@ -58,8 +58,8 @@ dependencies {
 
 
 
-File[] openApiInputs = [project.file('../../../api/src/main/resources/api/example/example.yaml').absoluteFile,
-                        project.file('../../../api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
+File[] openApiInputs = [rootProject.file('api/src/main/resources/api/example/example.yaml').absoluteFile,
+                        rootProject.file('api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
 // Iterate on all swagger files and generate a task for each one with the nomenclature openApiGenerate + swagger name
 openApiInputs.each {File file->
     def apiName = file.getName().replace(".yaml", "");
@@ -69,8 +69,8 @@ openApiInputs.each {File file->
         generatorName = "java"
         inputSpec = file.absolutePath
         outputDir = "$buildDir/generated/openapi/".toString()
-        apiPackage = "de.noventi.cm.client.java." + apiName + ".api"
-        modelPackage = "de.noventi.cm.client.java." + apiName + ".model"
+        apiPackage = "de.noventi.cm.wawi.java." + apiName + ".api"
+        modelPackage = "de.noventi.cm.wawi.java." + apiName + ".model"
         configOptions = [
                 dateLibrary: "java8"
         ]
@@ -90,7 +90,7 @@ sourceSets {
 }
 
 application {
-    mainClass = 'de.noventi.cm.client.java.Application'
+    mainClass = 'de.noventi.cm.wawi.java.Application'
 }
 
 test {

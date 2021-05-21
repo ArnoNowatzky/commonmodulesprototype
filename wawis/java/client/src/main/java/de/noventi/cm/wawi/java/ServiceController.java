@@ -1,8 +1,8 @@
-package de.noventi.cm.client.java;
+package de.noventi.cm.wawi.java;
 
-import de.noventi.cm.client.java.example.api.MedicationsApi;
-import de.noventi.cm.client.java.example.model.MedicationcontainerDTO;
-import de.noventi.cm.client.java.runtime.ApiException;
+import de.noventi.cm.wawi.java.example.api.MedicationsApi;
+import de.noventi.cm.wawi.java.example.model.MedicationcontainerDTO;
+import de.noventi.cm.wawi.java.runtime.ApiException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,7 +41,7 @@ public class ServiceController {
       lblId.setText(customer.getId());
       lblName.setText(customer.getConsumerName());
       lblFirstname.setText(customer.getConsumerFirstname());
-    } catch (de.noventi.cm.client.java.example.ApiException e) {
+    } catch (de.noventi.cm.wawi.java.example.ApiException e) {
       lblFirstname.setText("");
       lblName.setText("");
       lblId.setText("");

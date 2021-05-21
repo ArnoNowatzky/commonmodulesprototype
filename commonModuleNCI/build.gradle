@@ -85,7 +85,7 @@ springBoot {
 openApiGenerate {
     generatorName = "spring"
     library = "spring-boot"
-    inputSpec = file('../api/src/main/resources/api/runtime/runtime.yaml').toString()
+    inputSpec = rootProject.file('api/src/main/resources/api/runtime/runtime.yaml').toString()
     outputDir = "$buildDir/generated/openapi".toString()
     apiPackage = "de.noventi.cm.runtime.api"
     modelPackage = "de.noventi.cm.runtime.model"
@@ -108,7 +108,7 @@ sourceSets {
 }
 
 tasks.compileJava.dependsOn tasks.openApiGenerate
-tasks.bootRun.dependsOn rootProject.getTasksByName('releaseLocalSnapshot', true)
+tasks.bootRun.dependsOn rootProject.getTasksByName('publishToMavenLocal', true)
 tasks.bootRun.dependsOn rootProject.getTasksByName('jibDockerBuild', true)
 
 //TODO https://stackoverflow.com/questions/61197984/bootjar-mavenjar-artifact-wasnt-produced-by-this-build

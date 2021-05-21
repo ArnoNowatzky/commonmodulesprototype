@@ -1,7 +1,7 @@
-package de.noventi.cm.client.java;
+package de.noventi.cm.wawi.java;
 
-import de.noventi.cm.client.java.example.ApiClient;
-import de.noventi.cm.client.java.example.api.MedicationsApi;
+import de.noventi.cm.wawi.java.example.ApiClient;
+import de.noventi.cm.wawi.java.example.api.MedicationsApi;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;

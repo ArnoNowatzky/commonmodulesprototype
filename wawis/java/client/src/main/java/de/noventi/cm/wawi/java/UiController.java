@@ -1,4 +1,4 @@
-package de.noventi.cm.client.java;
+package de.noventi.cm.wawi.java;
 
 import java.io.File;
 import javafx.beans.value.ChangeListener;
@@ -7,6 +7,7 @@ import javafx.concurrent.Worker;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebErrorEvent;
 import javafx.scene.web.WebEvent;
@@ -15,12 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j public class UiController {
 
+  @FXML private TextField txtUrl;
   @FXML private WebView webview;
 
   @FXML private Button btnReload;
 
   public void load() {
     btnReload.setOnAction(event -> reload());
+    txtUrl.setText("https://localhost:8002");
   }
 
   private void reload() {
@@ -59,6 +62,6 @@ import lombok.extern.slf4j.Slf4j;
       }
     });
 
-    webview.getEngine().load("https://localhost:8003");
+    webview.getEngine().load(txtUrl.getText());
   }
 }

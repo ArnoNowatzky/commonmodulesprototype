@@ -1,8 +1,8 @@
-package de.noventi.cm.client.java;
+package de.noventi.cm.wawi.java;
 
-import de.noventi.cm.client.java.example.ApiException;
-import de.noventi.cm.client.java.example.api.MedicationsApi;
-import de.noventi.cm.client.java.example.model.MedicationcontainerDTO;
+import de.noventi.cm.wawi.java.example.ApiException;
+import de.noventi.cm.wawi.java.example.api.MedicationsApi;
+import de.noventi.cm.wawi.java.example.model.MedicationcontainerDTO;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import lombok.extern.slf4j.Slf4j;

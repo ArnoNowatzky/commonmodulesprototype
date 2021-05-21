@@ -1,4 +1,4 @@
-package de.noventi.cm.client.java;
+package de.noventi.cm.wawi.java;
 
 import java.io.File;
 import javafx.embed.swing.SwingNode;

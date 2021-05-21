@@ -1,4 +1,4 @@
-package de.noventi.cm.client.java;
+package de.noventi.cm.wawi.java;
 
 import java.util.ArrayList;
 import java.util.List;

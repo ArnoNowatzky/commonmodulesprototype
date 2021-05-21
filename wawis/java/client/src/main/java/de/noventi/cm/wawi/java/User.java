@@ -1,4 +1,4 @@
-package de.noventi.cm.client.java;
+package de.noventi.cm.wawi.java;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

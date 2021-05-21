@@ -1,6 +1,5 @@
-package de.noventi.cm.client.java;
+package de.noventi.cm.wawi.java;
 
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 public class Duration implements Comparable<Duration>  {

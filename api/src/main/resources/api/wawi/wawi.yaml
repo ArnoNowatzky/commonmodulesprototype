@@ -1,0 +1,66 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: "WAWI api"
+  description: "API of WAWI"
+servers:
+  - url: http://localhost:8003/v1
+
+paths:
+
+  /pharmacy:
+    get:
+      tags:
+        - pharmacy
+      operationId: "getPharmacyInfo"
+      description: "returns infos of the current pharmacy"
+      responses:
+        '200':
+          description: infos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PharmacyDTO'
+
+
+components:
+
+  schemas:
+
+    PharmacyDTO:
+      type: object
+      required:
+        - type
+      properties:
+        ik_nr:
+          description: Liste von Institutionskennzeichen {ik_nr} der Apotheke.
+          type: array
+          minItems: 0
+          items:
+            type: string
+            minLength: 1
+            maxLength: 9
+            description: Institutionskennzeichen {ik_nr}
+          example: [123456789,987654321]
+        bga_nr:
+          description: Liste von BGA (IDF)-Nummern {bga_nr} der Apotheke.
+          type: array
+          minItems: 0
+          items:
+            type: string
+            minLength: 1
+            maxLength: 7
+            description: BGA (IDF)-Nummer der Apotheke
+          example: [1234567,7654321]
+        apo_nr:
+          type: string
+          description: Ist die von der NGDA im Rahmen von N-Ident vergebene Apothekennummer und dient der eindeutigen Identifizierung einer Betriebsstätte.
+          example: APO1234567
+        name:
+          type: string
+          description: Name der Apotheke
+          example: Hauptstadt-Apotheke, Berlin
+        inhaber:
+          type: string
+          description: Name des Inhabers
+          example: Dr. Peter Mustermann

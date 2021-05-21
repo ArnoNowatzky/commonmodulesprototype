@@ -23,8 +23,8 @@ apply {
 
 ext.lombokVersion = '1.18.6'
 
-File[] openApiInputs = [project.file('../../../api/src/main/resources/api/example/example.yaml').absoluteFile,
-                        project.file('../../../api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
+File[] openApiInputs = [rootProject.file('api/src/main/resources/api/example/example.yaml').absoluteFile,
+                        rootProject.file('api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
 // Iterate on all swagger files and generate a task for each one with the nomenclature openApiGenerate + swagger name
 openApiInputs.each {File file->
     def apiName = file.getName().replace(".yaml", "")
@@ -36,7 +36,7 @@ openApiInputs.each {File file->
         outputDir = "$buildDir/generated/openapi"
         apiPackage = "Api"
         modelPackage = "Model"
-        packageName = "De.Noventi.Cm.Client.Csharp." + apiName.capitalize()
+        packageName = "De.Noventi.Cm.Wawi.Csharp." + apiName.capitalize()
 
     })
 

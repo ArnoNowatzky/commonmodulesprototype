@@ -11,11 +11,5 @@ server:
 
 jdks: jdk8@http://repo.intra.vsa.de:8082/artifactory/vsa-generic/java/distributions/corretto/8.202/corretto-8.202.08.2-#OS#-x64.zip, jdk11@http://repo.intra.vsa.de:8082/artifactory/vsa-generic/java/distributions/corretto/11.0.3/corretto-11.0.3.7.1-#OS#-x64.zip,jdk15@http://repo.intra.vsa.de:8082/artifactory/vsa-generic/java/distributions/openjdk/15/openjdk-15-#OS#-x64.zip
 
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/cm
-    username: cm
-    password: cm
-
 active-mq:
   broker-url: tcp://localhost:61616

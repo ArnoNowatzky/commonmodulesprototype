@@ -3,7 +3,6 @@ plugins {
     id "com.github.node-gradle.node" version "2.2.4"
 }
 
-
 apply {
     plugin 'java-library'
     plugin 'org.openapi.generator'
@@ -29,12 +28,10 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-activemq'
-    //TODO compile 'org.springframework.boot:spring-boot-starter-security'
 
     compile 'io.swagger:swagger-annotations:1.5.22'
     compile 'javax.validation:validation-api:2.0.1.Final'
 
-    compile project(':commonModuleBase')
 
     //TODO discuss compile 'org.springframework.boot:spring-boot-starter-actuator'
 
@@ -62,7 +59,7 @@ jar {
 openApiGenerate {
     generatorName = "spring"
     library = "spring-boot"
-    inputSpec = file('../api/src/main/resources/api/example/example.yaml').toString()
+    inputSpec = rootProject.file('api/src/main/resources/api/example/example.yaml').toString()
     outputDir = "$buildDir/generated/openapi".toString()
     apiPackage = "de.noventi.cm.example.api"
     modelPackage = "de.noventi.cm.example.model"
@@ -76,14 +73,23 @@ openApiGenerate {
     ]
 }
 
-tasks.create("openApiGenerateClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask.class, {
+tasks.create("openApiGenerateClientCM", org.openapitools.generator.gradle.plugin.tasks.GenerateTask.class, {
   //verbose = true
   generatorName = "typescript-angular"
-  inputSpec = file('../api/src/main/resources/api/service/service.yaml').toString()
-  outputDir = "$projectDir/src/app/generated".toString()
+  inputSpec = rootProject.file('api/src/main/resources/api/example/example.yaml').toString()
+  outputDir = "$projectDir/src/app/generatedCm".toString()
   apiPackage = "api"
   modelPackage = "model"
   invokerPackage = "api"
+})
+tasks.create("openApiGenerateClientWawi", org.openapitools.generator.gradle.plugin.tasks.GenerateTask.class, {
+    //verbose = true
+    generatorName = "typescript-angular"
+    inputSpec = rootProject.file('api/src/main/resources/api/wawi/wawi.yaml').toString()
+    outputDir = "$projectDir/src/app/generatedWawi".toString()
+    apiPackage = "api"
+    modelPackage = "model"
+    invokerPackage = "api"
 })
 
 node {
@@ -100,7 +106,8 @@ task buildClient(type: NpxTask) {
     inputs.dir(fileTree("node_modules").exclude(".cache"))
     outputs.dir('dist')
 }
-buildClient.dependsOn tasks.openApiGenerateClient
+buildClient.dependsOn tasks.openApiGenerateClientCM
+buildClient.dependsOn tasks.openApiGenerateClientWawi
 
 sourceSets {
     main {
@@ -167,3 +174,4 @@ test {
 tasks.jibDockerBuild.dependsOn classes, bootJar
 tasks.build.dependsOn tasks.publishToMavenLocal
 tasks.build.dependsOn tasks.jibDockerBuild
+tasks.bootRun.dependsOn tasks.buildClient

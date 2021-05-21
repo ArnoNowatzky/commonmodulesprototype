@@ -6,8 +6,8 @@ apply {
     plugin 'docker-compose'
 }
 
-File[] openApiInputs = [project.file('../../../api/src/main/resources/api/example/example.yaml').absoluteFile,
-                        project.file('../../../api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
+File[] openApiInputs = [rootProject.file('api/src/main/resources/api/example/example.yaml').absoluteFile,
+                        rootProject.file('api/src/main/resources/api/runtime/runtime.yaml').absoluteFile]
 // Iterate on all swagger files and generate a task for each one with the nomenclature openApiGenerate + swagger name
 openApiInputs.each {File file->
     def apiName = file.getName().replace(".yaml", "");

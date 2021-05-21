@@ -9,11 +9,19 @@ This projects needs the following things to be installed:
 - docker
 - docker-compose
 
+# APIs
+CM WebURI: https://localhost:8002/
+CM Rest API (Beispiel):https://localhost:8002/medicationcontainers
+NCI Rest API: https://localhost:8001/healthcheck 
+WAWI Rest API: https://localhost:8003/pharmacy
+
+
 # Structure of project
 The prototype contains of the following parts:
 * *api*: API definitions from CM side
-* *clients*: Default client implementation side of WAWI. They do not contain the complete target technology stack,
-  but the stack, which can be provided without having the WAWI
+* *wawis*: Default client implementation side of WAWI. They do not contain the complete target technology stack,
+  but the stack, which can be provided without having the WAWI. They are divided into client and server part and contain
+  all interface types: outgoing REST, incoming REST, event based communication and integration by embedded browser
 * *commonModuleBase*: Basic implementations which can be used in all common modules
 * *commonModuleExample*: Example common module containing REST API, Event implementation and a browser component,
   which can be used in embedded browser to be shown
@@ -81,29 +89,37 @@ and
 ```
 in one of the client projects (client/java....) to start the client, which tests the integration
 
-## Runtime exectuable jar
-The subproject 'commonModuleNCI' provides a small runtime which enables starting independent services.
-1. In subproject clients/java call `docker-compose up`. This starts a postgres database, an acivemq broker, 
-   a keycloak and other things important for running the prototype. This must only be done once.
-2. In another tab of your terminal call `./gradlew :commonModuleRuntime:bootRun` to start the runtime itself. 
-3. In a third tab of your terminal start call `./gradlew :clients:java:run` to start the small java client.
-4. In the client step to tab 'Admin' and select 'jar' in the combobox. 
-5. Install all modules by clicking button *Install all modules*. This installs everything under _clients/java/build/example/jar_
-6. Start all modules by clicking button *Start all modules*
-7. When clicking on button *Get status* you see the state of the installed modules. 
-8. You can start/stop one dedicated service by clicking button *Stop/Start* in the list.
+## Using the prototype in context of development
+For development it is convenient to start all components of the prototype as automatically as possible. 
+You can do the following steps to start it. I recommed you to use 4 different terminals to handle the different
+services: 
 
-## Runtime docker
-The subproject 'commonModuleNCI' provides a small runtime which enables starting independent services.
-1. In subproject clients/java call `docker-compose up`. This starts a postgres database, an acivemq broker,
-   a keycloak and other things important for running the prototype. This must only be done once.
-2. In another tab of your terminal call `./gradlew :commonModuleNCI:bootRun` to start the runtime itself.
-3. In a third tab of your terminal start call `./gradlew :clients:java:run` to start the small java client.
-4. In the client step to tab 'Admin' and select 'docker' in the combobox.
-5. Install all modules by clicking button *Install all modules*. This installs everything under _clients/java/build/example/jar_
-6. Start all modules by clicking bu tton *Start all modules*
-7. When clicking on button *Get status* you see the state of the installed modules.
-8. You can start/stop one dedicated service by clicking button *Stop/Start* in the list.
+1. In subproject 'commonModuleNCI' call 'docker-compose up' to start both local postgres database and activemq broker
+2. In another terminal call './gradlew :commonModuleNCI:bootRun' to start the NCI 
+3. In another terminal call './gradlew :commonModuleExample:bootRun' to start the example common module. 
+   You can see the ui of the example CM in your browser at https://localhost:8002/
+4. In another terminal call './gradlew :wawis:java:server:bootRun' to start the server part of the java WAWI dummy
+5. In another terminall call './gradlew :wawis:java:client:run' to start the client part of the java WAWI dummy
+ 
+If you want to see outgoing REST API switch to Tab 'Service'
+If you want to see the UI of the CM in client with embedded browser of the language itself (e.g. JavaFX) switch to Tab 'UI' and click 'Reload'
+Showing REST-API Call from CM to WAWI does not work in this context, but works in Chrome.
+If you want to see the UI of the CM in client with JCEF switch to Tab 'UICEF'. TODO
+If you want to see Events switch to Tab 'Event' 
+
+TODO: Currently we are using a self signed certificates. If you get an error in chrome type thisisunsafe o bypass the message:
+https://stackoverflow.com/questions/35274659/when-you-use-badidea-or-thisisunsafe-to-bypass-a-chrome-certificate-hsts-err
+
+## Using the prototype in context of production (showcase) - NOT YET DONE
+If you want to simulate the prototype in context of production, that means that e.g. the client shall trigger the 
+NCI to be updated and shall start and stop the common modules, the postgres db and so on, this is also possible. 
+You can do the following steps to start it: 
+
+1. In subproject 'commonModuleNCI' call './gradlew bootRun' to start the NCI
+2. In subproject 'wawis/java/server' call './gradlew bootRun' to start the server part of the WAWI dummy
+3. In subproject 'wawis/java/client' call './gradlew run' to start the client part of the WAWI dummy
+4. Step to mask 'Admin' and trigger button "Install all modules" to install the common modules automatically
+4. Step to mask 'Admin' and trigger button "Start all modules" to start the common modules automatically
 
 ## Autogenerate documentation of common module
 After initially build the project you only have to call 

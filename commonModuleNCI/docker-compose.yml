@@ -1,14 +1,31 @@
 version: '3'
 
 services:
-  ui:
-   image:  awinta-docker.intra.vsa.de/noventi.cm/runtime:0.1-SNAPSHOT
-   ports:
-     - "8001:8001"
-   volumes:
-     - ../keystore/commonmodule.p12:/keystore/commonmodule.p12
-   environment:
-      - SERVER_SSL_KEY-STORE=file:/keystore/commonmodule.p12
+
+  activemq:
+    image: rmohr/activemq
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+
+  postgresql:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=cm
+      - POSTGRES_PASSWORD=cm
+      - POSTGRES_DB=service
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U cm -d service" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
 networks:
   default:
     external:

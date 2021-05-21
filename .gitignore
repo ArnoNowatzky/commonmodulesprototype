@@ -4,8 +4,10 @@ bin/
 .gradle/
 .idea/
 build/
-commonModuleUi/client/src/app/generated/
 *.log
 .vs/
 application.pid
 /clients/keystore
+commonModuleExample/src/app/generatedCm/
+commonModuleExample/src/app/generatedWawi/
+commonModuleNCI/postgres_db/

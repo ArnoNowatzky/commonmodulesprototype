@@ -1,47 +1,22 @@
-<mat-grid-list cols="2">
-  <mat-grid-tile>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+TODO migrate from material to primeng <br><br>
 
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
+<h2>Data from WAWI</h2>
+Pharmacyname: '{{pharmacyInfo.name}}' <br>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
+<div *ngIf="medicationContainers">
+    <h2>Data from own CM</h2>
+    <table>
+        <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>First name</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let medication of medicationContainers">
+            <td>{{medication.id}}</td>
+            <td>{{medication.consumerName}}</td>
+            <td>{{medication.consumerFirstname}}</td>
+        </tr>
+        </tbody>
     </table>
-
-  </mat-grid-tile>
-  <mat-grid-tile>
-
-
-    <div class="example-container">
-      <mat-form-field appearance="fill">
-        <mat-label>Input</mat-label>
-        <input matInput>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="fill">
-        <mat-label>Select</mat-label>
-        <mat-select>
-          <mat-option value="option">Option</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="fill">
-        <mat-label>Textarea</mat-label>
-        <textarea matInput></textarea>
-      </mat-form-field>
-    </div>
-  </mat-grid-tile>
-
-
-
-
-</mat-grid-list>
+</div>

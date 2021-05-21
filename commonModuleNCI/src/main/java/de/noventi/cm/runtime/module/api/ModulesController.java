@@ -37,6 +37,10 @@ public class ModulesController implements ModulesApi {
   @Autowired
   private PostgresInstaller postgresInstaller;
 
+  public ModulesController () {
+    log.info("Create " + getClass().getName());
+  }
+
   @Override
   public ResponseEntity<Void> installModules(@ApiParam(value = "modules descriptor" ,required=true )  @Valid @RequestBody SetupModulesParamDTO setupModulesParamDTO) {
     try {

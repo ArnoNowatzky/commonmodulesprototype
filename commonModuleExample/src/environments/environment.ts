@@ -3,8 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false, 
-  API_BASE_PATH: "http://localhost:8003"
+  production: false,
+  API_BASE_PATH_CM: "https://localhost:8002",
+  API_BASE_PATH_WAWI: "https://localhost:8003"
 };
 
 /*

@@ -15,7 +15,7 @@ spring:
     password: cm
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+    show-sql: false
     hibernate:
       generate-ddl: true
       ddl-auto: create

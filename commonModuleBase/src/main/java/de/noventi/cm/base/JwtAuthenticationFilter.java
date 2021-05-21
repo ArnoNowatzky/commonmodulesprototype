@@ -27,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
 
+    /**TODO
     log.debug("doFilterInternal called");
     try {
       String jwt = getJwtFromRequest(request);
@@ -77,9 +78,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }catch (Exception e) {
       logger.error("Could not authenticate in SecurityContext: " + e.getLocalizedMessage(), e);
-    }
+    }**/
 
-    filterChain.doFilter(request, response);
+    //filterChain.doFilter(request, response);
   }
 
   private String getJwtFromRequest(HttpServletRequest request) {

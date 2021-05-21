@@ -5,8 +5,6 @@ info:
   description: "API which is provided by the module runtime itself"
 servers:
   - url: http://localhost:8001/v1
-security:
-  - BasicAuth
 
 paths:
   /modules/setup:
@@ -62,6 +60,7 @@ paths:
       responses:
         '200':
           description: Stopping modules succeded
+
   /modules/status:
     post:
       tags:
@@ -84,12 +83,22 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatusModulesReturnDTO"
 
+  /healthcheck:
+    get:
+      tags:
+        - base
+      operationId: "healthcheck"
+      description: "gets healthcheck infos of the server"
+      responses:
+        '200':
+          description: status of modules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthcheckDTO"
+
 
 components:
-  securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
 
   schemas:
     SetupModulesParamDTO:
@@ -125,4 +134,11 @@ components:
           type: "boolean"
         instanceId:
           description: "instanceID is the PID for jar based runtime or the container ID for docker based runtime"
+          type: "string"
+
+    HealthcheckDTO:
+      type: "object"
+      properties:
+        monitoring:
+          description: "The monitoring data which is also automatically sent"
           type: "string"
